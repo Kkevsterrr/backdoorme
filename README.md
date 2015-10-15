@@ -7,3 +7,4 @@
   - Netcat
   - Metasploit
 
+ Please run the dependencies python script to install the necessary dependencies. Backdoorme requires python2.7 or higher.
