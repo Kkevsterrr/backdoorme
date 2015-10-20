@@ -23,9 +23,9 @@ class Target:
         scp = SCPClient(self.ssh.get_transport())#don't call this, but use the above function instead.
         self.is_open = True
     #TODO: fix rm -rf bug
-    def scpFiles(filename, recur=True):#call this with a filename and false if it is a single file
-        ssh.exec_command("rm " + filename)
-        scp.put(filename, recursive=recur)
+    def scpFiles(self, filename,a, recur=True):#call this with a filename and false if it is a single file
+        self.ssh.exec_command("rm " + filename)
+        self.scp.put(filename, recursive=recur)
     
     def close(self):
         self.is_open = False
