@@ -9,3 +9,6 @@ os.system('rm /usr/local/lib/python2.7/dist-packages/paramiko/transport.py')
 os.system('cp paramiko/transport.py /usr/local/lib/python2.7/dist-packages/paramiko')
 os.system('apt-get install nmap')
 os.system('apt-get install python-tk')
+os.system('pip install rpyc')
+os.system('pip install pefile')
+

