@@ -283,6 +283,9 @@ class BackdoorMe(cmd.Cmd):
 
     def do_private_key(self, args):
         t = self.get_target(args)
+        if t == None:
+            return
+ 
         os.system("sshpass -p %s ssh-copy-id %s@%s" % (t.pword, t.uname, t.hostname))
         print GOOD + "Private key copied."
     
