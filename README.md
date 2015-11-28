@@ -1,9 +1,7 @@
-# backdoorme
+# backdoorme [![Build Status](https://travis-ci.org/Kkevsterrr/backdoorme.png)](https://travis-ci.org/Kkevsterrr/backdoorme)
+
  Backdoorme is a powerful utility capable of backdooring Unix machines with a slew of backdoors.   
  
-### Status
-[![Build Status](https://travis-ci.org/Kkevsterrr/backdoorme.png)](https://travis-ci.org/Kkevsterrr/backdoorme)
-
 ### Functionality  
  Currently enabled backdoors include:
  
