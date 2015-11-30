@@ -1,7 +1,1 @@
-os
-socket
-subprocess
 colorama
-Tkinter
-cmd
-start
