@@ -26,7 +26,7 @@ class Target:
         self.is_open = True
     #TODO: fix rm -rf bug
     def scpFiles(self, filename,a, recur=True):#call this with a filename and false if it is a single file
-        print "files: "
+        print "Shipping files: "
         print(a)
         self.ssh.exec_command("rm ", a)
         self.scp.put(a, recursive=recur)
