@@ -153,7 +153,7 @@ class BackdoorMe(cmd.Cmd):
         t = self.get_target(args)
         if t == None:
             return
-        Perl(t, self).cmdloop()
+        Perl(t, self, self.localIP).cmdloop()
         
     def do_bash(self, args):
         t = self.get_target(args)
