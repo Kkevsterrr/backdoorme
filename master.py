@@ -171,7 +171,7 @@ class BackdoorMe(cmd.Cmd):
         t = self.get_target(args)
         if t == None:
             return
-        Pyth(t, self).cmdloop()
+        Pyth(t, self, self.localIP).cmdloop()
        
     def do_metasploit(self,args):
         t = self.get_target(args)
