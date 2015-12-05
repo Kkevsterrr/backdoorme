@@ -178,6 +178,12 @@ class BackdoorMe(cmd.Cmd):
         if t == None:
             return
         Metasploit(t, self).cmdloop()
+
+    def do_userAdd(self, args):
+	t = self.get_target(args)
+	if t == None:
+	    return
+	UserAdd(t, self).cmdloop()
     
     def do_passwd(self, args):
         t = self.get_target(args)
