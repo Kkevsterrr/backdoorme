@@ -2,7 +2,8 @@
 
  Backdoorme is a powerful utility capable of backdooring Unix machines with a slew of backdoors.  
  
- Backdoorme relies on having an existing SSH connection or credentials to the victim, through which it will transfer and deploy any backdoors.  In the future, this reliance will be removed as the tool is expanded. https://help.ubuntu.com/community/SSH/OpenSSH/Configuring
+ Backdoorme relies on having an existing SSH connection or credentials to the victim, through which it will transfer and deploy any backdoors.  In the future, this reliance will be removed as the tool is expanded. 
+ To set up SSH, please see here: https://help.ubuntu.com/community/SSH/OpenSSH/Configuring
  
  Please only use Backdoorme with explicit permission - please don't hack without asking.  
 ## Usage
