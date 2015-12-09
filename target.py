@@ -35,8 +35,8 @@ class Target:
 	    else:
 		bareFile += a[i]
 	bareFile = bareFile[::-1]
-	print bareFile
-	print("echo " + self.pword + " | sudo -S rm " + bareFile)
+	#print bareFile
+	#print("echo " + self.pword + " | sudo -S rm " + bareFile)
 	self.ssh.exec_command("echo " + self.pword + " | sudo -S rm " + bareFile)
         self.scp.put(a, recursive=recur)
     
