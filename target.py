@@ -28,7 +28,16 @@ class Target:
     def scpFiles(self, filename,a, recur=True):#call this with a filename and false if it is a single file
         print "Shipping files: "
         print(a)
-        self.ssh.exec_command("rm ", a)
+        bareFile = ""
+	for i in range(len(a)-1, 0, -1):
+	    if(a[i] == '/'):
+		break;
+	    else:
+		bareFile += a[i]
+	bareFile = bareFile[::-1]
+	print bareFile
+	print("echo " + self.pword + " | sudo -S rm " + bareFile)
+	self.ssh.exec_command("echo " + self.pword + " | sudo -S rm " + bareFile)
         self.scp.put(a, recursive=recur)
     
     def close(self):

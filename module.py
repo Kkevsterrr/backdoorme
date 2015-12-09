@@ -1,5 +1,6 @@
 import cmd
 from option import *
+from definitions import *
 
 class Module(object, cmd.Cmd):
     def __init__(self, core):

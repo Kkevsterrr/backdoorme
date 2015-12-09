@@ -29,7 +29,7 @@ class UserAdd(Module):
 	
 	print("Creating user....")
 
-	self.target.ssh.exec_command("echo " + self.target.pword + " | sudo -S useradd -p $(openssl passwd -1 \"" + password + "\") " + user)
+	self.target.ssh.exec_command("echo " + self.target.pword + " | sudo -S useradd -M -p $(openssl passwd -1 \"" + password + "\") " + user)
 
 
 	sud= (raw_input("Press y to make this user a superuser (highly recommended)")=='y')
