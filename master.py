@@ -151,12 +151,18 @@ class BackdoorMe(cmd.Cmd):
                 return
         Netcat_Traditional(t, self).cmdloop()
 
+    def do_web(self, args):
+        t = self.get_target(args)
+        if t == None:
+                return
+       	Web(t, self).cmdloop()
+
     def do_perl(self,args):
         t = self.get_target(args)
         if t == None:
             return
         Perl(t, self, self.localIP).cmdloop()
-        
+       
     def do_bash(self, args):
         t = self.get_target(args)
         if t == None:
