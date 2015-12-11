@@ -7,4 +7,5 @@ from pyth import *
 from pupy import *
 from bash import *
 from poison import *
+from web import *
 from cron import *
