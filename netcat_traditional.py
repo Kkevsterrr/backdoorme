@@ -1,10 +1,6 @@
-from module import *
-import os
-import cmd
-from colorama import *
-from definitions import *
+from backdoor import *
 
-class Netcat_Traditional(Module):
+class Netcat_Traditional(Backdoor):
     prompt = Fore.RED + "(nct) " + Fore.BLUE + ">> " + Fore.RESET 
     
     def __init__(self, target, core):

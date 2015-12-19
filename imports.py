@@ -6,3 +6,4 @@ from perl import *
 from pyth import *
 from pupy import *
 from bash import *
+from poison import *

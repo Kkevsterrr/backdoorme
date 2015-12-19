@@ -1,10 +1,6 @@
-from module import *
-import os
-import cmd
-from colorama import *
-from definitions import *
+from backdoor import *
 
-class Metasploit(Module):
+class Metasploit(Backdoor):
     prompt = Fore.RED + "(msf) " + Fore.BLUE + ">> " + Fore.RESET 
     
     def __init__(self, target, core):
@@ -21,20 +17,18 @@ class Metasploit(Module):
                 "encoder" : Option("encoder", "none", "encoder to use for the backdoor", False),
                 "name"    : Option("name", "initd", "name of the backdoor", False)
                 }
+    
     def get_value(self, name):
         if name in self.options:
             return self.options[name].value
         else:
             return None
 
-
-
     def do_set(self, args):
         args = args.split(" ")
         if len(args) == 2 and args[0] in self.options:
             self.options[args[0].lower()].value = args[1]
             print "%s => %s" % (args[0], args[1])
-            print self.options
         elif len(args) != 2:
             print "Please supply a variable and an option"
             print "Usage: set LHOST 10.1.0.1"

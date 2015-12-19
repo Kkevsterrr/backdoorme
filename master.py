@@ -21,8 +21,7 @@ class BackdoorMe(cmd.Cmd):
     prompt = Fore.BLUE + ">> " + Fore.RESET
 
     def __init__(self):
-        cmd.Cmd.__init__(self) 
-        
+        cmd.Cmd.__init__(self)
         self.target_num = 1
         self.port = 22 
         self.targets = {}
@@ -34,13 +33,19 @@ class BackdoorMe(cmd.Cmd):
         print "Welcome to BackdoorMe, a powerful backdooring utility. Type \"help\" to see the list of available commands."
         print "Type \"addtarget\" to set a target, and \"open\" to open an SSH connection to that target."
         print "Using local IP of %s." % self.localIP
-    
+        self.addtarget("10.1.0.2", "student", "target123")
+
     def do_help(self, args):
         print "Type \"addtarget\" to set a target, and \"open\" to open an SSH connection to that target."
         print "Using local IP of %s." % self.localIP
         print "\nAvailable commands are: "
         print fmtcols(["addtarget", "adds a target", "edit target", "edit existing target"], 2)
-
+        
+    def addtarget(self, hostname, uname, pword):
+        t = target.Target(hostname, uname, pword, self.target_num)
+        self.targets[self.target_num] = t
+        self.target_num += 1
+        self.curtarget = t
     def do_addtarget(self, args):
         hostname = raw_input('Target Hostname: ') #victim host
         try:
@@ -51,11 +56,8 @@ class BackdoorMe(cmd.Cmd):
         uname = raw_input('Username: ') #username for the box to be attacked
         pword = raw_input('Password: ') #password for the box to be attacked
         print GOOD + "Target %d Set!" % self.target_num
-        t = target.Target(hostname, uname, pword, self.target_num)
-        self.targets[self.target_num] = t
-        self.target_num += 1
-        self.curtarget = t
-
+        self.addtarget(hostname, uname, pword);
+    
     def do_edittarget(self, args):
         t = self.get_target(args)
         if t == None:
@@ -89,6 +91,12 @@ class BackdoorMe(cmd.Cmd):
             print BAD + "Connection failed."
             return
         print GOOD + "Connection established."
+
+    def do_poison(self, args):
+        t = self.get_target(args)
+        if t == None:
+            return
+        Poison(t, self).cmdloop()
 
 
     def do_open(self, args):
@@ -143,7 +151,7 @@ class BackdoorMe(cmd.Cmd):
             return
         Netcat(t, self).cmdloop()
 
-    def do_nce(self, args):
+    def do_nct(self, args):
         t = self.get_target(args)
         if t == None:
                 return
@@ -243,7 +251,8 @@ class BackdoorMe(cmd.Cmd):
         return -1
     def precmd(self, line):
         self._hist += [ line.strip() ]
-        return line 
+        return line
+
     def default(self, line):       
         try:
             print GOOD + "Executing \"" + line + "\""

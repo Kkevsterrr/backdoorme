@@ -1,10 +1,6 @@
-from module import *
-import os
-import cmd
-from colorama import *
-from definitions import *
+from backdoor import *
 
-class Perl(Module):
+class Perl(Backdoor):
     prompt = Fore.RED + "(perl) " + Fore.BLUE + ">> " + Fore.RESET 
     
     def __init__(self, target, core):

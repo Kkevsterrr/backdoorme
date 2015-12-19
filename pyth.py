@@ -1,10 +1,6 @@
-from module import *
-import os
-import cmd
-from colorama import *
-from definitions import *
+from backdoor import *
 
-class Pyth(Module):
+class Pyth(Backdoor):
     prompt = Fore.RED + "(py) " + Fore.BLUE + ">> " + Fore.RESET 
     
     def __init__(self, target, core):

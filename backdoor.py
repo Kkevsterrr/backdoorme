@@ -5,7 +5,7 @@ import cmd
 from colorama import *
 from definitions import *
 
-class Module(object, cmd.Cmd):
+class Backdoor(object, cmd.Cmd):
     def __init__(self, core):
         self.options = {}
         self.core = core

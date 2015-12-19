@@ -1,10 +1,6 @@
-from module import *
-import os
-import cmd
-from colorama import *
-from definitions import *
+from backdoor import *
 
-class Pupy(Module):
+class Pupy(Backdoor):
     prompt = Fore.RED + "(pupy) " + Fore.BLUE + ">> " + Fore.RESET 
     
     def __init__(self, target, core):

