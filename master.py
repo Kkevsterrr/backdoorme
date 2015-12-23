@@ -187,6 +187,12 @@ class BackdoorMe(cmd.Cmd):
             return
         Metasploit(t, self).cmdloop()
 
+    def do_bash2(self,args):
+        t = self.get_target(args)
+        if t == None:
+            return
+        Bash2(t, self).cmdloop()
+
     def do_userAdd(self, args):
 	t = self.get_target(args)
 	if t == None:
