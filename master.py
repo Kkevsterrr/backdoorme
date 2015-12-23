@@ -161,7 +161,7 @@ class BackdoorMe(cmd.Cmd):
         t = self.get_target(args)
         if t == None:
             return
-        Perl(t, self).cmdloop()
+        Perl(t, self, self.localIP).cmdloop()
         
     def do_bash(self, args):
         t = self.get_target(args)
@@ -179,13 +179,19 @@ class BackdoorMe(cmd.Cmd):
         t = self.get_target(args)
         if t == None:
             return
-        Pyth(t, self).cmdloop()
+        Pyth(t, self, self.localIP).cmdloop()
        
     def do_metasploit(self,args):
         t = self.get_target(args)
         if t == None:
             return
         Metasploit(t, self).cmdloop()
+
+    def do_userAdd(self, args):
+	t = self.get_target(args)
+	if t == None:
+	    return
+	UserAdd(t, self).cmdloop()
     
     def do_passwd(self, args):
         t = self.get_target(args)

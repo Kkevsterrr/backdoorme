@@ -10,5 +10,6 @@ os.system('cp paramiko/transport.py /usr/local/lib/python2.7/dist-packages/param
 os.system('apt-get install nmap')
 os.system('apt-get install python-tk')
 os.system('pip install rpyc')
+os.system('pip install colorama')
 os.system('pip install pefile')
-
+os.system('git clone https://github.com/n1nj4sec/pupy')

