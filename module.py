@@ -1,11 +1,5 @@
 import cmd
 from option import *
-<<<<<<< HEAD
-import os
-import cmd
-from colorama import *
-=======
->>>>>>> 9563e692563829662b348c5aceee0ef6c2a54cad
 from definitions import *
 
 class Module(object, cmd.Cmd):
