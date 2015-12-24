@@ -1,6 +1,7 @@
 import cmd
 from option import *
 from definitions import *
+import os
 
 class Module(object, cmd.Cmd):
     def __init__(self, core):
@@ -21,8 +22,6 @@ class Module(object, cmd.Cmd):
         else:
             return False
 
-    def do_exploit():
-        return False
     def do_show(self, args):
         if args == "options":
             self.do_help(args)
@@ -69,8 +68,6 @@ class Module(object, cmd.Cmd):
         print "Exiting"
         exit()
     def do_help(self, args):
-        print "Option\t\tValue\t\tDescription\t\tRequired"
-        print "------\t\t-----\t\t-----------\t\t--------"
         for name, opt in self.options.iteritems():
             print("%s\t\t%s\t\t%s\t\t%s" % (opt.name, opt.value, opt.description, opt.required))
    

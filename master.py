@@ -22,6 +22,7 @@ class BackdoorMe(cmd.Cmd):
 
     def __init__(self):
         cmd.Cmd.__init__(self)
+        self.enabled_modules = {"poison" : Poison, "cron" : Cron }
         self.target_num = 1
         self.port = 22 
         self.targets = {}
@@ -91,13 +92,6 @@ class BackdoorMe(cmd.Cmd):
             print BAD + "Connection failed."
             return
         print GOOD + "Connection established."
-
-    def do_poison(self, args):
-        t = self.get_target(args)
-        if t == None:
-            return
-        Poison(t, self).cmdloop()
-
 
     def do_open(self, args):
         t = self.get_target(args)
