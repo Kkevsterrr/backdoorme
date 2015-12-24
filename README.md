@@ -50,7 +50,7 @@ Currently enabled backdoors include:
 Currently enabled modules include:
  - Poison
   - Performs bin poisoning on the target computer - it compiles an executable to call a system utility and an existing backdoor.
-  - For example, bin poisoning "ls" would compile a binary called "ls" that would run an existing backdoor and the original ls, thereby tripping a user to run an existing backdoor. 
+  - For example, if the bin poisoning module is triggered with "ls", it would would compile and move a binary called "ls" that would run both an existing backdoor and the original "ls", thereby tripping a user to run an existing backdoor more frequently. 
  - Cron
   - Adds an existing backdoor to the root user's crontab to run with a given frequency.  
  
