@@ -32,7 +32,10 @@ Password: password123
  + Target 1 Set!
 >>
  ```
-### Functionality  
+## Functionality  
+Backdoorme comes with a number of built-in backdoors and modules.  Backdoors are specific components to create and deploy a specific backdoor, such as a netcat backdoor or msfvenom backdoor.  Modules can be applied to any backdoor, and are used to make backdoors more potent, stealthy, or more readily tripped. 
+
+### Backdoors
 Currently enabled backdoors include:
  
  - Bash
@@ -42,6 +45,14 @@ Currently enabled backdoors include:
  - Perl
  - Pupy
  - Python
-  
+ 
+### Modules
+Currently enabled modules include:
+ - Poison
+  - Performs bin poisoning on the target computer - it compiles an executable to call a system utility and an existing backdoor.
+  - For example, bin poisoning "ls" would compile a binary called "ls" that would run an existing backdoor and the original ls, thereby tripping a user to run an existing backdoor. 
+ - Cron
+  - Adds an existing backdoor to the root user's crontab to run with a given frequency.  
+ 
 ## Contributing
 Backdoorme is still very much in its infancy! Feel free to contribute to the project - simply fork it, make your changes, and issue a pull request. 
