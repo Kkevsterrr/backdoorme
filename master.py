@@ -238,7 +238,12 @@ class BackdoorMe(cmd.Cmd):
             os.system(line)
         except Exception, e:
             print e.__class__, ":", e 
- 
+    def cmdloop(self):
+        try:
+            cmd.Cmd.cmdloop(self)
+        except KeyboardInterrupt:
+            print("\n" + BAD + "Please run \"exit\" to exit, or send EOF (Ctrl-D).")
+            self.cmdloop()
     def do_EOF(self, line):
         print ""
         return True
