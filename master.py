@@ -23,6 +23,7 @@ class BackdoorMe(cmd.Cmd):
     def __init__(self):
         cmd.Cmd.__init__(self)
         self.enabled_modules = {"poison" : Poison, "cron" : Cron }
+        self.enabled_backdoors = {"bash" : Bash, "bash2" : Bash2, "metasploit" : Metasploit, "netcat" : Netcat, "nct" : Netcat_Traditional, "perl" : Perl, "python" : Pyth, "pupy" : Pupy } 
         self.target_num = 1
         self.port = 22 
         self.targets = {}
@@ -118,18 +119,18 @@ class BackdoorMe(cmd.Cmd):
     def get_target(self, args):
         t = self.curtarget
                 
-        if (len(args) == 0):
+        if (len(args.split()) == 1):
             if self.curtarget == None:
                 print BAD + "No currently set target. Add a target with 'addtarget'."
                 return None
             else:
                 print GOOD + "Using current target %d." % t.target_num
-        elif not self.target_exists(int(args[0])):
+        elif not self.target_exists(int(args.split()[1])):
             print BAD + "No target with that target ID found." 
             return None
         else:
-            print GOOD + "Using target %s" % args[0]
-            t = self.targets[int(args[0])]
+            print GOOD + "Using target %s" % args.split()[1]
+            t = self.targets[int(args.split()[1])]
         if not t.is_open:
             print BAD + "No SSH connection to target. Attempting to open a connection..."
             self.open_conn(t)
@@ -138,60 +139,22 @@ class BackdoorMe(cmd.Cmd):
 
     def target_exists(self, num):
         return (num in self.targets)  
- 
-    def do_netcat(self, args):
-        t = self.get_target(args)
-        if t == None:
-            return
-        Netcat(t, self).cmdloop()
 
-    def do_nct(self, args):
-        t = self.get_target(args)
-        if t == None:
-                return
-        Netcat_Traditional(t, self).cmdloop()
-
-    def do_perl(self,args):
+    def do_use(self, args):
         t = self.get_target(args)
         if t == None:
             return
-        Perl(t, self, self.localIP).cmdloop()
-        
-    def do_bash(self, args):
-        t = self.get_target(args)
-        if t == None:
-            return
-        Bash(t, self).cmdloop()
-       
-    def do_pupy(self, args):
-        t=self.get_target(args)
-        if t == None:
-            return
-        Pupy(t, self).cmdloop() 
-
-    def do_python(self, args):
-        t = self.get_target(args)
-        if t == None:
-            return
-        Pyth(t, self, self.localIP).cmdloop()
-       
-    def do_metasploit(self,args):
-        t = self.get_target(args)
-        if t == None:
-            return
-        Metasploit(t, self).cmdloop()
-
-    def do_bash2(self,args):
-        t = self.get_target(args)
-        if t == None:
-            return
-        Bash2(t, self).cmdloop()
+        bd = args.split()[0]
+        if bd in self.enabled_backdoors.keys():
+            self.enabled_backdoors[bd](t, self).cmdloop()
+        else:
+            print(BAD + args + " backdoor cannot be found.")
 
     def do_userAdd(self, args):
-	t = self.get_target(args)
-	if t == None:
-	    return
-	UserAdd(t, self).cmdloop()
+        t = self.get_target(args)
+        if t == None:
+            return
+        UserAdd(t, self).cmdloop()
     
     def do_passwd(self, args):
         t = self.get_target(args)

@@ -3,7 +3,7 @@ from backdoor import *
 class Pyth(Backdoor):
     prompt = Fore.RED + "(py) " + Fore.BLUE + ">> " + Fore.RESET 
     
-    def __init__(self, target, core, ip):
+    def __init__(self, target, core):
         cmd.Cmd.__init__(self)
         self.intro = GOOD + "Using Python module"
         self.target = target
