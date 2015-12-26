@@ -41,7 +41,7 @@ class BackdoorMe(cmd.Cmd):
         print "Type \"addtarget\" to set a target, and \"open\" to open an SSH connection to that target."
         print "Using local IP of %s." % self.localIP
         print "\nAvailable commands are: "
-        print fmtcols(["addtarget", "adds a target", "edit target", "edit existing target"], 2)
+        print fmtcols(["addtarget", "adds a target", "edittarget", "edit existing target", "open", "opens an SSH connection to the target", "close", "closes an existing SSH connection to target"], 2)
         
     def addtarget(self, hostname, uname, pword):
         t = target.Target(hostname, uname, pword, self.target_num)
@@ -140,42 +140,6 @@ class BackdoorMe(cmd.Cmd):
     def target_exists(self, num):
         return (num in self.targets)  
  
-    def do_netcat(self, args):
-        t = self.get_target(args)
-        if t == None:
-            return
-        Netcat(t, self).cmdloop()
-
-    def do_nct(self, args):
-        t = self.get_target(args)
-        if t == None:
-                return
-        Netcat_Traditional(t, self).cmdloop()
-
-    def do_web(self, args):
-        t = self.get_target(args)
-        if t == None:
-                return
-       	Web(t, self).cmdloop()
-
-    def do_perl(self,args):
-        t = self.get_target(args)
-        if t == None:
-            return
-        Perl(t, self, self.localIP).cmdloop()
-       
-    def do_bash(self, args):
-        t = self.get_target(args)
-        if t == None:
-            return
-        Bash(t, self).cmdloop()
-       
-    def do_pupy(self, args):
-        t=self.get_target(args)
-        if t == None:
-            return
-        Pupy(t, self).cmdloop() 
-
     def do_use(self, args):
         t = self.get_target(args)
         if t == None:
