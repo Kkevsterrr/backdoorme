@@ -205,10 +205,20 @@ class BackdoorMe(cmd.Cmd):
     def do_clear(self, args):
         os.system("clear")
     def do_list(self, args):
-        print "Targets: "
-        for num, t in self.targets.iteritems():
-            print "%s - %s %s:%s" % (num, t.hostname, t.uname, t.pword)
-
+        if args == "targets" or len(args) == 0:
+            print(GOOD + "Targets: ")
+            for num, t in self.targets.iteritems():
+                print(" " + WARN + "%s - %s %s:%s" % (num, t.hostname, t.uname, t.pword))
+        if args == "modules" or len(args) == 0:
+            print(GOOD + "Available modules: ")
+            for num, mod in enumerate(sorted(self.enabled_modules.keys())):
+                print(" " + WARN + "%s" % (mod))
+        if args == "backdoors" or len(args) == 0:
+            print(GOOD+ "Available backdoors: ")
+            for mod in sorted(self.enabled_backdoors.keys()):
+                print(" " + WARN + "%s" % (mod))
+        if len(args) != 0 and args != "targets" and args != "backdoors" and args != "modules":
+            print(BAD + "Unknown option " + args)
     def preloop(self):
         cmd.Cmd.preloop(self)   ## sets up command completion
         self._hist    = []      ## No history yet

