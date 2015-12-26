@@ -182,7 +182,7 @@ class BackdoorMe(cmd.Cmd):
         t = self.get_target(args)
         if t == None:
             return
-
+        
         newPort = raw_input("Please enter the port you want to use for future connections: ")
         t.port = newPort;
         print(GOOD + "SSH Port for target is now: " + t.port)

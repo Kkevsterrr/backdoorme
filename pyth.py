@@ -13,7 +13,9 @@ class Pyth(Backdoor):
                 }
         self.command = "echo " + self.target.pword + " | sudo -S nohup python pythBackdoor.py"
         self.enabled_modules = {}
-        self.modules = {} 
+        self.modules = {}
+        self.allow_modules = True
+
     def check_valid(self):
         return True
     

