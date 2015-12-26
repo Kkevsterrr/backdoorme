@@ -139,6 +139,42 @@ class BackdoorMe(cmd.Cmd):
 
     def target_exists(self, num):
         return (num in self.targets)  
+ 
+    def do_netcat(self, args):
+        t = self.get_target(args)
+        if t == None:
+            return
+        Netcat(t, self).cmdloop()
+
+    def do_nct(self, args):
+        t = self.get_target(args)
+        if t == None:
+                return
+        Netcat_Traditional(t, self).cmdloop()
+
+    def do_web(self, args):
+        t = self.get_target(args)
+        if t == None:
+                return
+       	Web(t, self).cmdloop()
+
+    def do_perl(self,args):
+        t = self.get_target(args)
+        if t == None:
+            return
+        Perl(t, self, self.localIP).cmdloop()
+       
+    def do_bash(self, args):
+        t = self.get_target(args)
+        if t == None:
+            return
+        Bash(t, self).cmdloop()
+       
+    def do_pupy(self, args):
+        t=self.get_target(args)
+        if t == None:
+            return
+        Pupy(t, self).cmdloop() 
 
     def do_use(self, args):
         t = self.get_target(args)
