@@ -31,6 +31,7 @@ class BackdoorMe(cmd.Cmd):
         proc = subprocess.Popen(["ifconfig | grep inet | head -n1 | cut -d\  -f12 | cut -d: -f2"], stdout=subprocess.PIPE, shell=True)
         self.localIP = proc.stdout.read()
         self.localIP = self.localIP[:-1]
+        self.ctrlc = False
         ascii()
         print "Welcome to BackdoorMe, a powerful backdooring utility. Type \"help\" to see the list of available commands."
         print "Type \"addtarget\" to set a target, and \"open\" to open an SSH connection to that target."
@@ -200,23 +201,22 @@ class BackdoorMe(cmd.Cmd):
         print GOOD + "Private key copied."
     
     def do_quit(self, args):
-        print "Exiting"
-        exit()
+        self.quit()
     def do_clear(self, args):
         os.system("clear")
     def do_list(self, args):
         if args == "targets" or len(args) == 0:
             print(GOOD + "Targets: ")
             for num, t in self.targets.iteritems():
-                print(" " + WARN + "%s - %s %s:%s" % (num, t.hostname, t.uname, t.pword))
+                print(" " + (WARN if (num == self.targets.values().index(self.curtarget) + 1) else " * ") + "%s - %s %s:%s" % (num, t.hostname, t.uname, t.pword))
         if args == "modules" or len(args) == 0:
             print(GOOD + "Available modules: ")
             for num, mod in enumerate(sorted(self.enabled_modules.keys())):
-                print(" " + WARN + "%s" % (mod))
+                print("  * " + "%s" % (mod))
         if args == "backdoors" or len(args) == 0:
             print(GOOD+ "Available backdoors: ")
             for mod in sorted(self.enabled_backdoors.keys()):
-                print(" " + WARN + "%s" % (mod))
+                print("  * " + "%s" % (mod))
         if len(args) != 0 and args != "targets" and args != "backdoors" and args != "modules":
             print(BAD + "Unknown option " + args)
     def preloop(self):
@@ -227,11 +227,12 @@ class BackdoorMe(cmd.Cmd):
     def do_history(self, args):
         print self._hist
     def do_exit(self, args):
-        return -1
+        self.quit()
     def precmd(self, line):
         self._hist += [ line.strip() ]
+        self.ctrlc = False
         return line
-
+        
     def default(self, line):       
         try:
             print GOOD + "Executing \"" + line + "\""
@@ -242,13 +243,23 @@ class BackdoorMe(cmd.Cmd):
         try:
             cmd.Cmd.cmdloop(self)
         except KeyboardInterrupt:
-            print("\n" + BAD + "Please run \"exit\" to exit, or send EOF (Ctrl-D).")
-            self.cmdloop()
+            if not self.ctrlc: 
+                self.ctrlc = True
+                print("\n" + BAD + "Please run \"quit\" or \"exit\" to exit, or press Ctrl-C again.")
+                self.cmdloop()
+            else:
+                print("")
+                self.quit()            
     def do_EOF(self, line):
         print ""
         return True
     def emptyline(self):
         return
+    def quit(self):
+        print(BAD + "Exiting...")
+        exit()
+        return
+
 BackdoorMe().cmdloop()
 
 
