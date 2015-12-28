@@ -112,7 +112,17 @@ class BackdoorMe(cmd.Cmd):
 
     def get_target(self, args):
         t = self.curtarget
+<<<<<<< HEAD
         if (len(args.split()) == 1 or len(args.split()) == 0):
+=======
+        if not t.is_open:
+            print BAD + "No SSH connection to target. Attempting to open a connection..."
+            self.open_conn(t)
+
+	if (len(args.split()) == 0):
+	    print(GOOD + "Opening Connection")
+	elif (len(args.split()) == 1):
+>>>>>>> e02cd1334c9a5b44fb9bda518510c84a775244c3
             if self.curtarget == None:
                 print BAD + "No currently set target. Add a target with 'addtarget'."
                 return None
@@ -122,11 +132,16 @@ class BackdoorMe(cmd.Cmd):
             print BAD + "No target with that target ID found." 
             return None
         else:
+<<<<<<< HEAD
             print GOOD + "Using target %s" % args.split()[-1]
             t = self.targets[int(args.split()[-1])]
         if not t.is_open:
             print BAD + "No SSH connection to target. Attempting to open a connection..."
             self.open_conn(t)
+=======
+            print GOOD + "Using target %s" % args.split()[1]
+            t = self.targets[int(args.split()[1])]
+>>>>>>> e02cd1334c9a5b44fb9bda518510c84a775244c3
   
         return t
 
