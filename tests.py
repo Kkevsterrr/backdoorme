@@ -1,43 +1,49 @@
+import master 
 from imports import *
-from subprocess import Popen, PIPE, STDOUT
 from nose.tools import nottest
-import sys
 #######################################################################################
 
 @nottest
 def get_backdoors():
-    return ['bash', 'perl', 'metasploit', 'netcat', 'nct', 'perl', 'pupy', 'poison']
+    return [Bash, Bash2, Metasploit, Netcat, Netcat_Traditional, Pupy, Pyth, Web]
 
 @nottest
 def get_modules():
-    return ['poison']
+    return ['poison', 'cron']
 
+@nottest
+def check_add_module_test(bd, m):
+    core = master.BackdoorMe()
+    bd(core).do_add(m)
+    pass
 
 @nottest
 def check_crash_test(bd):
+    core = master.BackdoorMe()
+    bd(core)
     pass
-'''
-    p = Popen(['python master.py'],shell=True, stdout=PIPE,stdin=PIPE,stderr=PIPE)
-    stderr_data = p.communicate(input=bd)[1]
-    p.stdout.close()
-    p.stdin.close()
-    p.stderr.close()
-    assert(stderr_data == "")
-    '''
-
 
 #######################################################################################
 
-def check_backdoor_crash_test():
+def test_bash1_test():
+    core = master.BackdoorMe()
+    bd = Bash(core)
+
+
+def backdoor_crash_test():
     bds = get_backdoors()
     for bd in bds:
         yield check_crash_test, bd
 
-def check_module_crash_test():
-    ms = get_modules()
-    for m in ms:
-        yield check_crash_test, m
+def add_module_test():
+    bds = get_backdoors()
+    for bd in bds:
+        for m in get_modules():
+            yield check_crash_test, bd
 
 
 def add_target_test():
+    bd = master.BackdoorMe()
+    bd.addtarget("10.1.0.2", "student", "target123")
+    
     pass

