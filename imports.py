@@ -9,4 +9,5 @@ from bash import *
 from bash2 import *
 from poison import *
 from web import *
+from webMod import *
 from cron import *
