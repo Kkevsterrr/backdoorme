@@ -18,7 +18,7 @@ class Backdoor(object, cmd.Cmd):
     def do_add(self, line):
         if self.allow_modules:
             if line in self.core.enabled_modules.keys():
-                mod = self.core.enabled_modules[line](self.target, self.command, self.core)
+                mod = self.core.enabled_modules[line](self.core.curtarget, self.get_command(), self.core)
                 self.modules[mod] = mod.options
                 self.enabled_modules[line] = mod
                 print(GOOD + mod.name + " module added.")
@@ -51,12 +51,13 @@ class Backdoor(object, cmd.Cmd):
         args = args.split(" ")
         if len(args) == 2 and args[0] in self.options:
             self.options[args[0].lower()].value = args[1]
-            print "%s => %s" % (args[0], args[1])
+            print(GOOD + "%s => %s" % (args[0], args[1]))
+        elif args[0] == "target":
+            self.core.do_set(" ".join(args))
         elif len(args) != 2:
-            print "Please supply a variable and an option"
-            print "Usage: set LHOST 10.1.0.1"
+            print(BAD + "Usage: \"set <OPTION> <VALUE>\"")
         else:
-            print BAD + "Unknown option %s", args[0]
+            print(BAD + "Unknown option %s" % args[0])
 
     def get_value(self, name):
         if name in self.options:
@@ -73,12 +74,6 @@ class Backdoor(object, cmd.Cmd):
     def precmd(self, line):
         self._hist += [ line.strip() ]
         return line 
-    def default(self, line):       
-        try:
-            print GOOD + "Executing \"" + line + "\""
-            os.system(line)
-        except Exception, e:
-            print e.__class__, ":", e 
     def do_history(self, args):
         print self._hist
     def default(self, line): 

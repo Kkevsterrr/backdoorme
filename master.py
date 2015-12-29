@@ -75,16 +75,16 @@ class BackdoorMe(cmd.Cmd):
             return 
         uname = raw_input('Username: ') #username for the box to be attacked
         pword = raw_input('Password: ') #password for the box to be attacked
-        self.target_num -= 1
+        
+        t.hostname = hostname
+        t.uname = uname
+        t.pword = pword
+        print(GOOD + "Target edited")
 
-        print GOOD + "Target %d edited" % self.target_num
-        t = target.Target(hostname, uname, pword, self.target_num)
-        self.targets[self.target_num] = t
-        self.curtarget = t
 
     def do_set(self, args):
-        if (len(args.split()) == 0):
-            print(BAD + "Usage is set target <target-num>")
+        if (len(args.split()) == 0 or args.split()[0] != "target"):
+            print(BAD + "Usage is \"set target <target-num>\"")
             return
         t = self.get_target(args, connect=False)
         if t == None:
@@ -144,7 +144,7 @@ class BackdoorMe(cmd.Cmd):
             return
         bd = args.split()[0]
         if bd in self.enabled_backdoors.keys():
-            self.enabled_backdoors[bd](t, self).cmdloop()
+            self.enabled_backdoors[bd](self).cmdloop()
         else:
             print(BAD + args + " backdoor cannot be found.")
 
@@ -257,6 +257,10 @@ class BackdoorMe(cmd.Cmd):
         exit()
         return
 
-BackdoorMe().cmdloop()
+def main():
+    BackdoorMe().cmdloop()
+
+if __name__ == "__main__":
+    main()
 
 
