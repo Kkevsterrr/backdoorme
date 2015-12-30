@@ -25,8 +25,9 @@ class BackdoorMe(cmd.Cmd):
 
     def __init__(self):
         cmd.Cmd.__init__(self)
-        self.enabled_modules = {"poison" : Poison, "cron" : Cron, "web": WebMod }
-        self.enabled_backdoors = {"bash" : Bash, "bash2" : Bash2, "metasploit" : Metasploit, "netcat" : Netcat, "nct" : Netcat_Traditional, "perl" : Perl, "python" : Pyth, "pupy" : Pupy, "web" : Web } 
+        self.enabled_modules = enabled_modules 
+        self.enabled_backdoors = enabled_backdoors
+        
         self.target_num = 1
         self.port = 22 
         self.targets = {}
