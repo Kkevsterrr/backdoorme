@@ -100,6 +100,12 @@ Currently enabled modules include:
   - For example, if the bin poisoning module is triggered with "ls", it would would compile and move a binary called "ls" that would run both an existing backdoor and the original "ls", thereby tripping a user to run an existing backdoor more frequently. 
  - Cron
   - Adds an existing backdoor to the root user's crontab to run with a given frequency.  
+ - Web
+  - Sets up a web server and places a web page which triggers the backdoor.
+  - Simply visit the site with your listener open and the backdoor will begin.
+ - Keylogger
+  - Ships a keylogger to the target and starts it.
+  - Given the option to email the results to you every hour.
  
 ### Targets
 Backdoorme supports multiple different targets concurrently, organized by number when entered. The core maintains one "current" target, to which any new backdoors will default. To switch targets manually, simply add the target number after the command: "use metasploit 2" will prepare the metasploit backdoor against the second target.
