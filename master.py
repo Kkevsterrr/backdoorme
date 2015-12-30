@@ -6,7 +6,8 @@ from colorama import *
 from Tkinter import *
 import cmd
 from start import ascii
-from imports import *
+from backdoors import *
+from modules import *
 
 GOOD = Fore.GREEN + " + " + Fore.RESET
 BAD = Fore.RED + " - " + Fore.RESET

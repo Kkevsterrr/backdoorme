@@ -1,0 +1,92 @@
+#pupy stuff
+pupy/data/
+pupy/.pupy_history
+.DS_Store
+*.swp
+
+
+#do not redistribute microsoft visual C++ DLLs (LICENSE)
+client/sources/resources/msvcr90.dll
+client/sources/resources/msvcr90_x86.dll
+client/sources/resources/msvcr90_x64.dll
+
+#Client build related stuff
+*.obj
+*.lib
+*.exp
+*.exe
+*.dll
+client/sources/resources_bootloader_pyc.c
+client/sources/resources_bootloader.pyc
+client/sources/resources_python27_dll.c
+client/sources/resources/library_compressed_string.txt
+client/sources/resources/python27.dll
+client/sources/resources_library_compressed_string_txt.c
+client/sources/resources/library_compressed_string_x86.txt
+client/sources/resources/library_compressed_string_x64.txt
+client/sources/resources_msvcr90_dll.c
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+client/**/*.py[cod]
+pupy/*.py[cod]
+pupy/pupylib/**/*.py[cod]
+pupy/modules/*.py[cod]
+
+# do not ignore package & templates files
+!pupy/packages/
+!pupy/payload_templates/
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# PyInstaller
+#  Usually these files are written by a python script from a template
+#  before PyInstaller builds the exe, so as to inject date/other infos into it.
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*,cover
+
+# Translations
+*.mo
+*.pot
+
+# Django stuff:
+*.log
+
+# Sphinx documentation
+docs/_build/
+
+# PyBuilder
+target/
