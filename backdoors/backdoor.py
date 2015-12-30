@@ -67,12 +67,6 @@ class Backdoor(object, cmd.Cmd):
         else:
             return None
 
-    def mods(self):
-	print("Description                             Command")
-	print("Add as cronjob                          cron")
-	print("Poison files                            poison")
-	print("Add to a webpage                        web")
-
     def do_EOF(self, line):
         print ""
         return True
