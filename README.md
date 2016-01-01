@@ -7,7 +7,7 @@
  
  Please only use Backdoorme with explicit permission - please don't hack without asking.  
 ## Usage
-Backdoorme comes with a number of built-in backdoors and modules.  Backdoors are specific components to create and deploy a specific backdoor, such as a netcat backdoor or msfvenom backdoor.  Modules can be applied to any backdoor, and are used to make backdoors more potent, stealthy, or more readily tripped. 
+Backdoorme comes with a number of built-in backdoors, modules, and auxiliary modules.  Backdoors are specific components to create and deploy a specific backdoor, such as a netcat backdoor or msfvenom backdoor.  Modules can be applied to any backdoor, and are used to make backdoors more potent, stealthy, or more readily tripped. Auxiliaries are useful operations that could be performed to help persistence.
 
 To start backdoorme, first ensure that you have the required dependencies. 
 ```python
@@ -110,7 +110,27 @@ Currently enabled modules include:
   - Adds a new user to the target.
  - Startup
   - Allows for backdoors to be spawned with the bashrc and init files.
- 
+
+### Auxiliaries
+In order to have persistence be more potent, some users may wish to install certain services on a target. To apply an auxiliary module, use the "apply" keyword.
+
+```
+>> apply user
++ User Auxiliary Module added.
+```
+
+Auxiliaries also support the use of modules, so they can be triggered more steathily or more often.
+
+```
+>> (user) add startup
++ Startup Module added.
+```
+
+Currently enabled auxiliaries include:
+
+- User
+ - Adds a new user to the target.
+
 ### Targets
 Backdoorme supports multiple different targets concurrently, organized by number when entered. The core maintains one "current" target, to which any new backdoors will default. To switch targets manually, simply add the target number after the command: "use metasploit 2" will prepare the metasploit backdoor against the second target.
 
