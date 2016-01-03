@@ -10,7 +10,6 @@ class Netcat_Traditional(Backdoor):
         self.options = {
                 "port"   : Option("port", 53926, "port to connect to", True),
                 }
-        self.enabled_modules = {}
         self.modules = {} 
         self.allow_modules = True
 

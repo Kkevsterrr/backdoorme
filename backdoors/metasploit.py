@@ -16,7 +16,6 @@ class Metasploit(Backdoor):
                 "encoder" : Option("encoder", "none", "encoder to use for the backdoor", False),
                 "name"    : Option("name", "initd", "name of the backdoor", False)
                 }
-        self.enabled_modules = {}
         self.modules = {} 
         self.allow_modules = True
 

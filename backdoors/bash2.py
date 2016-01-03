@@ -11,7 +11,6 @@ class Bash2(Backdoor):
                 "port"   : Option("port", 53923, "port to connect to", True),
                 }
         self.allow_modules = True
-        self.enabled_modules = {}
         self.modules = {} 
     
     def get_command(self):

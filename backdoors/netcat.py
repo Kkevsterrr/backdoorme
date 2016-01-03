@@ -11,7 +11,6 @@ class Netcat(Backdoor):
                 "port"   : Option("port", 53920, "port to connect to", True),
                 }
         self.allow_modules = True
-        self.enabled_modules = {}
         self.modules = {} 
         
     def get_command(self):
