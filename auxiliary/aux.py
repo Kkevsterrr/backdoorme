@@ -1,11 +1,10 @@
 import cmd
 from option import *
 import os
-import cmd
 from colorama import *
 from definitions import *
 
-class Backdoor(object, cmd.Cmd):
+class Auxiliary(object, cmd.Cmd):
     def __init__(self, core):
         self.options = {}
         self.core = core
@@ -17,15 +16,15 @@ class Backdoor(object, cmd.Cmd):
     
     def do_add(self, line):
         if self.allow_modules:
-            for m in line.split():
-                if m in self.core.enabled_modules.keys():
-                    mod = self.core.enabled_modules[m](self.core.curtarget, self.get_command(), self.core)
-                    self.modules[mod] = mod.options
-                    print(GOOD + mod.name + " module added.")
-                else:
-                    print(BAD + "No module \""+m+"\" available.")
+            if line in self.core.enabled_modules.keys():
+                mod = self.core.enabled_modules[line](self.core.curtarget, self.get_command(), self.core)
+                self.modules[mod] = mod.options
+                self.enabled_modules[line] = mod
+                print(GOOD + mod.name + " module added.")
+            else:
+                print(BAD + "No module by that name available.")
         else:
-            print(BAD + "Modules disabled by this backdoor.")
+            print(BAD + "Modules disabled by this auxiliary module.")
 
 
     def set_target(target):
@@ -83,7 +82,7 @@ class Backdoor(object, cmd.Cmd):
         print "Exiting"
         exit()
     def do_help(self, args):
-        print "Backdoor options: "
+        print "Auxiliary Module options: "
         print("")
         print "Option\t\tValue\t\tDescription\t\tRequired"
         print "------\t\t-----\t\t-----------\t\t--------"
@@ -91,26 +90,22 @@ class Backdoor(object, cmd.Cmd):
             print("%s\t\t%s\t\t%s\t\t%s" % (opt.name, opt.value, opt.description, opt.required))
         if self.allow_modules:
             if self.modules != {}:
-                for mod, opts in self.modules.iteritems():
+                for mod in self.modules:
                     print("\n%s module options: \n" % mod.name)
                     print "Option\t\tValue\t\tDescription\t\tRequired"
                     print "------\t\t-----\t\t-----------\t\t--------"
                     for name, opt in mod.options.iteritems():
                         print("%s\t\t%s\t\t%s\t\t%s" % (opt.name, opt.value, opt.description, opt.required))
-    def get_by_name(self, name):
-        for mod in self.modules.keys():
-            if mod.name.lower() == name:
-                return mod
-        return None
-    def do_remove(self, line):
+
+    def do_remove(self, args):
         if self.allow_modules:
-            for m in line.split():
-                mod = self.get_by_name(m) 
-                if mod != None:
-                    self.modules.pop(mod, None)
-                    print(GOOD + "Removed %s module." % m)
-                else:
-                    print(BAD + "No module \""+m+"\" enabled")
+            if args in self.enabled_modules.keys():
+                mod = self.enabled_modules[args]
+                self.modules.pop(mod, None)
+                self.enabled_modules.pop(args, None)
+                print(GOOD + "Removed %s module." % args)
+            else:
+                print(BAD + "No module by that name enabled")
         else:
             print(BAD + "Modules disabled by this backdoor.")
 

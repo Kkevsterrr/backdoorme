@@ -8,6 +8,7 @@ import cmd
 from start import ascii
 from backdoors import *
 from modules import *
+from auxiliary import *
 
 GOOD = Fore.GREEN + " + " + Fore.RESET
 BAD = Fore.RED + " - " + Fore.RESET
@@ -27,7 +28,7 @@ class BackdoorMe(cmd.Cmd):
         cmd.Cmd.__init__(self)
         self.enabled_modules = enabled_modules 
         self.enabled_backdoors = enabled_backdoors
-        
+        self.enabled_aux = enabled_aux 
         self.target_num = 1
         self.port = 22 
         self.targets = {}
@@ -149,6 +150,16 @@ class BackdoorMe(cmd.Cmd):
             self.enabled_backdoors[bd](self).cmdloop()
         else:
             print(BAD + args + " backdoor cannot be found.")
+
+    def do_apply(self, args):
+	t = self.get_target(args)
+	if t == None:
+	    return
+	au = args.split()[0]
+	if au in self.enabled_aux.keys():
+	    self.enabled_aux[au](self).cmdloop()
+	else:
+	    print(BAD + args + " auxiliary module cannot be found.")
 
     def do_userAdd(self, args):
         t = self.get_target(args)
