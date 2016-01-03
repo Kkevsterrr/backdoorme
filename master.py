@@ -2,6 +2,7 @@ import os
 import socket
 import subprocess
 import target
+import getpass
 from colorama import *
 from Tkinter import *
 import cmd
@@ -54,7 +55,7 @@ class BackdoorMe(cmd.Cmd):
         self.targets[self.target_num] = t
         self.target_num += 1
         self.curtarget = t
-    def do_addtarget(self, args):
+    def get_target_info(self):
         hostname = raw_input('Target Hostname: ') #victim host
         try:
             socket.inet_aton(hostname)
@@ -62,7 +63,10 @@ class BackdoorMe(cmd.Cmd):
             print BAD + "Invalid IP Address."
             return 
         uname = raw_input('Username: ') #username for the box to be attacked
-        pword = raw_input('Password: ') #password for the box to be attacked
+        pword = getpass.getpass() #password for the box to be attacked
+        return hostname, uname, pword
+    def do_addtarget(self, args):
+        hostname, uname, pword = self.get_target_info() 
         print GOOD + "Target %d Set!" % self.target_num
         self.addtarget(hostname, uname, pword);
     
@@ -70,15 +74,7 @@ class BackdoorMe(cmd.Cmd):
         t = self.get_target(args, connect=False)
         if t == None:
             return
-        hostname = raw_input('Target Hostname: ') #victim host
-        try:
-            socket.inet_aton(hostname)
-        except socket.error:
-            print BAD + "Invalid IP Address."
-            return 
-        uname = raw_input('Username: ') #username for the box to be attacked
-        pword = raw_input('Password: ') #password for the box to be attacked
-        
+        hostname, uname, pword = self.get_target_info() 
         t.hostname = hostname
         t.uname = uname
         t.pword = pword
