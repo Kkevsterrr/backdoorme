@@ -8,6 +8,8 @@ from poison import *
 from cron import *
 from webMod import *
 from keylogger import *
+from whitelist import *
 
 enabled_modules = {"poison" : Poison, "cron" : Cron, "web": WebMod, "keylogger": Keylogger }
 
+portModules = {"whitelist" : Whitelist}

