@@ -21,7 +21,6 @@ class SimpleHTTP(Auxiliary):
     def do_exploit(self, args):
         target = self.core.curtarget
         print(GOOD + "Starting web server....")
-        print self.get_command()
         target.ssh.exec_command(self.get_command())
         for mod in self.modules.keys():
             print(INFO + "Attempting to execute " + mod.name + " module...")
