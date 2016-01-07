@@ -69,13 +69,15 @@ name		apache		name of the backdoor		False
 Currently enabled backdoors include:
  
  - Bash
+ - Bash2 (more reliable)
  - Metasploit
  - Netcat
  - Netcat-traditional
  - Perl
+ - Php (does not automatically install a web server, but use the web module!)
  - Pupy
  - Python
- - Web (php)
+ - Web (php - not the same backdoor as the above php backdoor)
  
 ### Modules
 Every backdoor has the ability to have additional modules applied to it to make the backdoor more potent. To add a module, simply use the "add" keyword. 
