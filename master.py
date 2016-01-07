@@ -29,8 +29,7 @@ class BackdoorMe(cmd.Cmd):
         cmd.Cmd.__init__(self)
         self.enabled_modules = enabled_modules 
         self.enabled_backdoors = enabled_backdoors
-        self.portModules = portModules
-	self.enabled_aux = enabled_aux 
+        self.enabled_aux = enabled_aux 
         self.target_num = 1
         self.port = 22 
         self.targets = {}
@@ -43,7 +42,7 @@ class BackdoorMe(cmd.Cmd):
         print "Welcome to BackdoorMe, a powerful backdooring utility. Type \"help\" to see the list of available commands."
         print "Type \"addtarget\" to set a target, and \"open\" to open an SSH connection to that target."
         print "Using local IP of %s." % self.localIP
-        self.addtarget("10.1.0.2", "student", "target123")
+        self.addtarget("10.1.0.5", "student", "target123")
 
     def do_help(self, args):
         print "Type \"addtarget\" to set a target, and \"open\" to open an SSH connection to that target."

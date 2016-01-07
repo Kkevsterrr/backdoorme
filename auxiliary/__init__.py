@@ -1,5 +1,5 @@
 
 from user import *
 from web import *
-
-enabled_aux = {"user" : User, "web": Web }
+from simplehttp import *
+enabled_aux = {"user" : User, "web": Web, "http": SimpleHTTP }

