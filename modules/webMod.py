@@ -16,7 +16,7 @@ class WebMod(Module):
     def exploit(self):
         location = self.get_value("location")
         
-        self.target.scpFiles(self, "modules/web/install.sh", False)
+        self.target.scpFiles(self, "auxiliary/web/install.sh", False)
         self.target.ssh.exec_command("echo " + self.target.pword + " | sudo -S bash install.sh")
 
         print("Starting Apache server.")
