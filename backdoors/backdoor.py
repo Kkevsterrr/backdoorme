@@ -51,6 +51,7 @@ class Backdoor(object, cmd.Cmd):
     
     def do_set(self, args):
         args = args.split(" ")
+        bad_opt = BAD + "Unknown option %s" % args[0]
         if len(args) == 2 and args[0] in self.options:
             self.options[args[0].lower()].value = args[1]
             print(GOOD + "%s => %s" % (args[0], args[1]))
@@ -58,15 +59,28 @@ class Backdoor(object, cmd.Cmd):
             self.core.do_set(" ".join(args))
         elif len(args) != 2:
             print(BAD + "Usage: \"set <OPTION> <VALUE>\"")
+        elif "." in args[0] and self.check_by_name(args[0].split(".")[0]):
+            mod = args[0].split(".")[0]
+            option = args[0].split(".")[1]
+            module = self.get_by_name(mod)
+            if module != None and option in module.options.keys():
+               module.options[option].value = args[1]
+               print(GOOD + "%s => %s" % (args[0], args[1]))
+            else:
+                print(bad_opt)
         else:
-            print(BAD + "Unknown option %s" % args[0])
+            print(bad_opt)
 
     def get_value(self, name):
         if name in self.options:
             return self.options[name].value
         else:
             return None
-
+    def check_by_name(self, name):
+        for mod in self.modules:
+            if name.lower() == mod.name.lower():
+                return True
+        return False
     def do_EOF(self, line):
         print ""
         return True
@@ -99,7 +113,7 @@ class Backdoor(object, cmd.Cmd):
                         print("%s\t\t%s\t\t%s\t\t%s" % (opt.name, opt.value, opt.description, opt.required))
     def get_by_name(self, name):
         for mod in self.modules.keys():
-            if mod.name.lower() == name:
+            if mod.name.lower() == name.lower():
                 return mod
         return None
     def do_remove(self, line):

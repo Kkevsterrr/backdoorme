@@ -9,7 +9,7 @@ class WebMod(Module):
         self.name = "Web"
         self.backdoor = backdoor
         self.options = {
-            "location" : Option("name", "newback.php", "location of file", False)
+            "location" : Option("location", "newback.php", "location of file", False)
         }
     
     
