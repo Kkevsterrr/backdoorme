@@ -139,11 +139,11 @@ class BackdoorMe(cmd.Cmd):
         return (num in self.targets)  
  
     def do_use(self, args):
-        t = self.get_target(args)
-        if t == None:
-            return
         bd = args.split()[0]
         if bd in self.enabled_backdoors.keys():
+            t = self.get_target(args)
+            if t == None:
+                return
             self.enabled_backdoors[bd](self).cmdloop()
         else:
             print(BAD + args + " backdoor cannot be found.")
