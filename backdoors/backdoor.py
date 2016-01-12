@@ -11,6 +11,7 @@ class Backdoor(object, cmd.Cmd):
         self.core = core
         self.modules = {}
         self.allow_modules = True
+        self.help_text = None
 
     def check_valid(self):
         return False
@@ -97,6 +98,8 @@ class Backdoor(object, cmd.Cmd):
         print "Exiting"
         exit()
     def do_help(self, args):
+        if self.help_text != None and self.help_text != "":
+            print self.help_text
         print "Backdoor options: "
         print("")
         print "Option\t\tValue\t\tDescription\t\tRequired"

@@ -18,6 +18,7 @@ class Metasploit(Backdoor):
                 }
         self.modules = {} 
         self.allow_modules = True
+        self.help_text = "" 
 
     def get_command(self):
         return "nohup ./%s > /dev/null" % self.get_value("name")

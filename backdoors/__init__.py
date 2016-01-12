@@ -15,6 +15,7 @@ from bash2 import *
 from web import *
 from user import *
 from php import *
+from setuid import *
 
-enabled_backdoors = {"user" : User, "bash" : Bash, "bash2" : Bash2, "metasploit" : Metasploit, "netcat" : Netcat, "nct" : Netcat_Traditional, "perl" : Perl, "python" : Pyth, "pupy" : Pupy, "web" : Web, "php": Php } 
+enabled_backdoors = {"user" : User, "bash" : Bash, "bash2" : Bash2, "metasploit" : Metasploit, "netcat" : Netcat, "nct" : Netcat_Traditional, "perl" : Perl, "python" : Pyth, "pupy" : Pupy, "web" : Web, "php": Php,"setuid" : Setuid } 
 
