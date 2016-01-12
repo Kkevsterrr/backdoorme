@@ -4,7 +4,7 @@ from nose.tools import nottest
 
 @nottest
 def get_backdoors():
-    return [Bash, Bash2, Metasploit, Netcat, Netcat_Traditional, Pupy, Pyth, Web]
+    return [Bash, Bash2, Metasploit, Netcat, Netcat_Traditional, Pupy, Pyth, Web, Setuid]
 
 @nottest
 def get_modules():
