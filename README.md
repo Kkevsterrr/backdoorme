@@ -69,19 +69,29 @@ name		apache		name of the backdoor		False
 Currently enabled backdoors include:
  
  - Bash
+  - Uses a simple bash script to connect to a specific ip and port combination and pipe the output into bash.
  - Bash2 (more reliable)
+  - A slightly different version of the above bash backdoor which does not prompt for the password on the client-side.
  - Metasploit
+  - Employs msfvenom to create a reverse_tcp binary on the target, then runs the binary to connect to a meterpreter shell.
  - Netcat
+  - Uses netcat to pipe standard input and output to /bin/sh, giving the user an interactive shell.
  - Netcat-traditional
+  - Utilizes netcat-traditional's -e option to create a reverse shell.
  - Perl
+  - A script written in perl which redirects output to bash, and renames the process to look less conspicuous.
  - Php (does not automatically install a web server, but use the web module!)
+  - Runs a php backdoor which sends output to bash.
  - Pupy
+  - Uses n1nj4sec's Pupy backdoor, found at https://github.com/n1nj4sec/pupy.
  - Python
+  - Uses a short python script to perform commands and send output back to the user.
  - SetUID
   - The SetUID backdoor works by setting the setuid bit on a binary while the user has root acccess, so that when that binary is later run by a user without root access, the binary is executed with root access. By default, this backdoor flips the setuid bit on nano, so that if root access is ever lost, the attacker can SSH back in as an unpriviledged user and still be able to run nano (or any chosen binary) as root. ('nano /etc/shadow'). 
  - SSH Key
   - Creates RSA key and copies to target for a passwordless ssh connection
  - Web (php - not the same backdoor as the above php backdoor)
+  - Ships a web server to the target, then uploads msfvenom's php reverse_tcp backdoor and connects to the host.
  
 ### Modules
 Every backdoor has the ability to have additional modules applied to it to make the backdoor more potent. To add a module, simply use the "add" keyword. 
