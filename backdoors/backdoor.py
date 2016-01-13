@@ -4,6 +4,7 @@ import os
 import cmd
 from colorama import *
 from definitions import *
+import subprocess
 
 class Backdoor(object, cmd.Cmd):
     def __init__(self, core):
