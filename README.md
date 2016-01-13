@@ -78,7 +78,7 @@ Currently enabled backdoors include:
  - Pupy
  - Python
  - SetUID
-  - The SetUID backdoor works by setting the setuid bit on a binary while the user has root acccess, so that when that binary is later run by a user without root access, the binary is executed with root access. By default, this backdoor flips the setuid bit on nano, so that if root access is ever lost, the attacker can SSH back in as an unpriviledged user and still be able to run nano (or any binary) as root. ('nano /etc/shadow'). 
+  - The SetUID backdoor works by setting the setuid bit on a binary while the user has root acccess, so that when that binary is later run by a user without root access, the binary is executed with root access. By default, this backdoor flips the setuid bit on nano, so that if root access is ever lost, the attacker can SSH back in as an unpriviledged user and still be able to run nano (or any chosen binary) as root. ('nano /etc/shadow'). 
  - SSH Key
   - Creates RSA key and copies to target for a passwordless ssh connection
  - Web (php - not the same backdoor as the above php backdoor)
