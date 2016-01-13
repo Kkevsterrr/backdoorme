@@ -136,6 +136,10 @@ Currently enabled auxiliaries include:
 
 - User
  - Adds a new user to the target.
+- Web
+ - Installs an Apache Server on the client.
+- SimpleHTTP
+ - Installs python's SimpleHTTP server on the client.
 
 ### Targets
 Backdoorme supports multiple different targets concurrently, organized by number when entered. The core maintains one "current" target, to which any new backdoors will default. To switch targets manually, simply add the target number after the command: "use metasploit 2" will prepare the metasploit backdoor against the second target.
