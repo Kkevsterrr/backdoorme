@@ -17,5 +17,6 @@ from user import *
 from php import *
 from setuid import *
 from ssh_key import *
-enabled_backdoors = {"user" : User, "bash" : Bash, "bash2" : Bash2, "metasploit" : Metasploit, "netcat" : Netcat, "nct" : Netcat_Traditional, "perl" : Perl, "python" : Pyth, "pupy" : Pupy, "web" : Web, "php": Php, "setuid" : Setuid, "sshkey" : SSHKey } 
+from windows import *
+enabled_backdoors = {"user" : User, "bash" : Bash, "bash2" : Bash2, "metasploit" : Metasploit, "netcat" : Netcat, "nct" : Netcat_Traditional, "perl" : Perl, "python" : Pyth, "pupy" : Pupy, "web" : Web, "php": Php, "setuid" : Setuid, "sshkey" : SSHKey, "windows": Windows } 
 
