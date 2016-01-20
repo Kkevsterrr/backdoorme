@@ -1,6 +1,6 @@
-from aux import *
+from backdoor import *
 
-class SimpleHTTP(Auxiliary):
+class SimpleHTTP(Backdoor):
     prompt = Fore.RED + "(SimpleHTTP) " + Fore.BLUE + ">> " + Fore.RESET
 
     def __init__(self, core):

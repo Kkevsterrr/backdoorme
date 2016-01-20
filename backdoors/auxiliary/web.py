@@ -1,6 +1,6 @@
-from aux import *
+from backdoor import *
 
-class Web(Auxiliary):
+class Web(Backdoor):
     prompt = Fore.RED + "(web) " + Fore.BLUE + ">> " + Fore.RESET
 
     def __init__(self, core):

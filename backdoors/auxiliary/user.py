@@ -1,6 +1,6 @@
-from aux import *
+from backdoor import *
 
-class User(Auxiliary):
+class User(Backdoor):
     prompt = Fore.RED + "(user) " + Fore.BLUE + ">> " + Fore.RESET
 
     def __init__(self, core):

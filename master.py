@@ -9,7 +9,9 @@ import cmd
 from start import ascii
 from backdoors import *
 from modules import *
-from auxiliary import *
+import importlib
+import inspect
+import sys
 
 GOOD = Fore.GREEN + " + " + Fore.RESET
 BAD = Fore.RED + " - " + Fore.RESET
@@ -21,15 +23,14 @@ CLOSED = Fore.RED + "closed" + Fore.RESET
 def fmtcols(mylist, cols):
     lines = ("\t".join(mylist[i:i+cols]) for i in xrange(0,len(mylist),cols))
     return '\n'.join(lines)
-
+sys.path.append("backdoors")
 class BackdoorMe(cmd.Cmd):
     prompt = Fore.BLUE + ">> " + Fore.RESET
 
     def __init__(self):
         cmd.Cmd.__init__(self)
         self.enabled_modules = enabled_modules 
-        self.enabled_backdoors = enabled_backdoors
-        self.enabled_aux = enabled_aux 
+        #self.enabled_backdoors = enabled_backdoors
         self.target_num = 1
         self.port = 22 
         self.targets = {}
@@ -138,24 +139,20 @@ class BackdoorMe(cmd.Cmd):
         return (num in self.targets)  
  
     def do_use(self, args):
-        bd = args.split()[0]
-        if bd in self.enabled_backdoors.keys():
+        try:
+            bd = args.split()[0]
+            loc, bd =  bd.rsplit("/", 1)
+            if "backdoors/" + loc not in sys.path: 
+                sys.path.append("backdoors/" + loc)
+            mod = importlib.import_module(bd)
             t = self.get_target(args)
             if t == None:
                 return
-            self.enabled_backdoors[bd](self).cmdloop()
-        else:
-            print(BAD + args + " backdoor cannot be found.")
 
-    def do_apply(self, args):
-	t = self.get_target(args)
-	if t == None:
-	    return
-	au = args.split()[0]
-	if au in self.enabled_aux.keys():
-	    self.enabled_aux[au](self).cmdloop()
-	else:
-	    print(BAD + args + " auxiliary module cannot be found.")
+            clsmembers = inspect.getmembers(sys.modules[bd], inspect.isclass)
+            [m for m in clsmembers if m[1].__module__ == bd][0][1](self).cmdloop() 
+        except Exception as e:
+            print(BAD + args + " backdoor cannot be found.")
 
     def do_userAdd(self, args):
         t = self.get_target(args)
