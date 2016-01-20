@@ -10,7 +10,7 @@
 Backdoorme comes with a number of built-in backdoors, modules, and auxiliary modules.  Backdoors are specific components to create and deploy a specific backdoor, such as a netcat backdoor or msfvenom backdoor.  Modules can be applied to any backdoor, and are used to make backdoors more potent, stealthy, or more readily tripped. Auxiliaries are useful operations that could be performed to help persistence.
 
 To start backdoorme, first ensure that you have the required dependencies. 
-```python
+```
 $ python dependencies.py
 ```
 Launching backdoorme:
