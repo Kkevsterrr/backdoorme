@@ -128,4 +128,4 @@ Currently enabled modules include:
 Backdoorme supports multiple different targets concurrently, organized by number when entered. The core maintains one "current" target, to which any new backdoors will default. To switch targets manually, simply add the target number after the command: "use metasploit 2" will prepare the metasploit backdoor against the second target. Run "list" to see the list of current targets, whether a connection is open or closed, and what backdoors & modules are available. 
 
 ## Contributing
-Backdoorme is still very much in its infancy! Feel free to contribute to the project - simply fork it, make your changes, and issue a pull request. 
+Backdoorme is still very much in its infancy! Feel free to contribute to the project - simply fork it, make your changes, and issue a pull request. Have an idea for a killer backdoor, or something we could improve? Make an issue and we'll add it ASAP!
