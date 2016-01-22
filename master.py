@@ -20,17 +20,18 @@ INFO = Fore.BLUE + " + " + Fore.RESET
 OPEN = Fore.GREEN + "open" + Fore.RESET
 CLOSED = Fore.RED + "closed" + Fore.RESET
 
+sys.path.append("backdoors")
+
 def fmtcols(mylist, cols):
     lines = ("\t".join(mylist[i:i+cols]) for i in xrange(0,len(mylist),cols))
     return '\n'.join(lines)
-sys.path.append("backdoors")
+
 class BackdoorMe(cmd.Cmd):
     prompt = Fore.BLUE + ">> " + Fore.RESET
 
     def __init__(self):
         cmd.Cmd.__init__(self)
         self.enabled_modules = enabled_modules 
-        #self.enabled_backdoors = enabled_backdoors
         self.target_num = 1
         self.port = 22 
         self.targets = {}
@@ -207,6 +208,15 @@ class BackdoorMe(cmd.Cmd):
         self.quit()
     def do_clear(self, args):
         os.system("clear")
+    def walk(self,folder):
+        print(" " + INFO + folder.replace("backdoors/", ""))
+        for root, dirs, files in os.walk(folder):
+            del dirs[:] # walk down only one level
+            path = root.split('/')
+            for file in files:
+                if file[-3:] == ".py":
+                    print (len(path)*'  ') + "-", str(file).replace(".py", "")
+
     def do_list(self, args):
         if args == "targets" or len(args) == 0:
             print(GOOD + "Targets: ")
@@ -218,8 +228,11 @@ class BackdoorMe(cmd.Cmd):
                 print("  * " + "%s" % (mod))
         if args == "backdoors" or len(args) == 0:
             print(GOOD+ "Available backdoors: ")
-            for mod in sorted(self.enabled_backdoors.keys()):
-                print("  * " + "%s" % (mod))
+            self.walk("backdoors/access")
+            self.walk("backdoors/escalation")
+            self.walk("backdoors/windows")
+            self.walk("backdoors/shell")
+            self.walk("backdoors/auxiliary")
         if len(args) != 0 and args != "targets" and args != "backdoors" and args != "modules":
             print(BAD + "Unknown option " + args)
     def preloop(self):
