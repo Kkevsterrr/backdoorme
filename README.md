@@ -38,7 +38,7 @@ Password: password123
 
 To use a backdoor, simply run the "use" keyword. 
 ``` 
->> use metasploit
+>> use shell/metasploit
  + Using current target 1.
  + Using Metasploit backdoor...
 (msf) >>
@@ -66,33 +66,30 @@ Option		Value		Description		Required
 name		apache		name of the backdoor		False
 ...
 ```
-Currently enabled backdoors include:
- 
- - Bash
-  - Uses a simple bash script to connect to a specific ip and port combination and pipe the output into bash.
- - Bash2 (more reliable)
-  - A slightly different version of the above bash backdoor which does not prompt for the password on the client-side.
- - Metasploit
-  - Employs msfvenom to create a reverse_tcp binary on the target, then runs the binary to connect to a meterpreter shell.
- - Netcat
-  - Uses netcat to pipe standard input and output to /bin/sh, giving the user an interactive shell.
- - Netcat-traditional
-  - Utilizes netcat-traditional's -e option to create a reverse shell.
- - Perl
-  - A script written in perl which redirects output to bash, and renames the process to look less conspicuous.
- - Php (does not automatically install a web server, but use the web module!)
-  - Runs a php backdoor which sends output to bash.
- - Pupy
-  - Uses n1nj4sec's Pupy backdoor, found at https://github.com/n1nj4sec/pupy.
- - Python
-  - Uses a short python script to perform commands and send output back to the user.
- - SetUID
-  - The SetUID backdoor works by setting the setuid bit on a binary while the user has root acccess, so that when that binary is later run by a user without root access, the binary is executed with root access. By default, this backdoor flips the setuid bit on nano, so that if root access is ever lost, the attacker can SSH back in as an unpriviledged user and still be able to run nano (or any chosen binary) as root. ('nano /etc/shadow'). 
- - SSH Key
-  - Creates RSA key and copies to target for a passwordless ssh connection
- - Web (php - not the same backdoor as the above php backdoor)
-  - Ships a web server to the target, then uploads msfvenom's php reverse_tcp backdoor and connects to the host.
- 
+As in metasploit, backdoors are organized by category. 
+- Auxiliary
+  - **user** - adds a new user to the target.
+  - **web** - installs an Apache Server on the client.
+  - **simplehttp** - installs python's SimpleHTTP server on the client.
+- Escalation
+  - **setuid** - the SetUID backdoor works by setting the setuid bit on a binary while the user has root acccess, so that when that binary is later run by a user without root access, the binary is executed with root access. By default, this backdoor flips the setuid bit on nano, so that if root access is ever lost, the attacker can SSH back in as an unpriviledged user and still be able to run nano (or any chosen binary) as root. ('nano /etc/shadow'). 
+   - **shell** - the shell backdoor is a priviledge escalation backdoor, similar to (but more powerful than) it's SetUID escalation brother. It duplicates the bash shell to a hidden binary, and sets the SUID bit. Unlike the SetUID backdoor though, this shell gives an unpriviledged user root priviledge with a full shell.  To use, while SSHed in as an unpriviledged user, simply run \".bash -p\", and you will have root access.
+- Shell
+  - **bash** - uses a simple bash script to connect to a specific ip and port combination and pipe the output into bash.
+  - **bash2** - a slightly different (and more reliable) version of the above bash backdoor which does not prompt for the password on the client-side.
+  - **metasploit** - employs msfvenom to create a reverse_tcp binary on the target, then runs the binary to connect to a meterpreter shell.
+  - **netcat** - uses netcat to pipe standard input and output to /bin/sh, giving the user an interactive shell.
+  - **netcat_traditional** - utilizes netcat-traditional's -e option to create a reverse shell.
+  - **perl** - a script written in perl which redirects output to bash, and renames the process to look less conspicuous.
+  - **php** - runs a php backdoor which sends output to bash. It does not automatically install a web server, but instead uses the web module
+  - **pupy** - uses n1nj4sec's Pupy backdoor, found at https://github.com/n1nj4sec/pupy.
+  - **python** - uses a short python script to perform commands and send output back to the user.
+  - **web** - ships a web server to the target, then uploads msfvenom's php reverse_tcp backdoor and connects to the host. Although this is also a php backdoor, it is not the same backdoor as the above php backdoor.
+- Access
+  - **ssh_key** - creates RSA key and copies to target for a passwordless ssh connection
+- Windows
+  - **windows**
+  
 ### Modules
 Every backdoor has the ability to have additional modules applied to it to make the backdoor more potent. To add a module, simply use the "add" keyword. 
 ```
@@ -115,7 +112,7 @@ Currently enabled modules include:
   - Performs bin poisoning on the target computer - it compiles an executable to call a system utility and an existing backdoor.
   - For example, if the bin poisoning module is triggered with "ls", it would would compile and move a binary called "ls" that would run both an existing backdoor and the original "ls", thereby tripping a user to run an existing backdoor more frequently. 
  - Cron
-  - Adds an existing backdoor to the root user's crontab to run with a given frequency.  
+  * Adds an existing backdoor to the root user's crontab to run with a given frequency.  
  - Web
   - Sets up a web server and places a web page which triggers the backdoor.
   - Simply visit the site with your listener open and the backdoor will begin.
@@ -126,30 +123,6 @@ Currently enabled modules include:
   - Adds a new user to the target.
  - Startup
   - Allows for backdoors to be spawned with the bashrc and init files.
-
-### Auxiliaries
-In order to have persistence be more potent, some users may wish to install certain services on a target. To apply an auxiliary module, use the "apply" keyword.
-
-```
->> apply user
-+ User Auxiliary Module added.
-```
-
-Auxiliaries also support the use of modules, so they can be triggered more steathily or more often.
-
-```
->> (user) add startup
-+ Startup Module added.
-```
-
-Currently enabled auxiliaries include:
-
-- User
- - Adds a new user to the target.
-- Web
- - Installs an Apache Server on the client.
-- SimpleHTTP
- - Installs python's SimpleHTTP server on the client.
 
 ### Targets
 Backdoorme supports multiple different targets concurrently, organized by number when entered. The core maintains one "current" target, to which any new backdoors will default. To switch targets manually, simply add the target number after the command: "use metasploit 2" will prepare the metasploit backdoor against the second target.
