@@ -72,8 +72,8 @@ As in metasploit, backdoors are organized by category.
   - **web** - installs an Apache Server on the client.
   - **simplehttp** - installs python's SimpleHTTP server on the client.
 - Escalation
-  - **setuid** - the SetUID backdoor works by setting the setuid bit on a binary while the user has root acccess, so that when that binary is later run by a user without root access, the binary is executed with root access. By default, this backdoor flips the setuid bit on nano, so that if root access is ever lost, the attacker can SSH back in as an unpriviledged user and still be able to run nano (or any chosen binary) as root. ('nano /etc/shadow'). 
-   - **shell** - the shell backdoor is a priviledge escalation backdoor, similar to (but more powerful than) it's SetUID escalation brother. It duplicates the bash shell to a hidden binary, and sets the SUID bit. Unlike the SetUID backdoor though, this shell gives an unpriviledged user root priviledge with a full shell.  To use, while SSHed in as an unpriviledged user, simply run \".bash -p\", and you will have root access.
+  - **setuid** - the SetUID backdoor works by setting the setuid bit on a binary while the user has root acccess, so that when that binary is later run by a user without root access, the binary is executed with root access. By default, this backdoor flips the setuid bit on nano, so that if root access is ever lost, the attacker can SSH back in as an unpriviledged user and still be able to run nano (or any chosen binary) as root. ('nano /etc/shadow'). Note that root access is initially required to deploy this escalation backdoor. 
+   - **shell** - the shell backdoor is a priviledge escalation backdoor, similar to (but more powerful than) it's SetUID escalation brother. It duplicates the bash shell to a hidden binary, and sets the SUID bit. Unlike the SetUID backdoor though, this shell gives an unpriviledged user root priviledge with a full shell.  Note that root access is initially required to deploy this escalation backdoor. To use, while SSHed in as an unpriviledged user, simply run ".bash -p", and you will have root access.
 - Shell
   - **bash** - uses a simple bash script to connect to a specific ip and port combination and pipe the output into bash.
   - **bash2** - a slightly different (and more reliable) version of the above bash backdoor which does not prompt for the password on the client-side.
@@ -125,7 +125,7 @@ Currently enabled modules include:
   - Allows for backdoors to be spawned with the bashrc and init files.
 
 ### Targets
-Backdoorme supports multiple different targets concurrently, organized by number when entered. The core maintains one "current" target, to which any new backdoors will default. To switch targets manually, simply add the target number after the command: "use metasploit 2" will prepare the metasploit backdoor against the second target.
+Backdoorme supports multiple different targets concurrently, organized by number when entered. The core maintains one "current" target, to which any new backdoors will default. To switch targets manually, simply add the target number after the command: "use metasploit 2" will prepare the metasploit backdoor against the second target. Run "list" to see the list of current targets, whether a connection is open or closed, and what backdoors & modules are available. 
 
 ## Contributing
 Backdoorme is still very much in its infancy! Feel free to contribute to the project - simply fork it, make your changes, and issue a pull request. 
