@@ -15,7 +15,6 @@ class SimpleHTTP(Backdoor):
         self.modules = {}
 
     def get_command(self):
-        print self.get_value("port")
         return ("nohup python -m SimpleHTTPServer %s &> /dev/null &" % self.get_value("port"))
     
     def do_exploit(self, args):
