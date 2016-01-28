@@ -129,3 +129,5 @@ Backdoorme supports multiple different targets concurrently, organized by number
 
 ## Contributing
 Backdoorme is still very much in its infancy! Feel free to contribute to the project - simply fork it, make your changes, and issue a pull request. Have an idea for a killer backdoor, or something we could improve? Make an issue and we'll add it ASAP!
+
+If you wish to add your own backdoor, follow the directions given in the backdoorme/backdoors/template.py file. 
