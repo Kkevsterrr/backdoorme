@@ -135,7 +135,6 @@ If you wish to add your own backdoor, follow the directions given in the backdoo
 If you wish to add your own module, follow the directions given in the backdoorme/modules/template.py file.
 
 Cheat Sheet for developers:
-
-Execute command on system: self.core.curtarget.ssh.exec_command("command")
-Retrieve an option: self.get_value("option")
-Execute command on system with root: self.target.ssh.exec_command("echo " + self.core.curtarget.pword + " | sudo -S command") 
+- Execute command on system: self.core.curtarget.ssh.exec_command("command")
+- Retrieve an option: self.get_value("option")
+- Execute command on system with root: self.target.ssh.exec_command("echo " + self.core.curtarget.pword + " | sudo -S command") 
