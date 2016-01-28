@@ -130,4 +130,12 @@ Backdoorme supports multiple different targets concurrently, organized by number
 ## Contributing
 Backdoorme is still very much in its infancy! Feel free to contribute to the project - simply fork it, make your changes, and issue a pull request. Have an idea for a killer backdoor, or something we could improve? Make an issue and we'll add it ASAP!
 
-If you wish to add your own backdoor, follow the directions given in the backdoorme/backdoors/template.py file. 
+If you wish to add your own backdoor, follow the directions given in the backdoorme/backdoors/template.py file.
+
+If you wish to add your own module, follow the directions given in the backdoorme/modules/template.py file.
+
+Cheat Sheet for developers:
+
+Execute command on system: self.core.curtarget.ssh.exec_command("command")
+Retrieve an option: self.get_value("option")
+Execute command on system with root: self.target.ssh.exec_command("echo " + self.core.curtarget.pword + " | sudo -S command") 
