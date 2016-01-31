@@ -5,7 +5,7 @@ from backdoor import *
 class ~NAME~(Backdoor):
     prompt = Fore.RED + "~NAME~" + Fore.BLUE + ">> " + Fore.RESET
 
-    def __init(self, core):
+    def __init__(self, core):
 	cmd.Cmd.__init__(self)
         self.intro = GOOD + "Using ~NAME~ module..."
         self.core = core
