@@ -8,5 +8,8 @@ from poison import *
 from cron import *
 from webMod import *
 from whitelist import *
+from addUser import *
+from startup import *
 
-enabled_modules = {"poison" : Poison, "cron" : Cron, "web": WebMod, "whitelist" : Whitelist}
+
+enabled_modules = {"adduser" : AddUser, "startup" : Startup, "poison" : Poison, "cron" : Cron, "web": WebMod, "whitelist" : Whitelist}
