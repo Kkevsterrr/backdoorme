@@ -15,7 +15,7 @@ class Windows(Backdoor):
                 }
         self.allow_modules = True
         self.modules = {}
-        self.help_text = ""
+        self.help_text = INFO + " Creates and starts a metasploit reverse_tcp backdoor."
     def get_command(self):
 	return self.get_value("name")
 

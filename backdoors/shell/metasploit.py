@@ -18,7 +18,7 @@ class Metasploit(Backdoor):
                 }
         self.modules = {} 
         self.allow_modules = True
-        self.help_text = "" 
+        self.help_text = INFO + "Employs msfvenom to create a reverse_tcp binary on the target, then runs that binary to start a meterpreter shell." 
 
     def get_command(self):
         return "nohup ./%s > /dev/null" % self.get_value("name")

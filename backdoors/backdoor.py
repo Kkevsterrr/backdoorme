@@ -47,7 +47,7 @@ class Backdoor(object, cmd.Cmd):
         if args == "options":
             self.do_help(args)
         elif args == "modules":
-	    self.mods()
+            self.mods()
 	else:
             print BAD + "Unknown option %s", args
     

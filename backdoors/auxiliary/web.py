@@ -12,6 +12,7 @@ class Web(Backdoor):
         self.allow_modules = True
         self.enabled_modules = {}
         self.modules = {}
+        self.help_text = INFO + "Installs and starts an apache web server on the client."
 
     def get_command(self):
 	target.ssh.exec_command("echo " + target.pword + " | sudo -S bash ~/install.sh")

