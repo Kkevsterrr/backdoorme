@@ -8,7 +8,7 @@ class Setuid(Backdoor):
         self.intro = GOOD + "Using setuid priviledge escalation backdoor..."
         self.core = core
         self.options = {
-                "program"   : Option("program", "nano", "binary on which to set the setuid bit", True),
+                "program"   : Option("program", "/bin/nano", "binary on which to set the setuid bit", True),
                 }
         self.allow_modules = True
         self.modules = {} 
