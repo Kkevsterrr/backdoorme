@@ -13,6 +13,7 @@ class SimpleHTTP(Backdoor):
         self.allow_modules = True
         self.enabled_modules = {}
         self.modules = {}
+        self.help_text = ""
 
     def get_command(self):
         return ("nohup python -m SimpleHTTPServer %s &> /dev/null &" % self.get_value("port"))

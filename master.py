@@ -151,7 +151,11 @@ class BackdoorMe(cmd.Cmd):
                 return
 
             clsmembers = inspect.getmembers(sys.modules[bd], inspect.isclass)
-            [m for m in clsmembers if m[1].__module__ == bd][0][1](self).cmdloop() 
+            try:
+                [m for m in clsmembers if m[1].__module__ == bd][0][1](self).cmdloop() 
+            except Exception as e:
+                print(BAD + "An unexpected error occured.")
+                print e
         except Exception as e:
             print(BAD + args + " backdoor cannot be found.")
 
