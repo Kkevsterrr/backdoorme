@@ -100,6 +100,8 @@ class Backdoor(object, cmd.Cmd):
         print "Exiting"
         exit()
     def print_help(self, options):
+        if options == {}:
+            return
         vals = [str(o.value) for o in options.values()]
         l = int(math.ceil(max(map(len, vals)) / 10.0)) * 10
         print(("{0:<15} {1:<%s} {2:<30}" % str(l)).format("Option","Value", "Description"))

@@ -47,7 +47,8 @@ def get_modules():
 def check_add_module_test(bd, m):
     core = BackdoorMe()
     bd = bd(core)
-    bd.do_add(m)
+    if bd.allow_modules:
+        bd.do_add(m)
     bd.do_show("options")
     pass
 
