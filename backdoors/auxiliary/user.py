@@ -13,6 +13,7 @@ class User(Backdoor):
                 }
         self.allow_modules = True
         self.modules = {}
+        self.help_text = ""
 
     def get_command(self):
         user = self.get_value("name")

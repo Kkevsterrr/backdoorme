@@ -12,6 +12,7 @@ from modules import *
 import importlib
 import inspect
 import sys
+import traceback
 
 GOOD = Fore.GREEN + " + " + Fore.RESET
 BAD = Fore.RED + " - " + Fore.RESET
@@ -144,7 +145,7 @@ class BackdoorMe(cmd.Cmd):
             bd = args.split()[0]
             loc, bd =  bd.rsplit("/", 1)
             if "backdoors/" + loc not in sys.path: 
-                sys.path.append("backdoors/" + loc)
+                sys.path.insert(0, "backdoors/" + loc)
             mod = importlib.import_module(bd)
             t = self.get_target(args)
             if t == None:
@@ -155,7 +156,6 @@ class BackdoorMe(cmd.Cmd):
                 [m for m in clsmembers if m[1].__module__ == bd][0][1](self).cmdloop() 
             except Exception as e:
                 print(BAD + "An unexpected error occured.")
-                print e
         except Exception as e:
             print(BAD + args + " backdoor cannot be found.")
 

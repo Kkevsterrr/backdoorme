@@ -11,7 +11,6 @@ class SimpleHTTP(Backdoor):
                 "port": Option("port", "8000", "port to serve up SimpleHTTPServer", False),
                 }
         self.allow_modules = True
-        self.enabled_modules = {}
         self.modules = {}
         self.help_text = ""
 

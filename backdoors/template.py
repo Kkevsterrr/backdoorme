@@ -9,7 +9,7 @@ class ~NAME~(Backdoor):
 	cmd.Cmd.__init__(self)
         self.intro = GOOD + "Using ~NAME~ module..."
         self.core = core
-        self.options = {#~Input extra options. You almost always need a port.~
+        self.options = { #~Input extra options. You almost always need a port.~
                 }
         self.allow_modules = True
         self.modules = {}
@@ -21,7 +21,7 @@ class ~NAME~(Backdoor):
     def do_exploit(self, args):
 	#~Add all commands needed to run the program.~
 
-#After you have filled out this entire program, move it to the correct folder. Then, make sure to add it to the __init__.py file in backdoorme/backdoors, and follow the convention there.
+#After you have filled out this entire program, move it to the correct folder. 
 
 
 
