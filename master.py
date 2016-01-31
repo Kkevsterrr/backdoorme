@@ -23,10 +23,6 @@ CLOSED = Fore.RED + "closed" + Fore.RESET
 
 sys.path.append("backdoors")
 
-def fmtcols(mylist, cols):
-    lines = ("\t".join(mylist[i:i+cols]) for i in xrange(0,len(mylist),cols))
-    return '\n'.join(lines)
-
 class BackdoorMe(cmd.Cmd):
     prompt = Fore.BLUE + ">> " + Fore.RESET
 
@@ -46,13 +42,20 @@ class BackdoorMe(cmd.Cmd):
         print "Type \"addtarget\" to set a target, and \"open\" to open an SSH connection to that target."
         print "Using local IP of %s." % self.localIP
         self.addtarget("10.1.0.5", "student", "target123")
+    
+    def print_help(self, lst):
+        it = iter(lst)
+        for x in it:
+            print("{0:<20} {1:<25}".format(x, next(it)))
 
     def do_help(self, args):
         print "Type \"addtarget\" to set a target, and \"open\" to open an SSH connection to that target."
         print "Using local IP of %s." % self.localIP
         print "\nAvailable commands are: "
-        print fmtcols(["addtarget", "adds a target", "edittarget", "edit existing target", "open", "opens an SSH connection to the target", "close", "closes an existing SSH connection to target"], 2)
-        
+        print "======================="
+        self.print_help(["addtarget", "adds a target", "change_ip <IP>", "changes local IP used by backdoors", "change_port <PORT>", "changes SSH port of current target", "close", "closes an existing SSH connection to target", "edittarget", "edit existing target", "history", "displays command history", "list", "lists currently loaded targets, available backdoors, and enabled modules.", "open", "opens an SSH connection to the target", "quit", "exits backdoorme", "set target <#>", "set the current target to given number", "use <BACKDOOR>", "loads given backdoor for exploit. Run \"list\" or \"list backdoors\" for a full list of available backdoors."])
+        #cmd.Cmd.do_help(self, args)
+    
     def addtarget(self, hostname, uname, pword):
         t = target.Target(hostname, uname, pword, self.target_num)
         self.targets[self.target_num] = t
@@ -68,6 +71,7 @@ class BackdoorMe(cmd.Cmd):
         uname = raw_input('Username: ') #username for the box to be attacked
         pword = getpass.getpass() #password for the box to be attacked
         return hostname, uname, pword
+    
     def do_addtarget(self, args):
         hostname, uname, pword = self.get_target_info() 
         print GOOD + "Target %d Set!" % self.target_num
@@ -156,15 +160,11 @@ class BackdoorMe(cmd.Cmd):
                 [m for m in clsmembers if m[1].__module__ == bd][0][1](self).cmdloop() 
             except Exception as e:
                 print(BAD + "An unexpected error occured.")
+                print e
+                traceback.print_exc()
         except Exception as e:
             print(BAD + args + " backdoor cannot be found.")
 
-    def do_userAdd(self, args):
-        t = self.get_target(args)
-        if t == None:
-            return
-        UserAdd(t, self).cmdloop()
-    
     def do_passwd(self, args):
         t = self.get_target(args)
         if t == None:
@@ -199,15 +199,6 @@ class BackdoorMe(cmd.Cmd):
             self.do_close(self, args)
             self.do_open(self, args)
         
-
-    def do_private_key(self, args):
-        t = self.get_target(args)
-        if t == None:
-            return
- 
-        os.system("sshpass -p %s ssh-copy-id %s@%s" % (t.pword, t.uname, t.hostname))
-        print GOOD + "Private key copied."
-    
     def do_quit(self, args):
         self.quit()
     def do_clear(self, args):

