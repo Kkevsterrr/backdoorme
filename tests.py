@@ -60,14 +60,12 @@ def check_crash_test(bd):
 @nottest
 def check_help_text(bd):
     core = BackdoorMe()
-
     if bd(core).help_text == "":
         assert False
 
 #######################################################################################
 def backdoor_crash_test():
     bds = get_backdoors()
-    assert False
     for bd in bds:
         yield check_crash_test, bd
 
