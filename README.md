@@ -68,9 +68,10 @@ name		apache		name of the backdoor		False
 ```
 As in metasploit, backdoors are organized by category. 
 - Auxiliary
+  - **keylogger** - Adds a keylogger to the system and gives the option to email results back to you.
+  - **simplehttp** - installs python's SimpleHTTP server on the client.
   - **user** - adds a new user to the target.
   - **web** - installs an Apache Server on the client.
-  - **simplehttp** - installs python's SimpleHTTP server on the client.
 - Escalation
   - **setuid** - the SetUID backdoor works by setting the setuid bit on a binary while the user has root acccess, so that when that binary is later run by a user without root access, the binary is executed with root access. By default, this backdoor flips the setuid bit on nano, so that if root access is ever lost, the attacker can SSH back in as an unpriviledged user and still be able to run nano (or any chosen binary) as root. ('nano /etc/shadow'). Note that root access is initially required to deploy this escalation backdoor. 
    - **shell** - the shell backdoor is a priviledge escalation backdoor, similar to (but more specific than) it's SetUID escalation brother. It duplicates the bash shell to a hidden binary, and sets the SUID bit.  Note that root access is initially required to deploy this escalation backdoor. To use, while SSHed in as an unpriviledged user, simply run ".bash -p", and you will have root access.
@@ -86,9 +87,11 @@ As in metasploit, backdoors are organized by category.
   - **python** - uses a short python script to perform commands and send output back to the user.
   - **web** - ships a web server to the target, then uploads msfvenom's php reverse_tcp backdoor and connects to the host. Although this is also a php backdoor, it is not the same backdoor as the above php backdoor.
 - Access
-  - **ssh_key** - creates RSA key and copies to target for a passwordless ssh connection
+  - **remove_ssh** - removes the ssh server on the client. Often good to use at the end of a backdoorme session to remove all traces.
+  - **ssh_key** - creates RSA key and copies to target for a passwordless ssh connection.
+  - **ssh_port** - Adds a new port for ssh.
 - Windows
-  - **windows**
+  - **windows** - Uses msfvenom to create a windows backdoor.
   
 ### Modules
 Every backdoor has the ability to have additional modules applied to it to make the backdoor more potent. To add a module, simply use the "add" keyword. 
@@ -116,13 +119,12 @@ Currently enabled modules include:
  - Web
   - Sets up a web server and places a web page which triggers the backdoor.
   - Simply visit the site with your listener open and the backdoor will begin.
- - Keylogger
-  - Ships a keylogger to the target and starts it.
-  - Given the option to email the results to you every hour.
  - User
   - Adds a new user to the target.
  - Startup
   - Allows for backdoors to be spawned with the bashrc and init files.
+ - Whitelist
+  - Whitelists an IP so that only that IP can connect to the backdoor.
 
 ### Targets
 Backdoorme supports multiple different targets concurrently, organized by number when entered. The core maintains one "current" target, to which any new backdoors will default. To switch targets manually, simply add the target number after the command: "use metasploit 2" will prepare the metasploit backdoor against the second target. Run "list" to see the list of current targets, whether a connection is open or closed, and what backdoors & modules are available. 

