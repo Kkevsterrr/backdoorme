@@ -69,7 +69,6 @@ name		apache		name of the backdoor		False
 As in metasploit, backdoors are organized by category. 
 - Auxiliary
   - **keylogger** - Adds a keylogger to the system and gives the option to email results back to you.
-  - **remove_ssh** - removes the ssh server on the client. Often good to use at the end of a backdoorme session to remove all traces.
   - **simplehttp** - installs python's SimpleHTTP server on the client.
   - **user** - adds a new user to the target.
   - **web** - installs an Apache Server on the client.
@@ -88,7 +87,9 @@ As in metasploit, backdoors are organized by category.
   - **python** - uses a short python script to perform commands and send output back to the user.
   - **web** - ships a web server to the target, then uploads msfvenom's php reverse_tcp backdoor and connects to the host. Although this is also a php backdoor, it is not the same backdoor as the above php backdoor.
 - Access
-  - **ssh_key** - creates RSA key and copies to target for a passwordless ssh connection
+  - **remove_ssh** - removes the ssh server on the client. Often good to use at the end of a backdoorme session to remove all traces.
+  - **ssh_key** - creates RSA key and copies to target for a passwordless ssh connection.
+  - **ssh_port** - Adds a new port for ssh.
 - Windows
   - **windows** - Uses msfvenom to create a windows backdoor.
   
