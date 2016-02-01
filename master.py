@@ -219,7 +219,7 @@ class BackdoorMe(cmd.Cmd):
 	if len(segment) == 1:
     	    categories = ["access/", "escalation/", "windows/", "shell/", "auxiliary/"]
             return [item for item in categories if item.startswith(text)]
-	if len(segment) == 2:
+	#if len(segment) == 2:
 	#    if segment[0] == "access":
 	#	return [item for item in accesslist if item.startswith(text)]
 
