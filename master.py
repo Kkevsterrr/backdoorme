@@ -211,6 +211,18 @@ class BackdoorMe(cmd.Cmd):
             for file in files:
                 if file[-3:] == ".py":
                     print (len(path)*'  ') + "-", str(file).replace(".py", "")
+    
+
+    def complete_use(self, text, line, begin_index, end_index):
+	line = line.rsplit(" ")[1]
+	segment=line.split("/")
+	if len(segment) == 1:
+    	    categories = ["access/", "escalation/", "windows/", "shell/", "auxiliary/"]
+            return [item for item in categories if item.startswith(text)]
+	if len(segment) == 2:
+	#    if segment[0] == "access":
+	#	return [item for item in accesslist if item.startswith(text)]
+
 
     def do_list(self, args):
         if args == "targets" or len(args) == 0:
