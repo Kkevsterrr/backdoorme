@@ -67,6 +67,7 @@ def check_help_text(bd):
 #######################################################################################
 def backdoor_crash_test():
     bds = get_backdoors()
+    assert False
     for bd in bds:
         yield check_crash_test, bd
 
