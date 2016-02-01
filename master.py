@@ -203,25 +203,30 @@ class BackdoorMe(cmd.Cmd):
         self.quit()
     def do_clear(self, args):
         os.system("clear")
-    def walk(self,folder):
-        print(" " + INFO + folder.replace("backdoors/", ""))
+    def walk(self,folder,echo=True):
+        bds = []
+        if echo:
+            print(" " + INFO + folder.replace("backdoors/", ""))
         for root, dirs, files in os.walk(folder):
             del dirs[:] # walk down only one level
             path = root.split('/')
             for file in files:
                 if file[-3:] == ".py":
-                    print (len(path)*'  ') + "-", str(file).replace(".py", "")
+                    bds.append(str(file).replace(".py", ""))
+                    if echo:
+                        print (len(path)*'  ') + "-", str(file).replace(".py", "")
+        return bds
     
 
     def complete_use(self, text, line, begin_index, end_index):
-	line = line.rsplit(" ")[1]
-	segment=line.split("/")
-	if len(segment) == 1:
-    	    categories = ["access/", "escalation/", "windows/", "shell/", "auxiliary/"]
+        line = line.rsplit(" ")[1]
+        segment=line.split("/")
+        if len(segment) == 1:
+            categories = ["access/", "escalation/", "windows/", "shell/", "auxiliary/"]
             return [item for item in categories if item.startswith(text)]
-	#if len(segment) == 2:
-	#    if segment[0] == "access":
-	#	return [item for item in accesslist if item.startswith(text)]
+        if len(segment) == 2:
+            bds = self.walk("backdoors/" + segment[0],echo=False) 
+            return [item for item in bds if item.startswith(text)]
 
 
     def do_list(self, args):
