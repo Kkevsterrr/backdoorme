@@ -17,7 +17,10 @@ class Backdoor(object, cmd.Cmd):
 
     def check_valid(self):
         return False
-    
+   
+    def complete_add(self, text, line, begin_index, end_index):
+        return [item for item in self.core.enabled_modules.keys() if item.startswith(text)]
+
     def do_add(self, line):
         if self.allow_modules:
             for m in line.split():
@@ -30,6 +33,13 @@ class Backdoor(object, cmd.Cmd):
         else:
             print(BAD + "Modules disabled by this backdoor.")
 
+    def complete_set(self, text, line, begin_index, end_index):
+        line = line.rsplit(" ")[1]
+        segment = line.split(".")
+        if len(segment) == 1:
+            return [item for item in ([m.name.lower() for m in self.modules.keys()] + ["target"] + self.options.keys()) if item.startswith(text)]
+        if len(segment) == 2:
+            return [(segment[0] + "." + item) for item in self.get_by_name(segment[0]).options.keys() if item.startswith(text.replace(segment[0]+".",""))]
 
     def set_target(target):
         self.options['target'] = target
