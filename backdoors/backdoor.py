@@ -6,6 +6,7 @@ from colorama import *
 from definitions import *
 import subprocess
 import math
+import shlex
 
 class Backdoor(object, cmd.Cmd):
     def __init__(self, core):
@@ -63,7 +64,7 @@ class Backdoor(object, cmd.Cmd):
             print BAD + "Unknown option %s", args
     
     def do_set(self, args):
-        args = args.split(" ")
+        args = shlex.split(args)
         bad_opt = BAD + "Unknown option %s" % args[0]
         if len(args) == 2 and args[0] in self.options:
             self.options[args[0].lower()].value = args[1]
