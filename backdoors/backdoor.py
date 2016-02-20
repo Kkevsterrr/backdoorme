@@ -7,7 +7,9 @@ from definitions import *
 import subprocess
 import math
 import shlex
-
+import importlib
+import inspect
+import sys
 class Backdoor(object, cmd.Cmd):
     def __init__(self, core):
         self.options = {}
@@ -15,21 +17,32 @@ class Backdoor(object, cmd.Cmd):
         self.modules = {}
         self.allow_modules = True
         self.help_text = None
-
-    def check_valid(self):
-        return False
-   
+     
+    def check_added(self, name):
+        for m, opts in self.modules.iteritems():
+            if m.name.lower() == name.lower():
+                return m
+        return None
     def complete_add(self, text, line, begin_index, end_index):
-        return [item for item in self.core.enabled_modules.keys() if item.startswith(text)]
-
+        return [item for item in self.walk("modules/", echo=False) if item.startswith(text)]
+    
     def do_add(self, line):
         if self.allow_modules:
             for m in line.split():
-                if m in self.core.enabled_modules.keys():
-                    mod = self.core.enabled_modules[m](self.core.curtarget, self, self.core)
-                    self.modules[mod] = mod.options
-                    print(GOOD + mod.name + " module added.")
-                else:
+                mod = self.check_added(m)
+                if mod != None:
+                   print(INFO + mod.name + " module already added.") 
+                   continue
+                try: 
+                    mod = importlib.import_module(m)
+                    clsmembers = inspect.getmembers(sys.modules[m], inspect.isclass)
+                    try:
+                        mod = [c for c in clsmembers if c[1].__module__ == m][0][1](self.core.curtarget, self, self.core) 
+                        self.modules[mod] = mod.options
+                        print(GOOD + mod.name + " module added.")
+                    except Exception as e:
+                        print(BAD + "An unexpected error occured.")
+                except:
                     print(BAD + "No module \""+m+"\" available.")
         else:
             print(BAD + "Modules disabled by this backdoor.")
@@ -155,4 +168,16 @@ class Backdoor(object, cmd.Cmd):
         self._locals  = {}      ## Initialize execution namespace for user
         self._globals = {}
 
-
+    def walk(self,folder,echo=True):
+        ms = []
+        if echo:
+            print(INFO + "Modules:")
+        for root, dirs, files in os.walk(folder):
+            del dirs[:] # walk down only one level
+            path = root.split('/')
+            for file in files:
+                if file[-3:] == ".py":
+                    ms.append(str(file).replace(".py", ""))
+                    if echo:
+                        print (len(path)*'  ') + "-", str(file).replace(".py", "")
+        return ms

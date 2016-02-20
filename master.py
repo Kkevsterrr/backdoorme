@@ -22,7 +22,7 @@ OPEN = Fore.GREEN + "open" + Fore.RESET
 CLOSED = Fore.RED + "closed" + Fore.RESET
 
 sys.path.append("backdoors")
-
+sys.path.append("modules")
 class BackdoorMe(cmd.Cmd):
     prompt = Fore.BLUE + ">> " + Fore.RESET
 
