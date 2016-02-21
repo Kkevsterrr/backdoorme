@@ -164,6 +164,8 @@ class BackdoorMe(cmd.Cmd):
                 traceback.print_exc()
         except Exception as e:
             print(BAD + args + " backdoor cannot be found.")
+            print e
+            traceback.print_exc()
 
     def do_passwd(self, args):
         t = self.get_target(args)
