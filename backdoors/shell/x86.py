@@ -4,7 +4,7 @@ class x86(Backdoor):
     prompt = Fore.RED + "x86" + Fore.BLUE + ">> " + Fore.RESET
 
     def __init__(self, core):
-		cmd.Cmd.__init__(self)
+	cmd.Cmd.__init__(self)
         self.intro = GOOD + "Using x86 module..."
         self.core = core
         self.options = { 
