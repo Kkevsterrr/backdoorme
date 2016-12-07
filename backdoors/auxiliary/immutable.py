@@ -1,4 +1,4 @@
-from backdoor import *
+from backdoors.backdoor import *
 
 class Immutable(Backdoor):
     prompt = Fore.RED + "(Immuteable) " + Fore.BLUE + ">> " + Fore.RESET 

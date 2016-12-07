@@ -68,7 +68,7 @@ def interactive_open(program=None, encoding=None):
 		t.start()
 
 		while True:
-			line = raw_input()
+			line = input()
 			p.stdin.write(line+"\n")
 			if line.strip()=="exit":
 				break

@@ -1,17 +1,18 @@
-import cmd
-from option import *
 import os
 import cmd
-from colorama import *
+from .option import *
 from definitions import *
-import subprocess
 import math
 import shlex
 import importlib
 import inspect
 import sys
-class Backdoor(object, cmd.Cmd):
+from six.moves import input
+
+
+class Backdoor(cmd.Cmd):
     def __init__(self, core):
+        super(Backdoor, self).__init__()
         self.options = {}
         self.core = core
         self.modules = {}
@@ -19,10 +20,11 @@ class Backdoor(object, cmd.Cmd):
         self.help_text = None
      
     def check_added(self, name):
-        for m, opts in self.modules.iteritems():
+        for m, opts in self.modules.items():
             if m.name.lower() == name.lower():
                 return m
         return None
+
     def complete_add(self, text, line, begin_index, end_index):
         return [item for item in self.walk("modules/", echo=False) if item.startswith(text)]
     
@@ -55,17 +57,17 @@ class Backdoor(object, cmd.Cmd):
         if len(segment) == 2:
             return [(segment[0] + "." + item) for item in self.get_by_name(segment[0]).options.keys() if item.startswith(text.replace(segment[0]+".",""))]
 
-    def set_target(target):
+    def set_target(self, target):
         self.options['target'] = target
 
-    def set_option(option, value):
+    def set_option(self, option, value):
         if option in self.options.keys():
             self.options[option] = value
             return True
         else:
             return False
 
-    def do_exploit():
+    def do_exploit(self):
         return False
 
     def do_show(self, args):
@@ -73,8 +75,8 @@ class Backdoor(object, cmd.Cmd):
             self.do_help(args)
         elif args == "modules":
             self.mods()
-	else:
-            print BAD + "Unknown option %s", args
+        else:
+            print(BAD + "Unknown option %s", args)
     
     def do_set(self, args):
         args = shlex.split(args)
@@ -103,58 +105,68 @@ class Backdoor(object, cmd.Cmd):
             return self.options[name].value
         else:
             return None
+
     def check_by_name(self, name):
         for mod in self.modules:
             if name.lower() == mod.name.lower():
                 return True
         return False
+
     def do_EOF(self, line):
-        print ""
+        print("")
         return True
+
     def emptyline(self):
         return
+
     def precmd(self, line):
         self._hist += [ line.strip() ]
-        return line 
+        return line
+
     def do_history(self, args):
-        print self._hist
+        print(self._hist)
+
     def default(self, line): 
         self.core.onecmd(line)
+
     def do_quit(self, args):
-        print "Exiting"
+        print("Exiting")
         exit()
+
     def print_help(self, options):
         if options == {}:
             return
         vals = [str(o.value) for o in options.values()]
         l = int(math.ceil(max(map(len, vals)) / 10.0)) * 10
         print(("{0:<15} {1:<%s} {2:<30}" % str(l)).format("Option","Value", "Description"))
-        print "="*(l+45)
-        for name, opt in options.iteritems():
+        print("="*(l+45))
+        for name, opt in options.items():
             print(("{0:<15} {1:<%s} {2:<30}" % str(l)).format(opt.name, opt.value, opt.description))
 
     def do_help(self, args):
-        if self.help_text != None and self.help_text != "":
-            print self.help_text
-        print "Backdoor options: "
+        if self.help_text is not None and self.help_text != "":
+            print(self.help_text)
+        print("Backdoor options: ")
         print("")
         self.print_help(self.options) 
         if self.allow_modules:
             print("")
             if self.modules != {}:
-                for mod, opts in self.modules.iteritems():
+                for mod, opts in self.modules.items():
                     print("\n%s module options: \n" % mod.name)
                     self.print_help(mod.options)
+
     def get_by_name(self, name):
         for mod in self.modules.keys():
             if mod.name.lower() == name.lower():
                 return mod
         return None
+
     def do_remove(self, line):
         if self.allow_modules:
             for m in line.split():
                 mod = self.get_by_name(m) 
-                if mod != None:
+                if mod is not None:
                     self.modules.pop(mod, None)
                     print(GOOD + "Removed %s module." % m)
                 else:
@@ -179,5 +191,5 @@ class Backdoor(object, cmd.Cmd):
                 if file[-3:] == ".py":
                     ms.append(str(file).replace(".py", ""))
                     if echo:
-                        print (len(path)*'  ') + "-", str(file).replace(".py", "")
+                        print((len(path)*'  ') + "-", str(file).replace(".py", ""))
         return ms

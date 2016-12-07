@@ -1,4 +1,4 @@
-from backdoor import *
+from backdoors.backdoor import *
 
 class User(Backdoor):
     prompt = Fore.RED + "(user) " + Fore.BLUE + ">> " + Fore.RESET

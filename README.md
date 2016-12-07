@@ -11,7 +11,11 @@ Backdoorme comes with a number of built-in backdoors, modules, and auxiliary mod
 
 To start backdoorme, first ensure that you have the required dependencies. 
 ```
-$ python dependencies.py
+$ sudo apt-get install python3 python3-pip python3-tk nmap
+$ cd backdoorme/
+$ virtualenv --python=python3.5 env
+$ source env/bin/activate
+(env) $ pip install -r requirements.txt
 ```
 Launching backdoorme:
 ```

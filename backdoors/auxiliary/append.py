@@ -1,4 +1,4 @@
-from backdoor import *
+from backdoors.backdoor import *
 
 class AppendOnly(Backdoor):
     prompt = Fore.RED + "(AppendOnly) " + Fore.BLUE + ">> " + Fore.RESET 

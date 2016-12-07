@@ -1,4 +1,4 @@
-from backdoor import *
+from backdoors.backdoor import *
 import os
 import time
 

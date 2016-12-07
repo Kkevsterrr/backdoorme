@@ -99,4 +99,4 @@ if __name__=="__main__":
 		mpe.wait(5)
 		mpe.close()
 		print mpe.get_stdout()
-	raw_input()
+	input()

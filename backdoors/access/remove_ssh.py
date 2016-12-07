@@ -1,4 +1,4 @@
-from backdoor import *
+from backdoors.backdoor import *
 
 class Remove_ssh(Backdoor):
     prompt = Fore.RED + "(remove_ssh)" + Fore.BLUE + ">> " + Fore.RESET

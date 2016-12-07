@@ -1,4 +1,4 @@
-from backdoor import *
+from backdoors.backdoor import *
 
 class Netcat_Traditional(Backdoor):
     prompt = Fore.RED + "(nct) " + Fore.BLUE + ">> " + Fore.RESET 

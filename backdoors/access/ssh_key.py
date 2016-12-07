@@ -1,4 +1,4 @@
-from backdoor import *
+from backdoors.backdoor import *
 
 class SSHKey(Backdoor):
     prompt = Fore.RED + "(sshkey) " + Fore.BLUE + ">> " + Fore.RESET 

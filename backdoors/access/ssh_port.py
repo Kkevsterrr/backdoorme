@@ -1,4 +1,4 @@
-from backdoor import *
+from backdoors.backdoor import *
 
 class Ssh_port(Backdoor):
     prompt = Fore.RED + "(ssh_port)" + Fore.BLUE + ">> " + Fore.RESET

