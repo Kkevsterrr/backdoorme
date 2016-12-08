@@ -14,6 +14,7 @@ import inspect
 import sys
 import traceback
 from six.moves import input
+import six
 
 GOOD = Fore.GREEN + " + " + Fore.RESET
 BAD = Fore.RED + " - " + Fore.RESET
@@ -35,8 +36,13 @@ class BackdoorMe(cmd.Cmd):
         self.targets = {}
         self.curtarget = None
         proc = subprocess.Popen(["ifconfig | grep inet | head -n1 | cut -d\  -f12 | cut -d: -f2"], stdout=subprocess.PIPE, shell=True)
+
         self.localIP = proc.stdout.read()
-        self.localIP = str(self.localIP[:-1], 'utf-8')
+        if six.PY3:
+            self.localIP = str(self.localIP[:-1], 'utf-8')
+        else:
+            self.localIP = self.localIP[:-1].encode('ascii', 'ignore').decode('ascii')
+
         self.ctrlc = False
         ascii()
         print("Welcome to BackdoorMe, a powerful backdooring utility. Type \"help\" to see the list of available commands.")
@@ -69,13 +75,15 @@ class BackdoorMe(cmd.Cmd):
             socket.inet_aton(hostname)
         except socket.error:
             print(BAD + "Invalid IP Address.")
-            return 
+            return None, None, None
         uname = input('Username: ') #username for the box to be attacked
         pword = getpass.getpass() #password for the box to be attacked
         return hostname, uname, pword
     
     def do_addtarget(self, args):
-        hostname, uname, pword = self.get_target_info() 
+        hostname, uname, pword = self.get_target_info()
+        if hostname is None:
+            return
         print(GOOD + "Target %d Set!" % self.target_num)
         self.addtarget(hostname, uname, pword)
     
@@ -106,7 +114,7 @@ class BackdoorMe(cmd.Cmd):
             print(BAD + "Connection failed.")
             return
         print(GOOD + "Connection established.")
-              
+
     def do_open(self, args):
         t = self.get_target(args)
         if t is None:
@@ -220,7 +228,7 @@ class BackdoorMe(cmd.Cmd):
                 if file[-3:] == ".py":
                     bds.append(str(file).replace(".py", ""))
                     if echo:
-                        print((len(path)*'  ') + "-", str(file).replace(".py", ""))
+                        print((len(path)*'  ') + "- " + str(file).replace(".py", ""))
         return bds
 
     def complete_use(self, text, line, begin_index, end_index):
