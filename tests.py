@@ -26,7 +26,7 @@ def get_backdoors_list():
 @nottest
 def get_backdoors():
     objs = []
-    args = get_backdoors_list();
+    args = get_backdoors_list()
     for s in args:
         bd = s.split()[0]
         loc, bd =  bd.rsplit("/", 1)

@@ -1,7 +1,7 @@
-from module import *
+from .module import *
+
 
 class Poison(Module):
-    
     def __init__(self, target, backdoor, core):
         self.core = core
         self.target = target

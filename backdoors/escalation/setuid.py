@@ -1,4 +1,5 @@
-from backdoor import *
+from backdoors.backdoor import *
+
 
 class Setuid(Backdoor):
     prompt = Fore.RED + "(setuid) " + Fore.BLUE + ">> " + Fore.RESET 

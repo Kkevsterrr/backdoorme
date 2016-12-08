@@ -31,7 +31,7 @@ class Target:
         bareFile = ""
         for i in range(len(a)-1, 0, -1):
             if(a[i] == '/'):
-                break;
+                break
             else:
                 bareFile += a[i]
         bareFile = bareFile[::-1]

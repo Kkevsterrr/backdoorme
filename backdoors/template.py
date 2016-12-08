@@ -1,12 +1,12 @@
 #This is the template to create backdoors. Please copy your backdoor into the suggested spots. Places you need to input are shown by ~tildes~.
-from backdoor import *
+from .backdoor import *
 #Remember extra imports.
 
 class ~NAME~(Backdoor):
     prompt = Fore.RED + "~NAME~" + Fore.BLUE + ">> " + Fore.RESET
 
     def __init__(self, core):
-	cmd.Cmd.__init__(self)
+        cmd.Cmd.__init__(self)
         self.intro = GOOD + "Using ~NAME~ module..."
         self.core = core
         self.options = { #~Input extra options. You almost always need a port.~
@@ -16,12 +16,11 @@ class ~NAME~(Backdoor):
         self.help_text = ""
 
     def get_command(self):
-	#~Add the final command.~
+        #~Add the final command.~
+        pass
 
     def do_exploit(self, args):
-	#~Add all commands needed to run the program.~
+        #~Add all commands needed to run the program.~
+        pass
 
 #After you have filled out this entire program, move it to the correct folder. 
-
-
-

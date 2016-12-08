@@ -6,6 +6,7 @@
 *.exe
 *.o
 *.so
+*.pyc
 
 # Packages #
 ############
@@ -35,3 +36,9 @@
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# Other files #
+###############
+.idea/
+__pycache__/
+env/

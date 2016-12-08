@@ -1,5 +1,4 @@
-class Option():
-
+class Option(object):
     def __init__(self, name, value, description, required):
         self.name = name
         self.value = value

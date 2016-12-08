@@ -1,4 +1,4 @@
-from backdoor import *
+from backdoors.backdoor import *
 
 class Web(Backdoor):
     prompt = Fore.RED + "(web) " + Fore.BLUE + ">> " + Fore.RESET

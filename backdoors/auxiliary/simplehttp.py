@@ -1,4 +1,4 @@
-from backdoor import *
+from backdoors.backdoor import *
 
 class SimpleHTTP(Backdoor):
     prompt = Fore.RED + "(SimpleHTTP) " + Fore.BLUE + ">> " + Fore.RESET

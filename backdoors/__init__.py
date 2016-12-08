@@ -1,4 +1,4 @@
-from backdoor import *
+from .backdoor import *
 '''
 from os.path import dirname, basename, isfile
 import glob

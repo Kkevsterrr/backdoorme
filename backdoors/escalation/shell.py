@@ -1,4 +1,4 @@
-from backdoor import *
+from backdoors.backdoor import *
 
 class Shell(Backdoor):
     prompt = Fore.RED + "(shell) " + Fore.BLUE + ">> " + Fore.RESET 
