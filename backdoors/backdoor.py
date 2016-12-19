@@ -81,6 +81,7 @@ class Backdoor(cmd.Cmd):
         if(hasattr(self, "child")):
             if(self.child.isalive()):
                 print("Press Control + ] to exit the shell.")
+                self.child.sendline()
                 self.child.interact(escape_character='\x1d', input_filter=None, output_filter=None)
             else:
                 print("The connection has been lost.")

