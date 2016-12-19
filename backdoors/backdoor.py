@@ -75,6 +75,7 @@ class Backdoor(cmd.Cmd):
         return False
 
     def listen(self):
+        print self.get_value("port")
         self.child = pexpect.spawn("python listen.py " + str(self.get_value("port")))
 
 
