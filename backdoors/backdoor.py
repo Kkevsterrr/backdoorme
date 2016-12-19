@@ -7,7 +7,11 @@ import shlex
 import importlib
 import inspect
 import sys
+import multiprocessing
 from six.moves import input
+import socket
+import time
+import pexpect
 
 
 class Backdoor(cmd.Cmd):
@@ -68,6 +72,12 @@ class Backdoor(cmd.Cmd):
             return False
 
     def do_exploit(self):
+        return False
+
+    def do_save(self):
+        return False
+
+    def do_send(self):
         return False
 
     def do_show(self, args):
