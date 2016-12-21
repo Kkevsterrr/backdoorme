@@ -7,7 +7,11 @@ import shlex
 import importlib
 import inspect
 import sys
+import multiprocessing
 from six.moves import input
+import socket
+import time
+import pexpect
 
 
 class Backdoor(cmd.Cmd):
@@ -69,6 +73,21 @@ class Backdoor(cmd.Cmd):
 
     def do_exploit(self):
         return False
+
+    def listen(self, passw="none", prompt="some"):
+        self.child = pexpect.spawn("python listen.py " + str(self.get_value("port")) + " " + str(passw) + " " + str(prompt))
+        time.sleep(.25)
+
+    def do_spawn(self, args):
+        if(hasattr(self, "child")):
+            if(self.child.isalive()):
+                print("Press Control + ] to exit the shell.")
+                #self.child.sendline()
+                self.child.interact(escape_character='\x1d', input_filter=None, output_filter=None)
+            else:
+                print("The connection has been lost.")
+        else:
+            print("The exploit has not been run yet or does not support the interpreter.")
 
     def do_show(self, args):
         if args == "options":

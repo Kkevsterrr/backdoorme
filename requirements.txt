@@ -13,3 +13,4 @@ pycparser==2.17
 rpyc==3.3.0
 scp==0.10.2
 six==1.10.0
+pexpect

