@@ -49,7 +49,7 @@ class Backdoor(cmd.Cmd):
                     except Exception as e:
                         print(BAD + "An unexpected error occured.")
                 except Exception as e:
-                    print e
+                    print(e)
                     print(BAD + "No module \""+m+"\" available.")
         else:
             print(BAD + "Modules disabled by this backdoor.")

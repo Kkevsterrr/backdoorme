@@ -31,7 +31,7 @@ def testPyth():
 	child.expect('Press Control \+ ] to exit the shell.')
 	child.sendline('whoami')
 	child.expect('root')
-	print "weve got rood"
+	print("weve got rood")
 
 def testPerl():
 	child = testAddTarget()
@@ -47,7 +47,7 @@ def testPerl():
 	child.expect('Press Control \+ ] to exit the shell.')
 	child.sendline('whoami')
 	child.expect('root')
-	print "weve got rood"
+	print("weve got rood")
 
 def testBash():
 	child = testAddTarget()
@@ -62,7 +62,7 @@ def testBash():
 	child.expect('Press Control \+ ] to exit the shell.')
 	child.sendline('whoami')
 	child.expect('root')
-	print "weve got rood"
+	print("weve got rood")
 
 def testBash2():
 	child = testAddTarget()
@@ -77,7 +77,7 @@ def testBash2():
 	child.expect('Press Control \+ ] to exit the shell.')
 	child.sendline('whoami')
 	child.expect('root')
-	print "weve got rood"
+	print("weve got rood")
 
 def testx86():
 	child = testAddTarget()
@@ -92,7 +92,7 @@ def testx86():
 	child.expect('Press Control \+ ] to exit the shell.')
 	child.sendline('whoami')
 	child.expect('root')
-	print "weve got rood"
+	print("weve got rood")
 
 def testNc():
 	child = testAddTarget()
@@ -107,7 +107,7 @@ def testNc():
 	child.expect('Press Control \+ ] to exit the shell.')
 	child.sendline('whoami')
 	child.expect('george')
-	print "weve got rood"
+	print("weve got rood")
 
 def testPHP():
 	child = testAddTarget()
@@ -122,19 +122,19 @@ def testPHP():
 	child.expect('Press Control \+ ] to exit the shell.')
 	child.sendline('whoami')
 	child.expect('root')
-	print "weve got rood"
+	print("weve got rood")
 
-print "pyth"
+print("pyth")
 testPyth()
-print "netcat"
+print("netcat")
 testNc()
-print "bash"
+print("bash")
 testBash()
-print "bash2"
+print("bash2")
 testBash2()
-print "php"
+print("php")
 testPHP()
-print "x86"
+print("x86")
 testx86()
-print "perl"
+print("perl")
 testPerl()
