@@ -74,14 +74,16 @@ class Backdoor(cmd.Cmd):
     def do_exploit(self):
         return False
 
-    def listen(self):
-        self.child = pexpect.spawn("python listen.py " + str(self.get_value("port")))
+    def listen(self, passw="none", prompt="some"):
+        print "python listen.py " + str(self.get_value("port")) + " " + str(passw) + " " + str(prompt)
+        self.child = pexpect.spawn("python listen.py " + str(self.get_value("port")) + " " + str(passw) + " " + str(prompt))
+        time.sleep(.25)
 
     def do_spawn(self, args):
         if(hasattr(self, "child")):
             if(self.child.isalive()):
                 print("Press Control + ] to exit the shell.")
-                self.child.sendline()
+                #self.child.sendline()
                 self.child.interact(escape_character='\x1d', input_filter=None, output_filter=None)
             else:
                 print("The connection has been lost.")
