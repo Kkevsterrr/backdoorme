@@ -21,7 +21,7 @@ class Php(Backdoor):
         port = self.get_value("port")
         target = self.core.curtarget
         #input("Please enter the following command: nc -v -n -l -p %s in another shell to connect." % port)
-        self.listen()
+        self.listen("none", "none")
         print(GOOD + "Initializing backdoor...")
         target.ssh.exec_command(self.get_command())
         for mod in self.modules.keys():

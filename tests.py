@@ -1,5 +1,6 @@
 from master import *
 from nose.tools import nottest
+import pexpect
 #######################################################################################
 
 @nottest
@@ -83,3 +84,8 @@ def add_target_test():
     bd.addtarget("10.1.0.2", "student", "target123")
     
     pass
+    
+@nottest
+def testPyth():
+    child = pexpect.spawn('python master.py')
+    child.expect('Welcome to BackdoorMe')

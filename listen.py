@@ -11,7 +11,7 @@ import pexpect
 class Interpreter(cmd.Cmd):
     def __init__(self):
         cmd.Cmd.__init__(self)
-        self.prompt = "# "
+        self.prompt = " ### "
         self.bind()
         self.initLines = ""
         if sys.argv[2] == "none":
@@ -43,17 +43,24 @@ class Interpreter(cmd.Cmd):
             print("\n" + "Disconnect your shell using Ctrl+]")
             self.cmdloop()
 
-    def specialPrint(self, lines):
-        for line in lines.split('\n'):
-            if(not(line[:-1] in self.initLines)): #if it's an initialization line
-                print line
+    def specialPrint(self, lines):#call this to print, but not include lines that were there in initialization
+        lines = lines.split('\n')[:-1] #remove last line, the prompt
+        if(sys.argv[3] == "some"):
+            lines = lines[1:]#remove first line, which is our command
+        for line in lines:
+            print line
+#        for line in lines.split('\n'):
+#            print line
+
+    def do_root(self): #to get root in case we haven't gotten it yet, just will run a few commands using the password given.
+        pass
 
     #override
     def emptyline(self):
         pass
+
     #override
     def default(self, line):
-        print "This line is sent " + line
         try:
             self.sock[0].send(line + '\n')
             time.sleep(.25) #fix this to make it dynamic
