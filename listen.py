@@ -15,11 +15,9 @@ def interact(sock):
     #print(sock[0].recv(0x10000)),
     while(command != 'exit'):
      	command = raw_input()
-     	print "hi"
         sock[0].send(command + '\n')
         time.sleep(.25)
         data = sock[0].recv(0x10000)
-        print ("hi")
         print data,
         #os.system("echo \"Sent " + command + "\" >> asdf.asdf")
         #os.system("echo \"Received " + data + "\" >> asdf.asdf")

