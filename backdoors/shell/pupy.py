@@ -1,4 +1,4 @@
-zfrom backdoors.backdoor import *
+from backdoors.backdoor import *
 import os
 
 class Pupy(Backdoor):
