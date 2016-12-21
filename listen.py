@@ -48,8 +48,12 @@ class Interpreter(cmd.Cmd):
             if(not(line[:-1] in self.initLines)): #if it's an initialization line
                 print line
 
-
+    #override
+    def emptyline(self):
+        pass
+    #override
     def default(self, line):
+        print "This line is sent " + line
         try:
             self.sock[0].send(line + '\n')
             time.sleep(.25) #fix this to make it dynamic
