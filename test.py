@@ -37,8 +37,8 @@ def testPerl():
 	child = testAddTarget()
 	child.sendline('use shell/perl')
 	child.expect('Using Perl module...')
-	#port = random.randrange(1024, 65535, 1)
-	port = 53921
+	port = random.randrange(1024, 65535, 1)
+	#port = 53921
 	child.sendline('set port ' + str(port))
 	child.expect('port => ' + str(port))
 	child.sendline('exploit')

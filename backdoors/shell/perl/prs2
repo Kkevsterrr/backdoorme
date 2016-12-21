@@ -1,5 +1,3 @@
-';
-my $port = 53921;
 
 # Options
 my $daemon = 1;
