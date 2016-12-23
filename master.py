@@ -41,7 +41,7 @@ class BackdoorMe(cmd.Cmd):
 
 #        self.localIP = proc.stdout.read()
         if six.PY3:
-            self.localIP = str(self.localIP, 'utf-8')
+            self.localIP = str(self.localIP)
         else:
             self.localIP = self.localIP.encode('ascii', 'ignore').decode('ascii')
 
