@@ -2,7 +2,7 @@ from backdoors.backdoor import *
 
 
 class x86(Backdoor):
-    prompt = Fore.RED + "x86" + Fore.BLUE + ">> " + Fore.RESET
+    prompt = Fore.RED + "x86 " + Fore.BLUE + ">> " + Fore.RESET
 
     def __init__(self, core):
         cmd.Cmd.__init__(self)

