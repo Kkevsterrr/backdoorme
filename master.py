@@ -13,6 +13,7 @@ import importlib
 import inspect
 import sys
 import traceback
+import netifaces as ni
 from six.moves import input
 import six
 
@@ -35,13 +36,14 @@ class BackdoorMe(cmd.Cmd):
         self.port = 22 
         self.targets = {}
         self.curtarget = None
-        proc = subprocess.Popen(["ifconfig | grep inet | head -n1 | cut -d\  -f12 | cut -d: -f2"], stdout=subprocess.PIPE, shell=True)
+        self.get_local_ip()
+#        proc = subprocess.Popen(["ifconfig | grep inet | head -n1 | cut -d\  -f12 | cut -d: -f2"], stdout=subprocess.PIPE, shell=True)
 
-        self.localIP = proc.stdout.read()
+#        self.localIP = proc.stdout.read()
         if six.PY3:
-            self.localIP = str(self.localIP[:-1], 'utf-8')
+            self.localIP = str(self.localIP, 'utf-8')
         else:
-            self.localIP = self.localIP[:-1].encode('ascii', 'ignore').decode('ascii')
+            self.localIP = self.localIP.encode('ascii', 'ignore').decode('ascii')
 
         self.ctrlc = False
         ascii()
@@ -50,6 +52,19 @@ class BackdoorMe(cmd.Cmd):
         print("Using local IP of %s." % self.localIP)
         self.addtarget("127.0.0.1", "george", "password")
     
+    def get_local_ip(self):
+        interfaces = ni.interfaces()
+        interface = ""
+        for iface in interfaces:
+            if ni.AF_INET in ni.ifaddresses(iface) and "lo" not in iface:
+                interface = iface
+
+        if interface != "":
+            addrs = ni.ifaddresses(interface)
+            ipinfo = addrs[socket.AF_INET][0]
+            self.localIP = ipinfo['addr']
+
+
     def print_help(self, lst):
         it = iter(lst)
         for x in it:

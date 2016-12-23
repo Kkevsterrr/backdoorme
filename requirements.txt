@@ -14,3 +14,4 @@ rpyc==3.3.0
 scp==0.10.2
 six==1.10.0
 pexpect
+netifaces
