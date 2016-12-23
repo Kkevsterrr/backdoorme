@@ -1,0 +1,4 @@
+#!/bin/bash
+
+PASSWORD_PATH="/usr/bin/passwd"
+LOG_PATH="
