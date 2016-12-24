@@ -12,7 +12,7 @@ from six.moves import input
 import socket
 import time
 import pexpect
-
+import traceback
 
 class Backdoor(cmd.Cmd):
     def __init__(self, core):
@@ -39,17 +39,18 @@ class Backdoor(cmd.Cmd):
                 if mod != None:
                    print(INFO + mod.name + " module already added.") 
                    continue
-                try: 
-                    mod = importlib.import_module("modules/" + m)
-                    clsmembers = inspect.getmembers(sys.modules[m], inspect.isclass)
+                try:
+                    mod = importlib.import_module("modules." + m)
+                    clsmembers = inspect.getmembers(sys.modules["modules."+m], inspect.isclass)
                     try:
-                        mod = [c for c in clsmembers if c[1].__module__ == m][0][1](self.core.curtarget, self, self.core) 
+                        mod = [c for c in clsmembers if c[1].__module__ == "modules."+m][0][1](self.core.curtarget, self, self.core)
                         self.modules[mod] = mod.options
                         print(GOOD + mod.name + " module added.")
                     except Exception as e:
+                        #traceback.print_exc()
                         print(BAD + "An unexpected error occured.")
                 except Exception as e:
-                    print(e)
+                    #traceback.print_exc()
                     print(BAD + "No module \""+m+"\" available.")
         else:
             print(BAD + "Modules disabled by this backdoor.")
