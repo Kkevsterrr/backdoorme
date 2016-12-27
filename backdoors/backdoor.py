@@ -22,6 +22,7 @@ class Backdoor(cmd.Cmd):
         self.modules = {}
         self.allow_modules = True
         self.help_text = None
+        self.listening = 0
      
     def check_added(self, name):
         for m, opts in self.modules.items():
@@ -79,12 +80,17 @@ class Backdoor(cmd.Cmd):
     def listen(self, passw="none", prompt="some"):
         self.child = pexpect.spawn("python listen.py " + str(self.get_value("port")) + " " + str(passw) + " " + str(prompt))
         time.sleep(.25)
+        self.listening = 1
 
     def do_spawn(self, args):
         if(hasattr(self, "child")):
             if(self.child.isalive()):
-                print("Press Control + ] to exit the shell.")
-                #self.child.sendline()
+                if(self.listening == 2):
+                    print("Press Control + ] to exit the shell."),
+                    self.child.sendline()
+                else:
+                    print("Press Control + ] to exit the shell.")
+                    self.listening = 2
                 self.child.interact(escape_character='\x1d', input_filter=None, output_filter=None)
             else:
                 print("The connection has been lost.")
