@@ -82,6 +82,8 @@ As in metasploit, backdoors are organized by category.
 - Shell
   - **bash** - uses a simple bash script to connect to a specific ip and port combination and pipe the output into bash.
   - **bash2** - a slightly different (and more reliable) version of the above bash backdoor which does not prompt for the password on the client-side.
+  - **sh** - Similar to the first bash backdoor, but redirects input to /bin/sh.
+  - **sh2** - Similar to the second bash backdoor, but redirects input to /bin/sh.
   - **metasploit** - employs msfvenom to create a reverse_tcp binary on the target, then runs the binary to connect to a meterpreter shell.
   - **netcat** - uses netcat to pipe standard input and output to /bin/sh, giving the user an interactive shell.
   - **netcat_traditional** - utilizes netcat-traditional's -e option to create a reverse shell.
