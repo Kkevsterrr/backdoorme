@@ -1,19 +1,26 @@
 # backdoorme [![Build Status](https://travis-ci.org/Kkevsterrr/backdoorme.png)](https://travis-ci.org/Kkevsterrr/backdoorme)
 
- Backdoorme is a powerful utility capable of backdooring Unix machines with a slew of backdoors.  Backdoorme uses a familiar metasploit interface with tremendous extensibility. 
+ Tools like metasploit are great for exploiting computers, but what happens after you've gained access to a computer? Backdoorme answers that question by unleashing a slew of backdoors to establish persistence over long periods of time.
+
+ Once an SSH connection has been established with the target, Backdoorme's strengths can come to fruition. Unfortunately, Backdoorme is not a tool to gain root access - only keep that access once it has been gained.
+
+ Please only use Backdoorme with explicit permission - please don't hack without asking.
  
- Backdoorme relies on having an existing SSH connection or credentials to the victim, through which it will transfer and deploy any backdoors.  In the future, this reliance will be removed as the tool is expanded. 
- To set up SSH, please see here: https://help.ubuntu.com/community/SSH/OpenSSH/Configuring
- 
- Please only use Backdoorme with explicit permission - please don't hack without asking.  
 ## Usage
-Backdoorme comes with a number of built-in backdoors, modules, and auxiliary modules.  Backdoors are specific components to create and deploy a specific backdoor, such as a netcat backdoor or msfvenom backdoor.  Modules can be applied to any backdoor, and are used to make backdoors more potent, stealthy, or more readily tripped. Auxiliaries are useful operations that could be performed to help persistence.
+Backdoorme is split into two parts: backdoors and modules. 
+
+Backdoors are small snippets of code which listen on a port and redirect to an interpreter, like bash. There are many backdoors written in various languages to give variety.
+
+Modules make the backdoors more potent by running them more often, for example, every few minutes or whenever the computer boots. This helps to establish persistence.
+
+Demonstration:
 
 [![IMAGE ALT TEXT](http://img.youtube.com/vi/HhnX1Y09KAk/0.jpg)](http://www.youtube.com/watch?v=HhnX1Y09KAk "BackdoorMe Sh demo")
 
 To start backdoorme, first ensure that you have the required dependencies. 
 ```
-$ sudo apt-get install python3 python3-pip python3-tk nmap
+Python 3                                                                                   Python 2
+$ sudo apt-get install python3 python3-pip python3-tk nmap                                 sudo python dependencies.py
 $ cd backdoorme/
 $ virtualenv --python=python3.5 env
 $ source env/bin/activate
@@ -22,14 +29,6 @@ $ source env/bin/activate
 Launching backdoorme:
 ```
 $ python master.py
-   ___           __      __              __  ___
-  / _ )___ _____/ /_____/ /__  ___  ____/  |/  /__
- / _  / _ `/ __/  '_/ _  / _ \/ _ \/ __/ /|_/ / -_)
-/____/\_,_/\__/_/\_\\_,_/\___/\___/_/ /_/  /_/\__/
-Welcome to BackdoorMe, a powerful backdooring utility. Type "help" to see the list of available commands.
-Type "addtarget" to set a target, and "open" to open an SSH connection to that target.
-Using local IP of 10.1.0.1.
->>
 ```
 To add a target:
 ``` 
@@ -57,11 +56,7 @@ Backdoor options:
 Option		Value		Description		Required
 ------		-----		-----------		--------
 name		initd		name of the backdoor		False
-format		elf		format to write the backdoor to		True
-lhost		10.1.0.1		local IP to connect back to		True
-encoder		none		encoder to use for the backdoor		False
-lport		4444		local port to connect back on		True
-payload		linux/x86/meterpreter/reverse_tcp		payload to deploy in backdoor		True
+...
 (msf) >> set name apache
  + name => apache
 (msf) >> show options
