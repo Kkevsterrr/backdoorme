@@ -1,311 +1,186 @@
 from master import *
-#from nose.tools import nottest
+from nose.tools import nottest
 import pexpect
 import random
+import sys
 
+NUM_TESTS = 1
+try:
+    IP = sys.argv[1]
+    USERNAME = sys.argv[2]
+    PASS = sys.argv[3]
+except:
+    IP = "192.168.121.153"
+    USERNAME = "george"
+    PASS = "password" 
+    print("Usage is: python stats.py <IP> <USERNAME> <PASSWORD>, but defaulting to %s@%s:%s" %(USERNAME, IP, PASS))
+
+@nottest
+def get_port():
+    return random.randrange(1024, 65535, 1)
+
+@nottest
 def testAddTarget():
+    print "Spawning..."
     child = pexpect.spawn('python master.py')
     child.expect('Using local IP')
     child.sendline('addtarget')
     child.expect('Target Hostname:')
-    child.sendline('192.168.121.153')
+    child.sendline(IP)
+    print "Getting there"
     child.expect('Username:')
-    child.sendline('george')
+    child.sendline(USERNAME)
     child.expect('Password:')
-    child.sendline("password")
+    child.sendline(PASS)
     child.expect('Target')
     child.sendline('open')
     child.expect('Connection established.')
+    print "wooohooo"
     return child
 
-def testPyth():
-	child = testAddTarget()
-	child.sendline('use shell/pyth')
-	child.expect('Using Python module...')
-	port = random.randrange(1024, 65535, 1)
-	child.sendline('set port ' + str(port))
-	child.expect('port => ' + str(port))
-	child.sendline('exploit')
-	child.expect('Python backdoor on')
-	child.sendline('spawn')
-	child.expect('Press Control \+ ] to exit the shell.')
-	child.sendline('whoami')
-	child.expect('root', timeout=10)
-	#print("weve got rood")
+def test_pyth():
+    child = testAddTarget()
+    child.sendline('use shell/pyth')
+    child.expect('Using Python module...')
+    port = get_port()   
+    child.sendline('set port ' + str(port))
+    child.expect('port => ' + str(port))
+    child.sendline('exploit')
+    child.expect('Python backdoor on')
+    child.sendline('spawn')
+    child.expect('Press Control \+ ] to exit the shell.')
+    child.sendline('whoami')
+    child.expect('root', timeout=10)
+    #print("weve got rood")
 
-def testPerl():
-	child = testAddTarget()
-	child.sendline('use shell/perl')
-	child.expect('Using Perl module...')
-	port = random.randrange(1024, 65535, 1)
-	#port = 53921
-	child.sendline('set port ' + str(port))
-	child.expect('port => ' + str(port))
-	child.sendline('exploit')
-	child.expect('Perl backdoor on')
-	child.sendline('spawn')
-	child.expect('Press Control \+ ] to exit the shell.')
-	child.sendline('whoami')
-	child.expect('root', timeout=10)
-	#print("weve got rood")
+def test_perl():
+    child = testAddTarget()
+    child.sendline('use shell/perl')
+    child.expect('Using Perl module...')
+    port = get_port()
+    child.sendline('set port ' + str(port))
+    child.expect('port => ' + str(port))
+    child.sendline('exploit')
+    child.expect('Perl backdoor on')
+    child.sendline('spawn')
+    child.expect('Press Control \+ ] to exit the shell.')
+    child.sendline('whoami')
+    child.expect('root', timeout=10)
 
-def testBash():
-	child = testAddTarget()
-	child.sendline('use shell/bash')
-	child.expect('Using Bash backdoor...')
-	port = random.randrange(1024, 65535, 1)
-	child.sendline('set port ' + str(port))
-	child.expect('port => ' + str(port))
-	child.sendline('exploit')
-	child.expect('Bash Backdoor on')
-	child.sendline('spawn')
-	child.expect('Press Control \+ ] to exit the shell.')
-	child.sendline('whoami')
-	child.expect('root', timeout=10)
-	#print("weve got rood")
+def test_bash():
+    child = testAddTarget()
+    child.sendline('use shell/bash')
+    child.expect('Using Bash backdoor...')
+    port = get_port()
+    child.sendline('set port ' + str(port))
+    child.expect('port => ' + str(port))
+    child.sendline('exploit')
+    child.expect('Bash Backdoor on')
+    child.sendline('spawn')
+    child.expect('Press Control \+ ] to exit the shell.')
+    child.sendline('whoami')
+    child.expect('root', timeout=10)
+    #print("weve got rood")
 
-def testSh():
-	child = testAddTarget()
-	child.sendline('use shell/sh')
-	child.expect('Using Sh backdoor...')
-	port = random.randrange(1024, 65535, 1)
-	child.sendline('set port ' + str(port))
-	child.expect('port => ' + str(port))
-	child.sendline('exploit')
-	child.expect('Sh Backdoor on')
-	child.sendline('spawn')
-	child.expect('Press Control \+ ] to exit the shell.')
-	child.sendline('whoami')
-	child.expect('root', timeout=10)
-	#print("weve got rood")
+def test_sh():
+    child = testAddTarget()
+    child.sendline('use shell/sh')
+    child.expect('Using Sh backdoor...')
+    port = get_port()
+    child.sendline('set port ' + str(port))
+    child.expect('port => ' + str(port))
+    child.sendline('exploit')
+    child.expect('Sh Backdoor on')
+    child.sendline('spawn')
+    child.expect('Press Control \+ ] to exit the shell.')
+    child.sendline('whoami')
+    child.expect('root', timeout=10)
+    #print("weve got rood")
 
-def testSh2():
-	child = testAddTarget()
-	child.sendline('use shell/sh2')
-	child.expect('Using second Sh module..')
-	port = random.randrange(1024, 65535, 1)
-	child.sendline('set port ' + str(port))
-	child.expect('port => ' + str(port))
-	child.sendline('exploit')
-	child.expect('Initializing backdoor...')
-	child.sendline('spawn')
-	child.expect('Press Control \+ ] to exit the shell.')
-	child.sendline('whoami')
-	child.expect('root', timeout=10)
-	#print("weve got rood")
+def test_sh2():
+    child = testAddTarget()
+    child.sendline('use shell/sh2')
+    child.expect('Using second Sh module..')
+    port = get_port()
+    child.sendline('set port ' + str(port))
+    child.expect('port => ' + str(port))
+    child.sendline('exploit')
+    child.expect('Initializing backdoor...')
+    child.sendline('spawn')
+    child.expect('Press Control \+ ] to exit the shell.')
+    child.sendline('whoami')
+    child.expect('root', timeout=10)
+    #print("weve got rood")
 
-def testBash2():
-	child = testAddTarget()
-	child.sendline('use shell/bash2')
-	child.expect('Using second Bash module...')
-	port = random.randrange(1024, 65535, 1)
-	child.sendline('set port ' + str(port))
-	child.expect('port => ' + str(port))
-	child.sendline('exploit')
-	child.expect('Initializing backdoor...')
-	child.sendline('spawn')
-	child.expect('Press Control \+ ] to exit the shell.')
-	child.sendline('whoami')
-	child.expect('root', timeout=10)
-	#print("weve got rood")
+def test_bash2():
+    child = testAddTarget()
+    child.sendline('use shell/bash2')
+    child.expect('Using second Bash module...')
+    port = get_port()
+    child.sendline('set port ' + str(port))
+    child.expect('port => ' + str(port))
+    child.sendline('exploit')
+    child.expect('Initializing backdoor...')
+    child.sendline('spawn')
+    child.expect('Press Control \+ ] to exit the shell.')
+    child.sendline('whoami')
+    child.expect('root', timeout=10)
+    #print("weve got rood")
 
-def testx86():
-	child = testAddTarget()
-	child.sendline('use shell/x86')
-	child.expect('Using x86 module...')
-	port = random.randrange(1024, 65535, 1)
-	child.sendline('set port ' + str(port))
-	child.expect('port => ' + str(port))
-	child.sendline('exploit')
-	child.expect('x86 backdoor on')
-	child.sendline('spawn')
-	child.expect('Press Control \+ ] to exit the shell.')
-	child.sendline('whoami')
-	child.expect('root', timeout=10)
-	#print("weve got rood")
+def test_x86():
+    child = testAddTarget()
+    child.sendline('use shell/x86')
+    child.expect('Using x86 module...')
+    port = get_port()
+    child.sendline('set port ' + str(port))
+    child.expect('port => ' + str(port))
+    child.sendline('exploit')
+    child.expect('x86 backdoor on')
+    child.sendline('spawn')
+    child.expect('Press Control \+ ] to exit the shell.')
+    child.sendline('whoami')
+    child.expect('root', timeout=10)
+    #print("weve got rood")
 
-def testNc():
-	child = testAddTarget()
-	child.sendline('use shell/netcat')
-	child.expect('Using netcat backdoor...')
-	port = random.randrange(1024, 65535, 1)
-	child.sendline('set port ' + str(port))
-	child.expect('port => ' + str(port))
-	child.sendline('exploit')
-	child.expect('Netcat backdoor on')
-	child.sendline('spawn')
-	child.expect('Press Control \+ ] to exit the shell.')
-	child.sendline('whoami')
-	child.expect('george', timeout=10)
-	#print("weve got rood")
+def test_nc():
+    child = testAddTarget()
+    child.sendline('use shell/netcat')
+    child.expect('Using netcat backdoor...')
+    port = get_port()
+    child.sendline('set port ' + str(port))
+    child.expect('port => ' + str(port))
+    child.sendline('exploit')
+    child.expect('Netcat backdoor on')
+    child.sendline('spawn')
+    child.expect('Press Control \+ ] to exit the shell.')
+    child.sendline('whoami')
+    child.expect(USERNAME, timeout=10)
+    #print("weve got rood")
 
-def testPHP():
-	child = testAddTarget()
-	child.sendline('use shell/php')
-	child.expect('Using php module...')
-	port = random.randrange(1024, 65535, 1)
-	child.sendline('set port ' + str(port))
-	child.expect('port => ' + str(port))
-	child.sendline('exploit')
-	child.expect('Initializing backdoor...')
-	child.sendline('spawn')
-	child.expect('Press Control \+ ] to exit the shell.')
-	child.sendline('whoami')
-	child.expect('root', timeout=10)
-	#print("weve got rood")
+def test_php():
+    child = testAddTarget()
+    child.sendline('use shell/php')
+    child.expect('Using php module...')
+    port = get_port()
+    child.sendline('set port ' + str(port))
+    child.expect('port => ' + str(port))
+    child.sendline('exploit')
+    child.expect('Initializing backdoor...')
+    child.sendline('spawn')
+    child.expect('Press Control \+ ] to exit the shell.')
+    child.sendline('whoami')
+    child.expect('root', timeout=10)
 
-i = 0
-j = 0
-while i < 1000:
-	#if(i % 10 == 0):
-		#print i
-	try:
-		testPyth()
-		j += 1
-		i += 1
-	except:
-		#print("Failure")
-		i += 1
+tests = {"Python" : test_pyth, "Perl" : test_perl, "Bash" : test_bash, "Bash2" : test_bash2, "Sh" : test_sh, "Sh2" : test_sh2, "Netcat" : test_nc, "x86" : test_x86, "PHP" : test_php } 
 
-print "-------------"
-print "Python final: " + str(j) + "/" + str(i)
-print "-------------"
-
-i = 0
-j = 0
-while i < 1000:
-	#if(i % 10 == 0):
-		#print i
-	try:
-		testPerl()
-		j += 1
-		i += 1
-	except:
-		#print("Failure")
-		i += 1
-
-print "-------------"
-print "Perl final: " + str(j) + "/" + str(i)
-print "-------------"
-
-i = 0
-j = 0
-while i < 1000:
-	#if(i % 10 == 0):
-		#print i
-	try:
-		testBash()
-		j += 1
-		i += 1
-	except:
-		#print("Failure")
-		i += 1
-
-print "-------------"
-print "Bash final: " + str(j) + "/" + str(i)
-print "-------------"
-
-i = 0
-j = 0
-while i < 1000:
-	#if(i % 10 == 0):
-		#print i
-	try:
-		testSh()
-		j += 1
-		i += 1
-	except:
-		#print("Failure")
-		i += 1
-
-print "-------------"
-print "Sh final: " + str(j) + "/" + str(i)
-print "-------------"
-
-
-i = 0
-j = 0
-while i < 1000:
-	#if(i % 10 == 0):
-		#print i
-	try:
-		testSh2()
-		j += 1
-		i += 1
-	except:
-		#print("Failure")
-		i += 1
-
-print "-------------"
-print "Sh2 final: " + str(j) + "/" + str(i)
-print "-------------"
-
-i = 0
-j = 0
-while i < 1000:
-	#if(i % 10 == 0):
-		#print i
-	try:
-		testBash2()
-		j += 1
-		i += 1
-	except:
-		#print("Failure")
-		i += 1
-
-print "-------------"
-print "Bash2 final: " + str(j) + "/" + str(i)
-print "-------------"
-
-
-i = 0
-j = 0
-while i < 1000:
-	#if(i % 10 == 0):
-		#print i
-	try:
-		testNc()
-		j += 1
-		i += 1
-	except:
-		#print("Failure")
-		i += 1
-
-print "-------------"
-print "Netcat final: " + str(j) + "/" + str(i)
-print "-------------"
-
-
-i = 0
-j = 0
-while i < 1000:
-	#if(i % 10 == 0):
-		#print i
-	try:
-		testx86()
-		j += 1
-		i += 1
-	except:
-		#print("Failure")
-		i += 1
-
-print "-------------"
-print "x86 final: " + str(j) + "/" + str(i)
-print "-------------"
-
-i = 0
-j = 0
-while i < 1000:
-	#if(i % 10 == 0):
-		#print i
-	try:
-		testPHP()
-		j += 1
-		i += 1
-	except:
-		#print("Failure")
-		i += 1
-
-print "-------------"
-print "Php final: " + str(j) + "/" + str(i)
-print "-------------"
+for test in tests:
+    success = 0
+    for num in range(1, NUM_TESTS + 1):
+        try:
+            tests[test]()
+            success += 1
+        except:
+            pass
+    print "-------------"
+    print "%s final: %d/%d" %(test, success, num)
+    print "-------------"
