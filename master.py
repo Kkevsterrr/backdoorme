@@ -231,18 +231,19 @@ class BackdoorMe(cmd.Cmd):
     def do_clear(self, args):
         os.system("clear")
 
-    def walk(self,folder, echo=True):
+    def walk(self, folder, echo=True):
         bds = []
-        if echo:
-            print(" " + INFO + folder.replace("backdoors/", ""))
         for root, dirs, files in os.walk(folder):
-            del dirs[:] # walk down only one level
+            if "__" in root:
+                continue
             path = root.split('/')
-            for file in files:
-                if file[-3:] == ".py":
-                    bds.append(str(file).replace(".py", ""))
+            if echo and len([f for f in files if f[-3:] == ".py"]) > 0:
+                print((((len(path) - 1) * 2 - 1)*' ') + INFO + path[-1]+"/")
+            for f in files:
+                if f[-3:] == ".py" and "util_" not in f:
+                    bds.append(str(f).replace(".py", ""))
                     if echo:
-                        print((len(path)*'  ') + "- " + str(file).replace(".py", ""))
+                        print((len(path)*'  ') + "- " + str(f).replace(".py", ""))
         return bds
     
     def get_categories(self):
