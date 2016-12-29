@@ -246,7 +246,8 @@ class BackdoorMe(cmd.Cmd):
         return bds
     
     def get_categories(self):
-        return ["access/", "escalation/", "windows/", "shell/", "auxiliary/"]
+        for root, dirs, files in os.walk("backdoors"):
+            return [f for f in dirs if "__" not in f]
 
     def get_capabilities(self, category=None):
         caps = []
