@@ -44,12 +44,11 @@ class Interpreter(cmd.Cmd):
             self.cmdloop()
 
     def specialPrint(self, lines):#call this to print, but not include lines that were there in initialization
-        print lines
         lines = lines.split('\n')[:-1] #remove last line, the prompt
         if(sys.argv[3] == "some"):
             lines = lines[1:]#remove first line, which is our command
         for line in lines:
-            print line
+            print(line)
 #        for line in lines.split('\n'):
 #            print line
 
