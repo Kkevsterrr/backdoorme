@@ -26,6 +26,7 @@ CLOSED = Fore.RED + "closed" + Fore.RESET
 
 sys.path.append("backdoors")
 sys.path.append("modules")
+
 class BackdoorMe(cmd.Cmd):
     prompt = Fore.BLUE + ">> " + Fore.RESET
 
@@ -37,9 +38,7 @@ class BackdoorMe(cmd.Cmd):
         self.targets = {}
         self.curtarget = None
         self.get_local_ip()
-#        proc = subprocess.Popen(["ifconfig | grep inet | head -n1 | cut -d\  -f12 | cut -d: -f2"], stdout=subprocess.PIPE, shell=True)
-
-#        self.localIP = proc.stdout.read()
+        
         if six.PY3:
             self.localIP = str(self.localIP)
         else:
@@ -91,8 +90,8 @@ class BackdoorMe(cmd.Cmd):
         except socket.error:
             print(BAD + "Invalid IP Address.")
             return None, None, None
-        uname = input('Username: ') #username for the box to be attacked
-        pword = getpass.getpass() #password for the box to be attacked
+        uname = input('Username: ')  # username for the box to be attacked
+        pword = getpass.getpass()  # password for the box to be attacked
         return hostname, uname, pword
     
     def do_addtarget(self, args):
@@ -232,26 +231,43 @@ class BackdoorMe(cmd.Cmd):
     def do_clear(self, args):
         os.system("clear")
 
-    def walk(self,folder,echo=True):
+    def walk(self, folder, echo=True):
         bds = []
-        if echo:
-            print(" " + INFO + folder.replace("backdoors/", ""))
         for root, dirs, files in os.walk(folder):
-            del dirs[:] # walk down only one level
+            if "__" in root:
+                continue
             path = root.split('/')
-            for file in files:
-                if file[-3:] == ".py":
-                    bds.append(str(file).replace(".py", ""))
+            if echo and len([f for f in files if f[-3:] == ".py"]) > 0:
+                print((((len(path) - 1) * 2 - 1)*' ') + INFO + path[-1]+"/")
+            for f in files:
+                if f[-3:] == ".py" and "util_" not in f:
+                    bds.append(str(f).replace(".py", ""))
                     if echo:
-                        print((len(path)*'  ') + "- " + str(file).replace(".py", ""))
+                        print((len(path)*'  ') + "- " + str(f).replace(".py", ""))
         return bds
+    
+    def get_categories(self):
+        for root, dirs, files in os.walk("backdoors"):
+            return [f for f in dirs if "__" not in f]
+
+    def get_capabilities(self, category=None):
+        caps = []
+        if category is None:
+            for cat in self.get_categories():
+                caps += self.walk("backdoors/"+cat, echo=False)
+            return caps
+        else:
+            return self.walk("backdoors/"+category, echo=False)
 
     def complete_use(self, text, line, begin_index, end_index):
         line = line.rsplit(" ")[1]
         segment=line.split("/")
         if len(segment) == 1:
-            categories = ["access/", "escalation/", "windows/", "shell/", "auxiliary/"]
-            return [item for item in categories if item.startswith(text)]
+            categories = self.get_categories()
+            opts = [item for item in categories if item.startswith(text)]
+            if opts == []:
+                return [category+item for category in categories for item in self.get_capabilities(category) if item.startswith(text)]
+            return opts
         if len(segment) == 2:
             bds = self.walk("backdoors/" + segment[0],echo=False) 
             return [item for item in bds if item.startswith(text)]
@@ -267,11 +283,8 @@ class BackdoorMe(cmd.Cmd):
                 print("  * " + "%s" % (mod))
         if args == "backdoors" or len(args) == 0:
             print(GOOD+ "Available backdoors: ")
-            self.walk("backdoors/access")
-            self.walk("backdoors/escalation")
-            self.walk("backdoors/windows")
-            self.walk("backdoors/shell")
-            self.walk("backdoors/auxiliary")
+            for cat in self.get_categories():
+                self.walk("backdoors/" + cat)
         if len(args) != 0 and args != "targets" and args != "backdoors" and args != "modules":
             print(BAD + "Unknown option " + args)
 
@@ -323,8 +336,10 @@ class BackdoorMe(cmd.Cmd):
         exit()
         return
 
+
 def main():
     BackdoorMe().cmdloop()
+
 
 if __name__ == "__main__":
     main()

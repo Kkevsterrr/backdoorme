@@ -48,7 +48,7 @@ class Interpreter(cmd.Cmd):
         if(sys.argv[3] == "some"):
             lines = lines[1:]#remove first line, which is our command
         for line in lines:
-            print line
+            print(line)
 #        for line in lines.split('\n'):
 #            print line
 
