@@ -234,9 +234,7 @@ class BackdoorMe(cmd.Cmd):
 
     def walk(self, folder, echo=True, path=False):
         bds = []
-        print folder
         for root, dirs, files in os.walk(folder):
-            print folder
             if "__" in root:  # ignore folders that start with __
                 continue
             path = root.split('/')
@@ -267,9 +265,9 @@ class BackdoorMe(cmd.Cmd):
         line = line.rsplit(" ")[1]
         segment = line.split("/")
         
-        completer = rlcompleter.Completer()
-        print " "
-        print completer.complete(text, 5)
+        #completer = rlcompleter.Completer()
+        #print " "
+        #print completer.complete(text, 5)
         if len(segment) == 1:
             categories = self.get_categories()
             opts = [item for item in categories if item.startswith(text)]
@@ -277,9 +275,8 @@ class BackdoorMe(cmd.Cmd):
                 return [item for item in self.get_capabilities(path=True) if text in item]
             return opts
         elif len(segment) == 2:
-            print "HERE"
-            print self.get_capabilities(category=segment[0], echo=True)
-            print [item for item in self.get_capabilities(category=segment[0], echo=False) if item.startswith(segment[1])]
+            #print self.get_capabilities(category=segment[0], echo=True)
+            #print [item for item in self.get_capabilities(category=segment[0], echo=False) if item.startswith(segment[1])]
 
             return [item for item in self.get_capabilities(category=segment[0], echo=False) if item.startswith(segment[1])]
 
