@@ -17,15 +17,26 @@ Demonstration:
 
 [![IMAGE ALT TEXT](http://img.youtube.com/vi/HhnX1Y09KAk/0.jpg)](http://www.youtube.com/watch?v=HhnX1Y09KAk "BackdoorMe Sh demo")
 
+### Setup
+
 To start backdoorme, first ensure that you have the required dependencies. 
+
+For Python 3.5+:                                                                                  
 ```
-Python 3                                                                                   Python 2
-$ sudo apt-get install python3 python3-pip python3-tk nmap                                 sudo python dependencies.py
+$ sudo apt-get install python3 python3-pip python3-tk nmap                                 
 $ cd backdoorme/
 $ virtualenv --python=python3.5 env
 $ source env/bin/activate
 (env) $ pip install -r requirements.txt
 ```
+
+For Python 2.7:
+```
+$ sudo python dependencies.py
+```
+
+### Getting Started
+
 Launching backdoorme:
 ```
 $ python master.py
