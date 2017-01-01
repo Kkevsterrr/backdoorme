@@ -232,9 +232,11 @@ class BackdoorMe(cmd.Cmd):
     def do_clear(self, args):
         os.system("clear")
 
-    def walk(self, folder, echo=True, path=False):
+    def walk(self, folder, echo=True, recursive=False):
         bds = []
         for root, dirs, files in os.walk(folder):
+            bds += [d + "/" for d in dirs if "__" not in d]
+
             if "__" in root:  # ignore folders that start with __
                 continue
             path = root.split('/')
@@ -243,42 +245,41 @@ class BackdoorMe(cmd.Cmd):
             for f in files:
                 if f[-3:] == ".py" and "util_" not in f:
                     name = str(f).replace(".py", "")
-                    bds.append(root.replace("backdoors/", "") + "/" + name if path else name)
+                    bds.append(root.replace("backdoors/", "") + "/" + name if recursive else name)
                     if echo:
                         print((len(path)*'  ') + "- " + str(f).replace(".py", ""))
+            if not recursive:
+                break
+
         return bds
     
     def get_categories(self):
         for root, dirs, files in os.walk("backdoors"):
             return [f for f in dirs if "__" not in f]
 
-    def get_capabilities(self, category=None, path=False):
+    def get_capabilities(self, category=None, recursive=False):
         caps = []
         if category is None:
             for cat in self.get_categories():
-                caps += self.walk("backdoors/"+cat, echo=False, path=path)
+                caps += self.walk("backdoors/"+cat, echo=False, recursive=recursive)
             return caps
         else:
-            return self.walk("backdoors/"+category, echo=False, path=path)
+            return self.walk("backdoors/"+category, echo=False, recursive=recursive)
 
     def complete_use(self, text, line, begin_index, end_index):
         line = line.rsplit(" ")[1]
         segment = line.split("/")
-        
-        #completer = rlcompleter.Completer()
-        #print " "
-        #print completer.complete(text, 5)
         if len(segment) == 1:
-            categories = self.get_categories()
-            opts = [item for item in categories if item.startswith(text)]
-            if not opts:
-                return [item for item in self.get_capabilities(path=True) if text in item]
-            return opts
-        elif len(segment) == 2:
-            #print self.get_capabilities(category=segment[0], echo=True)
-            #print [item for item in self.get_capabilities(category=segment[0], echo=False) if item.startswith(segment[1])]
-
-            return [item for item in self.get_capabilities(category=segment[0], echo=False) if item.startswith(segment[1])]
+            opts = self.walk("backdoors/", echo=False)
+        else:
+            opts = self.walk("backdoors/" + "/".join(segment[:-1]), echo=False)  
+        opts = [o for o in opts if o.startswith(text)]
+        if not opts:
+            opts = self.walk("backdoors/" + "/".join(segment[:-1]), echo=False, recursive=True)
+            return [o for o in opts if text in o]
+        #print text
+        #print [o for o in opts if o.startswith(text)]
+        return opts 
 
     def do_list(self, args):
         if args == "targets" or len(args) == 0:
