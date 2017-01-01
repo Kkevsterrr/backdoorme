@@ -3,6 +3,7 @@ import socket
 import subprocess
 import target
 import getpass
+import rlcompleter
 from colorama import *
 from tkinter import *
 import cmd
@@ -231,17 +232,20 @@ class BackdoorMe(cmd.Cmd):
     def do_clear(self, args):
         os.system("clear")
 
-    def walk(self, folder, echo=True):
+    def walk(self, folder, echo=True, path=False):
         bds = []
+        print folder
         for root, dirs, files in os.walk(folder):
-            if "__" in root:
+            print folder
+            if "__" in root:  # ignore folders that start with __
                 continue
             path = root.split('/')
-            if echo and len([f for f in files if f[-3:] == ".py"]) > 0:
+            if echo and len([f for f in files if f[-3:] == ".py"]) > 0:  # Only show a folder if it has a python file in it
                 print((((len(path) - 1) * 2 - 1)*' ') + INFO + path[-1]+"/")
             for f in files:
                 if f[-3:] == ".py" and "util_" not in f:
-                    bds.append(str(f).replace(".py", ""))
+                    name = str(f).replace(".py", "")
+                    bds.append(root.replace("backdoors/", "") + "/" + name if path else name)
                     if echo:
                         print((len(path)*'  ') + "- " + str(f).replace(".py", ""))
         return bds
@@ -250,27 +254,34 @@ class BackdoorMe(cmd.Cmd):
         for root, dirs, files in os.walk("backdoors"):
             return [f for f in dirs if "__" not in f]
 
-    def get_capabilities(self, category=None):
+    def get_capabilities(self, category=None, path=False):
         caps = []
         if category is None:
             for cat in self.get_categories():
-                caps += self.walk("backdoors/"+cat, echo=False)
+                caps += self.walk("backdoors/"+cat, echo=False, path=path)
             return caps
         else:
-            return self.walk("backdoors/"+category, echo=False)
+            return self.walk("backdoors/"+category, echo=False, path=path)
 
     def complete_use(self, text, line, begin_index, end_index):
         line = line.rsplit(" ")[1]
-        segment=line.split("/")
+        segment = line.split("/")
+        
+        completer = rlcompleter.Completer()
+        print " "
+        print completer.complete(text, 5)
         if len(segment) == 1:
             categories = self.get_categories()
             opts = [item for item in categories if item.startswith(text)]
-            if opts == []:
-                return [category+item for category in categories for item in self.get_capabilities(category) if item.startswith(text)]
+            if not opts:
+                return [item for item in self.get_capabilities(path=True) if text in item]
             return opts
-        if len(segment) == 2:
-            bds = self.walk("backdoors/" + segment[0],echo=False) 
-            return [item for item in bds if item.startswith(text)]
+        elif len(segment) == 2:
+            print "HERE"
+            print self.get_capabilities(category=segment[0], echo=True)
+            print [item for item in self.get_capabilities(category=segment[0], echo=False) if item.startswith(segment[1])]
+
+            return [item for item in self.get_capabilities(category=segment[0], echo=False) if item.startswith(segment[1])]
 
     def do_list(self, args):
         if args == "targets" or len(args) == 0:
