@@ -3,7 +3,7 @@ class Connection:
 		self.open = False
 		self.type = intro
 		self.connection = conn
-	  	self.listening = 1
+		self.listening = 1
 	def __str__(self):
 		string = ""
 		if(self.open):
