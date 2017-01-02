@@ -99,7 +99,7 @@ class Backdoor(cmd.Cmd):
         if "-i" in args or "--interact" in args:
             self.core.curtarget.sessions[int(args.split(" ")[1]) - 1].interact()
 
-        print args
+        print(args)
 
     def do_show(self, args):
         if args == "options":
