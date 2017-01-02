@@ -15,7 +15,7 @@ class Connection:
 		if self.connection.isalive():
 			if self.listening == 0:
 				self.connection.sendline()
-		   		print("Press Control + ] to exit the shell."),
+				print("Press Control + ] to exit the shell."),
 
 			else:
 				self.listening = 0
