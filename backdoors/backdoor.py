@@ -13,19 +13,22 @@ import socket
 import time
 import pexpect
 import traceback
+from connection import Connection
 
 class Backdoor(cmd.Cmd):
     def __init__(self, core):
         super(Backdoor, self).__init__()
         self.options = {}
         self.core = core
+        self.target = core.curtarget
         self.modules = {}
         self.allow_modules = True
         self.help_text = None
         self.listening = 0
+        self.intro = ""
      
     def check_added(self, name):
-        for m, opts in self.modules.items():
+        for m, opts in  self.modules.items():
             if m.name.lower() == name.lower():
                 return m
         return None
@@ -80,22 +83,23 @@ class Backdoor(cmd.Cmd):
     def listen(self, passw="none", prompt="some"):
         self.child = pexpect.spawn("python listen.py " + str(self.get_value("port")) + " " + str(passw) + " " + str(prompt))
         time.sleep(.25)
+        self.core.curtarget.sessions.append(Connection(self.intro, self.child))
+        print("Session " + str(len(self.core.curtarget.sessions)) + " created")
         self.listening = 1
 
-    def do_spawn(self, args):
-        if(hasattr(self, "child")):
-            if(self.child.isalive()):
-                if(self.listening == 2):
-                    print("Press Control + ] to exit the shell."),
-                    self.child.sendline()
-                else:
-                    print("Press Control + ] to exit the shell.")
-                    self.listening = 2
-                self.child.interact(escape_character='\x1d', input_filter=None, output_filter=None)
-            else:
-                print("The connection has been lost.")
-        else:
-            print("The exploit has not been run yet or does not support the interpreter.")
+    def do_sessions(self, args):
+        if args == "" or args == "--help" or args == "-h":
+            print("Use sessions -l to list and sessions -i <num> to interact with a shell")
+        if args == "" or args == "--list" or args == "-l":
+            i = 1
+            for session in self.core.curtarget.sessions:
+                print str(i) 
+                print session
+                i += 1
+        if "-i" in args or "--interact" in args:
+            self.core.curtarget.sessions[int(args.split(" ")[1]) - 1].interact()
+
+        print args
 
     def do_show(self, args):
         if args == "options":

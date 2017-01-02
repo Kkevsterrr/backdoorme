@@ -4,7 +4,8 @@ import pexpect
 import random
 import sys
 
-NUM_TESTS = 1
+NUM_TESTS = 10
+VERBOSITY = 0 #Change to 1 for more verbosity.
 try:
     IP = sys.argv[1]
     USERNAME = sys.argv[2]
@@ -21,13 +22,15 @@ def get_port():
 
 @nottest
 def testAddTarget():
-    print "Spawning..."
+    if VERBOSITY == 1:
+        print "Spawning..."
     child = pexpect.spawn('python master.py')
     child.expect('Using local IP')
     child.sendline('addtarget')
     child.expect('Target Hostname:')
     child.sendline(IP)
-    print "Getting there"
+    if VERBOSITY == 1:
+        print "Getting there"
     child.expect('Username:')
     child.sendline(USERNAME)
     child.expect('Password:')
@@ -35,7 +38,8 @@ def testAddTarget():
     child.expect('Target')
     child.sendline('open')
     child.expect('Connection established.')
-    print "wooohooo"
+    if VERBOSITY == 1:
+        print "Established Connection over ssh"
     return child
 
 def test_pyth():
@@ -51,6 +55,8 @@ def test_pyth():
     child.expect('Press Control \+ ] to exit the shell.')
     child.sendline('whoami')
     child.expect('root', timeout=10)
+    if VERBOSITY == 1:
+        print "Backdoor successful"
     #print("weve got rood")
 
 def test_perl():
@@ -66,6 +72,8 @@ def test_perl():
     child.expect('Press Control \+ ] to exit the shell.')
     child.sendline('whoami')
     child.expect('root', timeout=10)
+    if VERBOSITY == 1:
+        print "Backdoor successful"
 
 def test_bash():
     child = testAddTarget()
@@ -80,6 +88,8 @@ def test_bash():
     child.expect('Press Control \+ ] to exit the shell.')
     child.sendline('whoami')
     child.expect('root', timeout=10)
+    if VERBOSITY == 1:
+        print "Backdoor successful"
     #print("weve got rood")
 
 def test_sh():
@@ -95,6 +105,8 @@ def test_sh():
     child.expect('Press Control \+ ] to exit the shell.')
     child.sendline('whoami')
     child.expect('root', timeout=10)
+    if VERBOSITY == 1:
+        print "Backdoor successful"
     #print("weve got rood")
 
 def test_sh2():
@@ -110,6 +122,8 @@ def test_sh2():
     child.expect('Press Control \+ ] to exit the shell.')
     child.sendline('whoami')
     child.expect('root', timeout=10)
+    if VERBOSITY == 1:
+        print "Backdoor successful"
     #print("weve got rood")
 
 def test_bash2():
@@ -125,6 +139,8 @@ def test_bash2():
     child.expect('Press Control \+ ] to exit the shell.')
     child.sendline('whoami')
     child.expect('root', timeout=10)
+    if VERBOSITY == 1:
+        print "Backdoor successful"
     #print("weve got rood")
 
 def test_x86():
@@ -140,6 +156,8 @@ def test_x86():
     child.expect('Press Control \+ ] to exit the shell.')
     child.sendline('whoami')
     child.expect('root', timeout=10)
+    if VERBOSITY == 1:
+        print "Backdoor successful"
     #print("weve got rood")
 
 def test_nc():
@@ -155,6 +173,8 @@ def test_nc():
     child.expect('Press Control \+ ] to exit the shell.')
     child.sendline('whoami')
     child.expect(USERNAME, timeout=10)
+    if VERBOSITY == 1:
+        print "Backdoor successful"
     #print("weve got rood")
 
 def test_php():
@@ -170,8 +190,11 @@ def test_php():
     child.expect('Press Control \+ ] to exit the shell.')
     child.sendline('whoami')
     child.expect('root', timeout=10)
+    if VERBOSITY == 1:
+        print "Backdoor successful"
 
 tests = {"Python" : test_pyth, "Perl" : test_perl, "Bash" : test_bash, "Bash2" : test_bash2, "Sh" : test_sh, "Sh2" : test_sh2, "Netcat" : test_nc, "x86" : test_x86, "PHP" : test_php } 
+print "-------------"
 
 for test in tests:
     success = 0
@@ -181,6 +204,5 @@ for test in tests:
             success += 1
         except:
             pass
-    print "-------------"
     print "%s final: %d/%d" %(test, success, num)
     print "-------------"
