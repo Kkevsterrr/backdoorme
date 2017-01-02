@@ -84,8 +84,7 @@ class Backdoor(cmd.Cmd):
         self.child = pexpect.spawn("python listen.py " + str(self.get_value("port")) + " " + str(passw) + " " + str(prompt))
         time.sleep(.25)
         self.core.curtarget.sessions.append(Connection(self.intro, self.child))
-        print("Session " + str(len(self.core.curtarget.sessions)) + " created")
-        self.listening = 1
+        print(INFO + "Session " + str(len(self.core.curtarget.sessions)) + " created.")
 
     def do_sessions(self, args):
         if args == "" or args == "--help" or args == "-h":
