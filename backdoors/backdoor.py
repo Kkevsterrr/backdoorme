@@ -93,8 +93,8 @@ class Backdoor(cmd.Cmd):
         if args == "" or args == "--list" or args == "-l":
             i = 1
             for session in self.core.curtarget.sessions:
-                print str(i) 
-                print session
+                print(str(i))
+                print(session)
                 i += 1
         if "-i" in args or "--interact" in args:
             self.core.curtarget.sessions[int(args.split(" ")[1]) - 1].interact()
