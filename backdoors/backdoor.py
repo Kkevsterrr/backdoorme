@@ -13,7 +13,7 @@ import socket
 import time
 import pexpect
 import traceback
-from connection import Connection
+from .connection import Connection
 
 class Backdoor(cmd.Cmd):
     def __init__(self, core):
