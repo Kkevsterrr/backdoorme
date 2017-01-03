@@ -37,13 +37,20 @@ class Interpreter(cmd.Cmd):
 		self.sock = self.s.accept()
 		time.sleep(.25)
 
-
 	def cmdloop(self):
 		try:
 			cmd.Cmd.cmdloop(self)
 		except KeyboardInterrupt:
 			print("\n" + "Disconnect your shell using Ctrl+]")
 			self.cmdloop()
+
+    def specialPrint(self, lines):#call this to print, but not include lines that were there in initialization
+        lines = lines.split('\n')[:-1] #remove last line, the prompt
+        if(sys.argv[3] == "some"):
+            lines = lines[1:]#remove first line, which is our command
+        for line in lines:
+            print(line)
+
 
 	def specialPrint(self, lines):#call this to print, but not include lines that were there in initialization
 		#print lines
@@ -83,4 +90,4 @@ def main():
 	Interpreter().cmdloop()
 
 if __name__ == "__main__":
-	main()
+  main()
