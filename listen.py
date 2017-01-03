@@ -27,6 +27,7 @@ class Interpreter(cmd.Cmd):
 				self.sock[0].send(sys.argv[2] + '\n')
 				time.sleep(.25)
 				self.initLines += self.sock[0].recv(0x10000)
+		print("Connection Received.")
 
 	def bind(self): #set up a connection
 		self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -36,6 +37,7 @@ class Interpreter(cmd.Cmd):
 		self.sock = self.s.accept()
 		time.sleep(.25)
 
+
 	def cmdloop(self):
 		try:
 			cmd.Cmd.cmdloop(self)
@@ -44,7 +46,7 @@ class Interpreter(cmd.Cmd):
 			self.cmdloop()
 
 	def specialPrint(self, lines):#call this to print, but not include lines that were there in initialization
-		print lines
+		#print lines
 		lines = lines.split('\n')[:-1] #remove last line, the prompt
 		if(sys.argv[3] == "some"):
 			lines = lines[1:]#remove first line, which is our command

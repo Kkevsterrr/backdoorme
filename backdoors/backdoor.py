@@ -83,7 +83,7 @@ class Backdoor(cmd.Cmd):
     def listen(self, passw="none", prompt="some"):
         self.child = pexpect.spawn("python listen.py " + str(self.get_value("port")) + " " + str(passw) + " " + str(prompt))
         time.sleep(.25)
-        self.core.curtarget.sessions.append(Connection(self.intro, self.child))
+        self.core.curtarget.sessions.append(Connection(self.intro, self.child, len(self.core.curtarget.sessions)))
         print(INFO + "Session " + str(len(self.core.curtarget.sessions)) + " created.")
 
     def do_sessions(self, args):
