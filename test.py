@@ -49,6 +49,21 @@ def testPerl():
 	child.expect('root')
 	print("weve got rood")
 
+def test_ruby():
+    child = testAddTarget()
+    child.sendline('use shell/ruby')
+    child.expect('Using Ruby module')
+    port = random.randrange(1024, 65535, 1)
+    child.sendline('set port ' + str(port))
+    child.expect('port => ' + str(port))
+    child.sendline('exploit')
+    child.expect('Ruby backdoor on')
+    child.sendline('sessions -i 1')
+    child.expect('Press Control \+ ] to exit the shell.')
+    child.sendline('whoami')
+    child.expect('root', timeout=10)
+    print("weve got rood")
+
 def testBash():
 	child = testAddTarget()
 	child.sendline('use shell/bash')
@@ -154,6 +169,8 @@ def testPHP():
 	child.expect('root')
 	print("weve got rood")
 
+print("ruby")
+test_ruby()
 print("pyth")
 testPyth()
 print("netcat")

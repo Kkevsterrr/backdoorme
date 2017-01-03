@@ -16,7 +16,7 @@ class Connection:
 			string += "Open\n"
 		else:
 			string += "Closed\n"
-		string += self.type + "\n"
+		string += self.type
 		#string += self.connection + "\n"
 		return string
 
@@ -38,6 +38,5 @@ class Connection:
 				self.listening = 0
 				print("Press Control + ] to exit the shell.")
 			self.connection.interact(escape_character='\x1d', input_filter=None, output_filter=None)
-			self.open = True #at least for now
 		else:
 			print("The connection has been lost")
