@@ -1,6 +1,6 @@
 from master import *
 from nose.tools import nottest
-import pexpect
+
 #######################################################################################
 
 @nottest
@@ -58,6 +58,7 @@ def check_crash_test(bd):
     core = BackdoorMe()
     bd(core).do_show("options")
     pass
+
 @nottest
 def check_help_text(bd):
     core = BackdoorMe()
@@ -65,6 +66,7 @@ def check_help_text(bd):
         assert False
 
 #######################################################################################
+
 def backdoor_crash_test():
     bds = get_backdoors()
     for bd in bds:
@@ -75,17 +77,13 @@ def add_module_test():
     for bd in bds:
         for m in get_modules():
             yield check_add_module_test, bd, m
+
 def help_text_test():
     bds = get_backdoors()
     for bd in bds:
        yield check_help_text, bd 
+
 def add_target_test():
     bd = BackdoorMe()
     bd.addtarget("10.1.0.2", "student", "target123")
-    
     pass
-    
-@nottest
-def testPyth():
-    child = pexpect.spawn('python master.py')
-    child.expect('Welcome to BackdoorMe')
