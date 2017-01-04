@@ -112,6 +112,15 @@ class Backdoor(cmd.Cmd):
         args = shlex.split(args)
         bad_opt = BAD + "Unknown option %s" % args[0]
         if len(args) == 2 and args[0] in self.options:
+            if args[0] == "port":
+                if int(args[1]) > 0 and int(args[1]) < 1024:
+                    print(INFO + "Sudo is required for this port.")
+                elif int(args[1]) > 1023 and int(args[1]) < 65536:
+                    pass
+                else:
+                    print(BAD + "This is not a valid port.")
+                    return
+
             self.options[args[0].lower()].value = args[1]
             print(GOOD + "%s => %s" % (args[0], args[1]))
         elif args[0] == "target":
