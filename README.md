@@ -93,11 +93,12 @@ As in metasploit, backdoors are organized by category.
   - **sh** - Similar to the first bash backdoor, but redirects input to /bin/sh.
   - **sh2** - Similar to the second bash backdoor, but redirects input to /bin/sh.
   - **metasploit** - employs msfvenom to create a reverse_tcp binary on the target, then runs the binary to connect to a meterpreter shell.
+  - **java** - creates a socket connection using libraries from Java and compiles the backdoor on the target.
+  - **ruby** - uses ruby's libraries to create a connection, then redirects to /bin/bash.
   - **netcat** - uses netcat to pipe standard input and output to /bin/sh, giving the user an interactive shell.
   - **netcat_traditional** - utilizes netcat-traditional's -e option to create a reverse shell.
   - **perl** - a script written in perl which redirects output to bash, and renames the process to look less conspicuous.
   - **php** - runs a php backdoor which sends output to bash. It does not automatically install a web server, but instead uses the web module
-  - **pupy** - uses n1nj4sec's Pupy backdoor, found at https://github.com/n1nj4sec/pupy.
   - **python** - uses a short python script to perform commands and send output back to the user.
   - **web** - ships a web server to the target, then uploads msfvenom's php reverse_tcp backdoor and connects to the host. Although this is also a php backdoor, it is not the same backdoor as the above php backdoor.
 - Access
