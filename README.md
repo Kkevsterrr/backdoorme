@@ -15,7 +15,8 @@ Modules make the backdoors more potent by running them more often, for example, 
 
 Demonstration:
 
-<img src="https://i.makeagif.com/media/1-03-2017/31ZYvY.gif" alt="ice video 20170103 145207" | height = 500px></a>
+<img src="https://cloud.githubusercontent.com/assets/14065974/21631075/2cd23a98-d205-11e6-811e-c3564b1ca55a.gif" alt="Bash Demonstration" | height = 500px></a>
+
 ### Setup
 
 To start backdoorme, first ensure that you have the required dependencies. 
