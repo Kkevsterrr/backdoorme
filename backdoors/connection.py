@@ -36,7 +36,7 @@ class Connection:
 
 			else:
 				self.listening = 0
-				print("Press Control + ] to exit the shell.")
+				print("Press Control + ] to exit the shell."),
 			self.connection.interact(escape_character='\x1d', input_filter=None, output_filter=None)
 		else:
 			print("The connection has been lost")
