@@ -15,7 +15,7 @@ Modules make the backdoors more potent by running them more often, for example, 
 
 Demonstration:
 
-<img src="https://cloud.githubusercontent.com/assets/14065974/21630672/7d8bcdfe-d201-11e6-945e-68c02c56c222.gif" alt="Bash Demonstration" | height = 500px></a>
+<img src="https://cloud.githubusercontent.com/assets/14065974/21631075/2cd23a98-d205-11e6-811e-c3564b1ca55a.gif" alt="Bash Demonstration" | height = 500px></a>
 
 ### Setup
 
