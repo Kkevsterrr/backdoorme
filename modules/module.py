@@ -1,7 +1,12 @@
 import cmd
-from .option import *
-from definitions import *
 import os
+from colorama import *
+from .option import *
+
+GOOD = Fore.GREEN + " + " + Fore.RESET
+BAD = Fore.RED + " - " + Fore.RESET
+WARN = Fore.YELLOW + " * " + Fore.RESET
+INFO = Fore.BLUE + " + " + Fore.RESET
 
 class Module(object):
     def __init__(self, core):

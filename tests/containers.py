@@ -37,12 +37,11 @@ class Machine(object):
         return res
     
     def get_ip(self):
-        return self.run("ifconfig eth0 | grep \"inet \" | awk -F'[: ]+' '{ print $4 }'")
+        return self.run("ifconfig eth0 | grep \"inet \"  | awk -F'[: ]+' '{ print $4 }'")
 
 def create_archive():
     os.system("tar -czf code.tar.gz ./* 2> /dev/null")
 
-# Also need to enable SSH, ifconfig, python, etc
 def setup_attacker(m):
     codebase = open("code.tar.gz", "rb").read()
     m.container.put_archive("/", codebase)
@@ -53,7 +52,7 @@ def setup_attacker(m):
 def setup_target(m):
     m.run("apt-get update")
     m.run("useradd -ms /bin/bash george")
-    m.run("echo \"george:password\" | chpasswd")
+    m.run("echo 'george:password' | chpasswd")
     m.run("apt-get install -y openssh-server ssh net-tools netcat python")
     m.run("service ssh start")
     return True

@@ -1,18 +1,25 @@
 import os
 import cmd
-from .option import *
-from definitions import *
 import math
 import shlex
 import importlib
 import inspect
 import sys
 import multiprocessing
-from six.moves import input
 import socket
 import time
 import pexpect
 import traceback
+from colorama import *
+from .option import *
+from six.moves import input
+
+
+GOOD = Fore.GREEN + " + " + Fore.RESET
+BAD = Fore.RED + " - " + Fore.RESET
+WARN = Fore.YELLOW + " * " + Fore.RESET
+INFO = Fore.BLUE + " + " + Fore.RESET
+
 
 class Backdoor(cmd.Cmd):
     def __init__(self, core):

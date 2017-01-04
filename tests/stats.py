@@ -5,9 +5,27 @@ import random
 import sys
 from containers import *
 
-NUM_TESTS = 5
+NUM_TESTS = 1
 PASSRATE = 0.9
 DOCKER = False
+
+class Client(object):
+    def __init__(self, command, verbose=True):
+        self.command = command
+        self.client = pexpect.spawn(command)
+        self.verbose = verbose
+    
+    def expect(self, line):
+        if self.verbose:
+            print(self.client.before)
+        res = self.client.expect(line)
+        if self.verbose:
+            print(res)
+            print(self.client.after)
+        return res
+    
+    def sendline(self, line):
+        return self.client.sendline(line)
 
 @nottest
 def setup():
@@ -41,11 +59,12 @@ def get_port():
 
 @nottest
 def testAddTarget():
+    
     #if not DOCKER:
     #    child = pexpect.spawn('python master.py')
     #else: 
         #attacker = None  # TODO
-    child = pexpect.spawn("docker exec -it b8f0a8a60bb2 python master.py")# % attacker.docker_id)
+    child = Client("docker exec -it b2294285de44 python master.py")# % machines["Attacker"].docker_id)
     print("Spawned.")
     child.expect('Using local IP')
     child.sendline('addtarget')
@@ -225,6 +244,7 @@ def check(test):
 IP = "172.17.0.3"
 USERNAME = "george"
 PASS = "password"
+
 def test_all():
     try:
         #tests = {"Python" : test_pyth, "Perl" : test_perl, "Bash" : test_bash, "Bash2" : test_bash2, "Sh" : test_sh, "Sh2" : test_sh2, "Netcat" : test_nc, "x86" : test_x86, "PHP" : test_php } 
@@ -233,5 +253,5 @@ def test_all():
             yield check, tests[test] 
     finally:
         print(GOOD + "Cleaning up...")
-        for m in machines:
-            machines[m].stop()
+    #    for m in machines:
+    #        machines[m].stop()

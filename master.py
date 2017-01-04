@@ -7,7 +7,6 @@ import rlcompleter
 from colorama import *
 from tkinter import *
 import cmd
-from start import ascii
 from backdoors import *
 from modules import *
 import importlib
@@ -28,6 +27,14 @@ CLOSED = Fore.RED + "closed" + Fore.RESET
 sys.path.append("backdoors")
 sys.path.append("modules")
 
+
+def ascii_art():
+    print("   ___           __      __              __  ___"   )
+    print("  / _ )___ _____/ /_____/ /__  ___  ____/  |/  /__ ")
+    print(" / _  / _ `/ __/  '_/ _  / _ \/ _ \/ __/ /|_/ / -_)")
+    print("/____/\_,_/\__/_/\_\\\\_,_/\___/\___/_/ /_/  /_/\__/ ")
+
+
 class BackdoorMe(cmd.Cmd):
     prompt = Fore.BLUE + ">> " + Fore.RESET
 
@@ -46,7 +53,7 @@ class BackdoorMe(cmd.Cmd):
             self.localIP = self.localIP.encode('ascii', 'ignore').decode('ascii')
 
         self.ctrlc = False
-        ascii()
+        ascii_art()
         print("Welcome to BackdoorMe, a powerful backdooring utility. Type \"help\" to see the list of available commands.")
         print("Type \"addtarget\" to set a target, and \"open\" to open an SSH connection to that target.")
         print("Using local IP of %s." % self.localIP)

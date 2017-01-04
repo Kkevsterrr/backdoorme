@@ -4,6 +4,7 @@ import sys
 import os
 import cmd
 import pexpect
+
 #First argument - port 
 #Second argument - password
 #third - if it has a prompt or not, defaults to some (meaning it has a prompt)
