@@ -158,6 +158,22 @@ def test_sh2():
     #print("weve got rood")
 
 @nottest
+def testJava():
+    child = testAddTarget()
+    child.sendline('use shell/java')
+    child.expect('Using Java module...')
+    port = random.randrange(1024, 65535, 1)
+    child.sendline('set port ' + str(port))
+    child.expect('port => ' + str(port))
+    child.sendline('exploit')
+    child.expect('Java backdoor on')
+    child.sendline('sessions -i 1')
+    child.expect('Press Control \+ ] to exit the shell.')
+    child.sendline('whoami')
+    child.expect('root', timeout=10)
+    #print("weve got rood")
+
+@nottest
 def test_bash2():
     child = testAddTarget()
     child.sendline('use shell/bash2')
