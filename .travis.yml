@@ -3,4 +3,4 @@ python:
  - "3.5"
 install:
  - pip install -r requirements.txt
-script: nosetests-3.4 -vv --nocapture --ignore-file tests/test.py
+script: nosetests-3.4 -vv --nocapture --ignore-file tests/tests.py
