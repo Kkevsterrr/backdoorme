@@ -260,6 +260,20 @@ class BackdoorMe(cmd.Cmd):
 
         return bds
     
+    def do_sessions(self, args):
+        if args == "" or args == "--help" or args == "-h":
+            print("Use sessions -l to list and sessions -i <num> to interact with a shell")
+        if args == "" or args == "--list" or args == "-l":
+            i = 1
+            for session in self.curtarget.sessions:
+                print(str(i))
+                print(session)
+                i += 1
+        if "-i" in args or "--interact" in args:
+            self.curtarget.sessions[int(args.split(" ")[1]) - 1].interact()
+
+        print(args)
+
     def get_categories(self):
         for root, dirs, files in os.walk("backdoors"):
             return [f for f in dirs if "__" not in f]

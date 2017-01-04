@@ -15,7 +15,7 @@ Modules make the backdoors more potent by running them more often, for example, 
 
 Demonstration:
 
-[![IMAGE ALT TEXT](http://img.youtube.com/vi/HhnX1Y09KAk/0.jpg)](http://www.youtube.com/watch?v=HhnX1Y09KAk "BackdoorMe Sh demo")
+<img src="https://cloud.githubusercontent.com/assets/14065974/21631075/2cd23a98-d205-11e6-811e-c3564b1ca55a.gif" alt="Bash Demonstration" | height = 500px></a>
 
 ### Setup
 

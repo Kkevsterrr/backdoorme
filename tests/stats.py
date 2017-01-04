@@ -91,7 +91,7 @@ def test_pyth():
     child.expect('port => ' + str(port))
     child.sendline('exploit')
     child.expect('Python backdoor on')
-    child.sendline('spawn')
+    child.sendline('sessions -i 1')
     child.expect('Press Control \+ ] to exit the shell.')
     child.sendline('whoami')
     child.expect('root', timeout=10)
@@ -107,7 +107,7 @@ def test_perl():
     child.expect('port => ' + str(port))
     child.sendline('exploit')
     child.expect('Perl backdoor on')
-    child.sendline('spawn')
+    child.sendline('sessions -i 1')
     child.expect('Press Control \+ ] to exit the shell.')
     child.sendline('whoami')
     child.expect('root', timeout=10)
@@ -122,7 +122,7 @@ def test_bash():
     child.expect('port => ' + str(port))
     child.sendline('exploit')
     child.expect('Bash Backdoor on')
-    child.sendline('spawn')
+    child.sendline('sessions -i 1')
     child.expect('Press Control \+ ] to exit the shell.')
     child.sendline('whoami')
     child.expect('root', timeout=10)
@@ -138,7 +138,23 @@ def test_sh():
     child.expect('port => ' + str(port))
     child.sendline('exploit')
     child.expect('Sh Backdoor on')
-    child.sendline('spawn')
+    child.sendline('sessions -i 1')
+    child.expect('Press Control \+ ] to exit the shell.')
+    child.sendline('whoami')
+    child.expect('root', timeout=10)
+    #print("weve got rood")
+
+@nottest
+def test_ruby():
+    child = testAddTarget()
+    child.sendline('use shell/ruby')
+    child.expect('Using Ruby module')
+    port = get_port()
+    child.sendline('set port ' + str(port))
+    child.expect('port => ' + str(port))
+    child.sendline('exploit')
+    child.expect('Ruby backdoor on')
+    child.sendline('sessions -i 1')
     child.expect('Press Control \+ ] to exit the shell.')
     child.sendline('whoami')
     child.expect('root', timeout=10)
@@ -154,7 +170,23 @@ def test_sh2():
     child.expect('port => ' + str(port))
     child.sendline('exploit')
     child.expect('Initializing backdoor...')
-    child.sendline('spawn')
+    child.sendline('sessions -i 1')
+    child.expect('Press Control \+ ] to exit the shell.')
+    child.sendline('whoami')
+    child.expect('root', timeout=10)
+    #print("weve got rood")
+
+@nottest
+def testJava():
+    child = testAddTarget()
+    child.sendline('use shell/java')
+    child.expect('Using Java module...')
+    port = random.randrange(1024, 65535, 1)
+    child.sendline('set port ' + str(port))
+    child.expect('port => ' + str(port))
+    child.sendline('exploit')
+    child.expect('Java backdoor on')
+    child.sendline('sessions -i 1')
     child.expect('Press Control \+ ] to exit the shell.')
     child.sendline('whoami')
     child.expect('root', timeout=10)
@@ -170,7 +202,7 @@ def test_bash2():
     child.expect('port => ' + str(port))
     child.sendline('exploit')
     child.expect('Initializing backdoor...')
-    child.sendline('spawn')
+    child.sendline('sessions -i 1')
     child.expect('Press Control \+ ] to exit the shell.')
     child.sendline('whoami')
     child.expect('root', timeout=10)
@@ -186,7 +218,7 @@ def test_x86():
     child.expect('port => ' + str(port))
     child.sendline('exploit')
     child.expect('x86 backdoor on')
-    child.sendline('spawn')
+    child.sendline('sessions -i 1')
     child.expect('Press Control \+ ] to exit the shell.')
     child.sendline('whoami')
     child.expect('root', timeout=10)
@@ -202,7 +234,7 @@ def test_nc():
     child.expect('port => ' + str(port))
     child.sendline('exploit')
     child.expect('Netcat backdoor on')
-    child.sendline('spawn')
+    child.sendline('sessions -i 1')
     child.expect('Press Control \+ ] to exit the shell.')
     child.sendline('whoami')
     child.expect(USERNAME, timeout=10)
@@ -218,7 +250,7 @@ def test_php():
     child.expect('port => ' + str(port))
     child.sendline('exploit')
     child.expect('Initializing backdoor...')
-    child.sendline('spawn')
+    child.sendline('sessions -i 1')
     child.expect('Press Control \+ ] to exit the shell.')
     child.sendline('whoami')
     child.expect('root', timeout=10)
@@ -247,7 +279,7 @@ PASS = "password"
 
 def test_all():
     try:
-        #tests = {"Python" : test_pyth, "Perl" : test_perl, "Bash" : test_bash, "Bash2" : test_bash2, "Sh" : test_sh, "Sh2" : test_sh2, "Netcat" : test_nc, "x86" : test_x86, "PHP" : test_php } 
+        #tests = {"Ruby" : test_ruby, "Python" : test_pyth, "Perl" : test_perl, "Bash" : test_bash, "Bash2" : test_bash2, "Sh" : test_sh, "Sh2" : test_sh2, "Netcat" : test_nc, "x86" : test_x86, "PHP" : test_php } 
         tests = {"Bash" : test_bash}
         for test in tests:
             yield check, tests[test] 

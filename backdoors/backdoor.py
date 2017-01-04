@@ -13,6 +13,7 @@ import traceback
 from colorama import *
 from .option import *
 from six.moves import input
+from .connection import Connection
 
 
 GOOD = Fore.GREEN + " + " + Fore.RESET
@@ -26,13 +27,15 @@ class Backdoor(cmd.Cmd):
         super(Backdoor, self).__init__()
         self.options = {}
         self.core = core
+        self.target = core.curtarget
         self.modules = {}
         self.allow_modules = True
         self.help_text = None
         self.listening = 0
+        self.intro = ""
      
     def check_added(self, name):
-        for m, opts in self.modules.items():
+        for m, opts in  self.modules.items():
             if m.name.lower() == name.lower():
                 return m
         return None
@@ -87,22 +90,22 @@ class Backdoor(cmd.Cmd):
     def listen(self, passw="none", prompt="some"):
         self.child = pexpect.spawn("python listen.py " + str(self.get_value("port")) + " " + str(passw) + " " + str(prompt))
         time.sleep(.25)
-        self.listening = 1
+        self.core.curtarget.sessions.append(Connection(self.intro, self.child, len(self.core.curtarget.sessions)))
+        print(INFO + "Session " + str(len(self.core.curtarget.sessions)) + " created.")
 
-    def do_spawn(self, args):
-        if(hasattr(self, "child")):
-            if(self.child.isalive()):
-                if(self.listening == 2):
-                    print("Press Control + ] to exit the shell."),
-                    self.child.sendline()
-                else:
-                    print("Press Control + ] to exit the shell.")
-                    self.listening = 2
-                self.child.interact(escape_character='\x1d', input_filter=None, output_filter=None)
-            else:
-                print("The connection has been lost.")
-        else:
-            print("The exploit has not been run yet or does not support the interpreter.")
+    def do_sessions(self, args):
+        if args == "" or args == "--help" or args == "-h":
+            print("Use sessions -l to list and sessions -i <num> to interact with a shell")
+        if args == "" or args == "--list" or args == "-l":
+            i = 1
+            for session in self.core.curtarget.sessions:
+                print(str(i))
+                print(session)
+                i += 1
+        if "-i" in args or "--interact" in args:
+            self.core.curtarget.sessions[int(args.split(" ")[1]) - 1].interact()
+
+        print(args)
 
     def do_show(self, args):
         if args == "options":
@@ -116,6 +119,15 @@ class Backdoor(cmd.Cmd):
         args = shlex.split(args)
         bad_opt = BAD + "Unknown option %s" % args[0]
         if len(args) == 2 and args[0] in self.options:
+            if args[0] == "port":
+                if int(args[1]) > 0 and int(args[1]) < 1024:
+                    print(INFO + "Sudo is required for this port.")
+                elif int(args[1]) > 1023 and int(args[1]) < 65536:
+                    pass
+                else:
+                    print(BAD + "This is not a valid port.")
+                    return
+
             self.options[args[0].lower()].value = args[1]
             print(GOOD + "%s => %s" % (args[0], args[1]))
         elif args[0] == "target":
