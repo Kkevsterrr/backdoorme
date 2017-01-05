@@ -288,7 +288,7 @@ PASS = "password"
 def test_all():
     try:
         #tests = {"Ruby" : test_ruby, "Python" : test_pyth, "Perl" : test_perl, "Bash" : test_bash, "Bash2" : test_bash2, "Sh" : test_sh, "Sh2" : test_sh2, "Netcat" : test_nc, "x86" : test_x86, "PHP" : test_php } 
-        tests = {"Bash" : test_bash}
+        tests = {"Bash2" : test_bash2}
         for test in tests:
             yield check, tests[test] 
     finally:
