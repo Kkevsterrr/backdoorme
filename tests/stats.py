@@ -9,8 +9,8 @@ NUM_TESTS = 1
 PASSRATE = 0.9
 DOCKER = False
 
-os.system("useradd -ms /bin/bash george")
-os.system("echo password | chpasswd george")
+os.system("sudo useradd -ms /bin/bash george")
+os.system("sudo echo password | chpasswd george")
 #os.chdir("../")
 #os.system("pwd")
 
