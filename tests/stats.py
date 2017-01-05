@@ -1,4 +1,3 @@
-from master import *
 from nose.tools import nottest
 import pexpect
 import random
@@ -8,6 +7,12 @@ from containers import *
 NUM_TESTS = 1
 PASSRATE = 0.9
 DOCKER = False
+
+os.system("useradd -ms /bin/bash george")
+os.system("echo password | chpasswd george")
+#os.chdir("../")
+#os.system("pwd")
+
 
 class Client(object):
     def __init__(self, command, verbose=True):
@@ -51,7 +56,7 @@ def setup():
         try:
             return {}, sys.argv[1], sys.argv[2], sys.argv[3]
         except:  
-            return {}, "192.168.121.153", "george", "password" 
+            return {}, "127.0.0.1", "george", "password" 
     
 @nottest
 def get_port():
@@ -59,12 +64,11 @@ def get_port():
 
 @nottest
 def testAddTarget():
-    
-    #if not DOCKER:
-    #    child = pexpect.spawn('python master.py')
-    #else: 
-        #attacker = None  # TODO
-    child = Client("docker exec -it b2294285de44 python master.py")# % machines["Attacker"].docker_id)
+    if not DOCKER:
+        child = pexpect.spawn('python master.py')
+    else: 
+        attacker = None  # TODO
+        child = Client("docker exec -it b2294285de44 python master.py")# % machines["Attacker"].docker_id)
     print("Spawned.")
     child.expect('Using local IP')
     child.sendline('addtarget')
@@ -273,7 +277,7 @@ def check(test):
         pass
 
 #machines, IP, USERNAME, PASS = setup()
-IP = "172.17.0.3"
+IP = "127.0.0.1"
 USERNAME = "george"
 PASS = "password"
 
@@ -284,6 +288,6 @@ def test_all():
         for test in tests:
             yield check, tests[test] 
     finally:
-        print(GOOD + "Cleaning up...")
+        print(GOOD + "Exiting...")
     #    for m in machines:
     #        machines[m].stop()
