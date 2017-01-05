@@ -10,7 +10,7 @@ PASSRATE = 0.9
 DOCKER = False
 
 os.system("sudo useradd -ms /bin/bash george")
-os.system("sudo echo password | chpasswd george")
+os.system("sudo echo \"george:password\" | chpasswd")
 #os.chdir("../")
 #os.system("pwd")
 
