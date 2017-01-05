@@ -27,7 +27,7 @@ class Client(object):
         res = self.client.expect(line)
         if self.verbose:
             print(res)
-            print(self.client.after)
+            #print(self.client.after)
         return res
     
     def sendline(self, line):
