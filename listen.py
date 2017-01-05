@@ -4,7 +4,7 @@ import sys
 import os
 import cmd
 import pexpect
-
+import traceback
 #First argument - port 
 #Second argument - password
 #third - if it has a prompt or not, defaults to some (meaning it has a prompt)
@@ -75,6 +75,7 @@ class Interpreter(cmd.Cmd):
 			self.specialPrint(self.sock[0].recv(0x10000))
 		except Exception as e:
 			print(e.__class__, ":", e)
+                        traceback.print_exc()
 			
 def main():
 	Interpreter().cmdloop()
