@@ -1,4 +1,4 @@
-# backdoorme [![Build Status](https://travis-ci.org/Kkevsterrr/backdoorme.png)](https://travis-ci.org/Kkevsterrr/backdoorme)
+# backdoorme [![Build Status](https://travis-ci.org/Kkevsterrr/backdoorme.png?branch=master)](https://travis-ci.org/Kkevsterrr/backdoorme)
 
  Tools like metasploit are great for exploiting computers, but what happens after you've gained access to a computer? Backdoorme answers that question by unleashing a slew of backdoors to establish persistence over long periods of time.
 
