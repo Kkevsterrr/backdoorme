@@ -289,6 +289,6 @@ def test_all():
         for test in tests:
             yield check, tests[test] 
     finally:
-        print(GOOD + "Exiting...")
+        print("Exiting...")
     #    for m in machines:
     #        machines[m].stop()
