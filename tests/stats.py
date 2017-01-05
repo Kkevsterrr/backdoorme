@@ -66,7 +66,7 @@ def get_port():
 @nottest
 def testAddTarget():
     if not DOCKER:
-        child = pexpect.spawn('python master.py')
+        child = Client('python master.py')
     else: 
         attacker = None  # TODO
         child = Client("docker exec -it b2294285de44 python master.py")# % machines["Attacker"].docker_id)
