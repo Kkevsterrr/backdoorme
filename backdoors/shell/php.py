@@ -27,7 +27,3 @@ class Php(Backdoor):
         for mod in self.modules.keys():
             print(INFO + "Attempting to execute " + mod.name + " module...")
             mod.exploit(self.get_command())
-       # for mod in self.portModules.keys():
-       #     print(INFO + "Attempting to execute " + mod.name + " module...")
-       #     mod.exploit(self.get_port())
-
