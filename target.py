@@ -23,6 +23,8 @@ class Target:
         self.is_open = False 
         self.scp = None
         self.sessions = []   
+        paramiko.util.log_to_file("filename.log")
+
     def conn(self):
         #print("Opening SSH connection to target...")
         self.ssh = paramiko.SSHClient()  # use ssh.exec_command("") to perform an action.
