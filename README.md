@@ -15,7 +15,7 @@ Modules make the backdoors more potent by running them more often, for example, 
 
 Demonstration:
 
-<img src="https://cloud.githubusercontent.com/assets/14065974/21631075/2cd23a98-d205-11e6-811e-c3564b1ca55a.gif" alt="Bash Demonstration" | height = 500px></a>
+<img src="https://cloud.githubusercontent.com/assets/14065974/21631075/2cd23a98-d205-11e6-811e-c3564b1ca55a.gif" alt="Bash Demonstration" height="500">
 
 ### Setup
 
@@ -85,8 +85,8 @@ As in metasploit, backdoors are organized by category.
   - **user** - adds a new user to the target.
   - **web** - installs an Apache Server on the client.
 - Escalation
-  - **setuid** - the SetUID backdoor works by setting the setuid bit on a binary while the user has root acccess, so that when that binary is later run by a user without root access, the binary is executed with root access. By default, this backdoor flips the setuid bit on nano, so that if root access is ever lost, the attacker can SSH back in as an unpriviledged user and still be able to run nano (or any chosen binary) as root. ('nano /etc/shadow'). Note that root access is initially required to deploy this escalation backdoor. 
-   - **shell** - the shell backdoor is a priviledge escalation backdoor, similar to (but more specific than) it's SetUID escalation brother. It duplicates the bash shell to a hidden binary, and sets the SUID bit.  Note that root access is initially required to deploy this escalation backdoor. To use, while SSHed in as an unpriviledged user, simply run ".bash -p", and you will have root access.
+  - **setuid** - the SetUID backdoor works by setting the setuid bit on a binary while the user has root acccess, so that when that binary is later run by a user without root access, the binary is executed with root access. By default, this backdoor flips the setuid bit on nano, so that if root access is ever lost, the attacker can SSH back in as an unprivileged user and still be able to run nano (or any chosen binary) as root. ('nano /etc/shadow'). Note that root access is initially required to deploy this escalation backdoor.
+   - **shell** - the shell backdoor is a privilege escalation backdoor, similar to (but more specific than) it's SetUID escalation brother. It duplicates the bash shell to a hidden binary, and sets the SUID bit.  Note that root access is initially required to deploy this escalation backdoor. To use, while SSHed in as an unprivileged user, simply run ".bash -p", and you will have root access.
 - Shell
   - **bash** - uses a simple bash script to connect to a specific ip and port combination and pipe the output into bash.
   - **bash2** - a slightly different (and more reliable) version of the above bash backdoor which does not prompt for the password on the client-side.
